@@ -1,0 +1,6 @@
+{
+  "content": "display: ${1|none,inline,block,list-item,run-in,compact,marker|};$0",
+  "name": "display: common-types",
+  "scope": "source.css",
+  "tabTrigger": "display"
+}

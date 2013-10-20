@@ -1,0 +1,6 @@
+{
+  "content": "letter-spacing: $1em;$0",
+  "name": "letter-spacing: em",
+  "scope": "source.css",
+  "tabTrigger": "letter"
+}

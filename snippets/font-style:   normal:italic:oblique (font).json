@@ -1,0 +1,6 @@
+{
+  "content": "font-style: ${1|normal,italic,oblique|};$0",
+  "name": "font-style: normal/italic/oblique",
+  "scope": "source.css",
+  "tabTrigger": "font"
+}

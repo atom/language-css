@@ -1,0 +1,8 @@
+{
+  "name": "Symbol List: Selector",
+  "scope": "source.css meta.selector, source.css meta.at-rule.media",
+  "settings": {
+    "showInSymbolList": 1,
+    "symbolTransformation": "s/^\\s*/CSS: /; s/\\s+/ /g"
+  }
+}

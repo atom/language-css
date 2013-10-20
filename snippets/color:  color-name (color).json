@@ -1,0 +1,6 @@
+{
+  "content": "color: ${1:red};$0",
+  "name": "color: name",
+  "scope": "source.css",
+  "tabTrigger": "color"
+}

@@ -1,0 +1,6 @@
+{
+  "content": "border-left-width: ${1:1}px",
+  "name": "border-left-width: size",
+  "scope": "source.css",
+  "tabTrigger": "border"
+}

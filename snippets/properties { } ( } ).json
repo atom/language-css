@@ -1,0 +1,6 @@
+{
+  "content": "{\n\t/* $1 */\n\t$0\n",
+  "name": "properties { } ( } )",
+  "scope": "source.css",
+  "tabTrigger": "{"
+}

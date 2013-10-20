@@ -1,0 +1,6 @@
+{
+  "content": "margin: ${1:20px} ${2:0px};$0",
+  "name": "margin: V H",
+  "scope": "source.css",
+  "tabTrigger": "margin"
+}

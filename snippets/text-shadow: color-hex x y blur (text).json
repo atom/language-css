@@ -1,0 +1,6 @@
+{
+  "content": "text-shadow: #${1:DDD} ${2:10px} ${3:10px} ${4:2px};$0",
+  "name": "text-shadow: color-hex x y blur",
+  "scope": "source.css",
+  "tabTrigger": "text"
+}

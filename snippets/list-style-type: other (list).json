@@ -1,0 +1,6 @@
+{
+  "content": "list-style-type: ${1|hebrew,armenian,georgian|};$0",
+  "name": "list-style-type: other",
+  "scope": "source.css",
+  "tabTrigger": "list"
+}

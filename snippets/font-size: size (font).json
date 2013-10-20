@@ -1,0 +1,6 @@
+{
+  "content": "font-size: ${1:100%};$0",
+  "name": "font-size: size",
+  "scope": "source.css",
+  "tabTrigger": "font"
+}

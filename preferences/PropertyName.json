@@ -1,0 +1,12 @@
+{
+  "name": "PropertyName",
+  "scope": "meta.property-list.css -meta.property-value",
+  "settings": {
+    "smartTypingPairs": [
+      [
+        ":",
+        ";"
+      ]
+    ]
+  }
+}

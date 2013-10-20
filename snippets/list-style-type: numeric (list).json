@@ -1,0 +1,6 @@
+{
+  "content": "list-style-type: ${1|decimal,decimal-leading-zero,zero|};$0",
+  "name": "list-style-type: numeric",
+  "scope": "source.css",
+  "tabTrigger": "list"
+}

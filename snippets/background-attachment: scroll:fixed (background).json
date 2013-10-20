@@ -1,0 +1,6 @@
+{
+  "content": "background-attachment: ${1|scroll,fixed|};$0",
+  "name": "background-attachment: scroll/fixed",
+  "scope": "source.css",
+  "tabTrigger": "background"
+}

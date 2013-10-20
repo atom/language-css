@@ -1,0 +1,6 @@
+{
+  "content": "list-style-position: ${1|inside,outside|};$0",
+  "name": "list-style-position: pos",
+  "scope": "source.css",
+  "tabTrigger": "list"
+}

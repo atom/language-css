@@ -1,0 +1,6 @@
+{
+  "content": "direction: ${1:ltr|rtl};$0",
+  "name": "direction: ltr/rtl",
+  "scope": "source.css",
+  "tabTrigger": "direction"
+}

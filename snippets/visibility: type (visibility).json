@@ -1,0 +1,6 @@
+{
+  "content": "visibility: ${1|visible,hidden,collapse|};$0",
+  "name": "visibility: type",
+  "scope": "source.css",
+  "tabTrigger": "visibility"
+}

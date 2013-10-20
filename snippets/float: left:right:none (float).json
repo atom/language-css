@@ -1,0 +1,6 @@
+{
+  "content": "float: ${1|left,right,none|};$0",
+  "name": "float: left/right/none",
+  "scope": "source.css",
+  "tabTrigger": "float"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Folding",
+  "scope": "source.css",
+  "settings": {
+    "foldingStartMarker": "/\\*\\*(?!\\*)|\\{\\s*($|/\\*(?!.*?\\*/.*\\S))|\\/\\*\\s*@group\\s*.*\\s*\\*\\/",
+    "foldingStopMarker": "(?<!\\*)\\*\\*/|^\\s*\\}|\\/*\\s*@end\\s*\\*\\/"
+  }
+}

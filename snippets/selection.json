@@ -1,0 +1,6 @@
+{
+  "content": "$1::-moz-selection,\n$1::selection {\n\tcolor: ${2:inherit};\n\tbackground: ${3:inherit};\n}",
+  "name": "selection",
+  "scope": "source.css -meta.property-list",
+  "tabTrigger": "selection"
+}

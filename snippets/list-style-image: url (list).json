@@ -1,0 +1,6 @@
+{
+  "content": "list-style-image: url($1);$0",
+  "name": "list-style-image: url",
+  "scope": "source.css",
+  "tabTrigger": "list"
+}

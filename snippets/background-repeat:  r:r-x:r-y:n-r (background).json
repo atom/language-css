@@ -1,0 +1,6 @@
+{
+  "content": "background-repeat: ${1|repeat,repeat-x,repeat-y,no-repeat|};$0",
+  "name": "background-repeat: r/r-x/r-y/n-r",
+  "scope": "source.css",
+  "tabTrigger": "background"
+}

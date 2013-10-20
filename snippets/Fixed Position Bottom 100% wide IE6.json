@@ -1,0 +1,6 @@
+{
+  "content": "${2:bottom: auto;}top: expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-${1:THE HEIGHT OF THIS THING IN PIXELS}));\n${3:left: expression(eval(document.documentElement.scrollLeft));\n}${4:width: expression(eval(document.documentElement.clientWidth));}$0",
+  "name": "Fixed Position Bottom 100% wide IE6",
+  "scope": "source.css meta.property-list",
+  "tabTrigger": "fixed"
+}

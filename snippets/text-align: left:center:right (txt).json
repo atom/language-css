@@ -1,0 +1,6 @@
+{
+  "content": "text-align: ${1|left,right,center,justify|};$0",
+  "name": "text-align: left/center/right",
+  "scope": "source.css",
+  "tabTrigger": "text"
+}

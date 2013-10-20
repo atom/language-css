@@ -1,0 +1,6 @@
+{
+  "content": "border-bottom-width: ${1:1}px ${2:solid} #${3:999};$0",
+  "name": "border-bottom-width: size",
+  "scope": "source.css",
+  "tabTrigger": "border"
+}

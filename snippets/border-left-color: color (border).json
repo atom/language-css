@@ -1,0 +1,6 @@
+{
+  "content": "border-right-color: #${1:999};$0",
+  "name": "border-left-color: color",
+  "scope": "source.css",
+  "tabTrigger": "border"
+}

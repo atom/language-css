@@ -1,0 +1,6 @@
+{
+  "content": "font-family: ${1:Arial, \"MS Trebuchet\"}, ${2:sans-}serif;$0",
+  "name": "font-family: family",
+  "scope": "source.css",
+  "tabTrigger": "font"
+}

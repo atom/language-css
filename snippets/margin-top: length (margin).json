@@ -1,0 +1,6 @@
+{
+  "content": "margin-top: ${1:20px};$0",
+  "name": "margin-top: length",
+  "scope": "source.css",
+  "tabTrigger": "margin"
+}

@@ -1,0 +1,6 @@
+{
+  "content": "scrollbar-base-color:       ${1:#CCCCCC};${2:\nscrollbar-arrow-color:      ${3:#000000};\nscrollbar-track-color:      ${4:#999999};\nscrollbar-3dlight-color:    ${5:#EEEEEE};\nscrollbar-highlight-color:  ${6:#FFFFFF};\nscrollbar-face-color:       ${7:#CCCCCC};\nscrollbar-shadow-color:     ${9:#999999};\nscrollbar-darkshadow-color: ${8:#666666};}",
+  "name": "scrollbar",
+  "scope": "source.css meta.property-list",
+  "tabTrigger": "scrollbar"
+}

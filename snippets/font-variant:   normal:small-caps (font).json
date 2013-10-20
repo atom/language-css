@@ -1,0 +1,6 @@
+{
+  "content": "font-variant: ${1|normal,small-caps|};$0",
+  "name": "font-variant: normal/small-caps",
+  "scope": "source.css",
+  "tabTrigger": "font"
+}

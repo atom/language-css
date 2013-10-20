@@ -1,0 +1,6 @@
+{
+  "content": "background-color: #${1:DDD};$0",
+  "name": "background-color: hex",
+  "scope": "source.css",
+  "tabTrigger": "background"
+}

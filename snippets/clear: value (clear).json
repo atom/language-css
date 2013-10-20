@@ -1,0 +1,6 @@
+{
+  "content": "clear: ${1|left,right,both,none|};$0",
+  "name": "clear: value",
+  "scope": "source.css",
+  "tabTrigger": "clear"
+}

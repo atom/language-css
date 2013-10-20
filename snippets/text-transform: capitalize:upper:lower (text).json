@@ -1,0 +1,6 @@
+{
+  "content": "text-transform: ${1|capitalize,uppercase,lowercase|};$0",
+  "name": "text-transform: capitalize/upper/lower",
+  "scope": "source.css",
+  "tabTrigger": "text"
+}

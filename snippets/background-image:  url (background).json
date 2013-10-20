@@ -1,0 +1,6 @@
+{
+  "content": "background-image: url($1);$0",
+  "name": "background-image: url",
+  "scope": "source.css",
+  "tabTrigger": "background"
+}

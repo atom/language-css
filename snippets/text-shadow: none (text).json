@@ -1,0 +1,6 @@
+{
+  "content": "text-shadow: none;$0",
+  "name": "text-shadow: none",
+  "scope": "source.css",
+  "tabTrigger": "text"
+}

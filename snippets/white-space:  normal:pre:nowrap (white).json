@@ -1,0 +1,6 @@
+{
+  "content": "white-space: ${1|normal,pre,nowrap|};$0",
+  "name": "white-space: normal/pre/nowrap",
+  "scope": "source.css",
+  "tabTrigger": "white"
+}

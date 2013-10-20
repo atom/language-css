@@ -1,0 +1,6 @@
+{
+  "content": "list-style-type: ${1|cjk-ideographic,hiragana,katakana,hiragana-iroha,katakana-iroha|};$0",
+  "name": "list-style-type: asian",
+  "scope": "source.css",
+  "tabTrigger": "list"
+}

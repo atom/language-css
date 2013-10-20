@@ -1,0 +1,6 @@
+{
+  "content": "vertical-align: ${1|baseline,sub,super,top,text-top,middle,bottom,text-bottom,length,%|};$0",
+  "name": "vertical-align: type",
+  "scope": "source.css",
+  "tabTrigger": "vertical"
+}

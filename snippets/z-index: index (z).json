@@ -1,0 +1,6 @@
+{
+  "content": "z-index: $1;$0",
+  "name": "z-index: index",
+  "scope": "source.css",
+  "tabTrigger": "z"
+}

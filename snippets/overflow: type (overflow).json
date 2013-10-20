@@ -1,0 +1,6 @@
+{
+  "content": "overflow: ${1|visible,hidden,scroll,auto|};$0",
+  "name": "overflow: type",
+  "scope": "source.css",
+  "tabTrigger": "overflow"
+}

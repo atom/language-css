@@ -1,0 +1,6 @@
+{
+  "content": "font: ${1:75%} ${2:\"Lucida Grande\", \"Trebuchet MS\", Verdana,} ${3:sans-}serif;$0",
+  "name": "font: size font",
+  "scope": "source.css",
+  "tabTrigger": "font"
+}

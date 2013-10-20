@@ -1,0 +1,6 @@
+{
+  "content": "list-style-type: ${1|lower-roman,upper-roman,lower-alpha,upper-alpha,lower-greek,lower-latin,upper-latin|};$0",
+  "name": "list-style-type: roman-alpha-greek",
+  "scope": "source.css",
+  "tabTrigger": "list"
+}

@@ -1,0 +1,7 @@
+{
+  "content": "${1:!important}",
+  "keyEquivalent": "",
+  "name": "!important CSS",
+  "scope": "source.css",
+  "tabTrigger": "!"
+}

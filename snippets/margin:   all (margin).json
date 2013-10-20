@@ -1,0 +1,6 @@
+{
+  "content": "margin: ${1:20px};$0",
+  "name": "margin: all",
+  "scope": "source.css",
+  "tabTrigger": "margin"
+}

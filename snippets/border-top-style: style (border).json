@@ -1,0 +1,6 @@
+{
+  "content": "border-top-style: ${1|none,hidden,dotted,dashed,solid,double,groove,ridge,inset,outset|};$0",
+  "name": "border-top-style: style",
+  "scope": "source.css",
+  "tabTrigger": "border"
+}

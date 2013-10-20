@@ -1,0 +1,6 @@
+{
+  "content": "padding-left: ${1:20px};$0",
+  "name": "padding-left: length",
+  "scope": "source.css",
+  "tabTrigger": "padding"
+}

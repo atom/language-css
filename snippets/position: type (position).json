@@ -1,0 +1,6 @@
+{
+  "content": "position: ${1|static,relative,absolute,fixed|};$0",
+  "name": "position: type",
+  "scope": "source.css",
+  "tabTrigger": "position"
+}

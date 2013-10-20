@@ -1,0 +1,6 @@
+{
+  "content": "marker-offset: ${1:10px};$0",
+  "name": "marker-offset: length",
+  "scope": "source.css",
+  "tabTrigger": "marker"
+}

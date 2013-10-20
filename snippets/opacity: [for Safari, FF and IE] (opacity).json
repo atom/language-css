@@ -1,0 +1,6 @@
+{
+  "content": "opacity: ${1:0.5};${100:\n}-moz-opacity: ${1:0.5};${100:\n}filter:alpha(opacity=${2:${1/(1?)0?\\.(.*)/$1$2/}${1/^\\d*\\.\\d\\d+$|^\\d*$|(^\\d\\.\\d$)/(?1:0)/}});$0",
+  "name": "opacity: [for Safari, FF & IE]",
+  "scope": "source.css",
+  "tabTrigger": "opacity"
+}
