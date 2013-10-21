@@ -6,12 +6,12 @@
     "atom": "*",
     "node": "*"
   },
-  "homepage": "https://atom.github.io/language-css",
+  "homepage": "http://atom.github.io/language-css",
   "repository": {
     "type": "git",
     "url": "https://github.com/atom/language-css.git"
   },
   "bugs": {
     "url": "https://github.com/atom/language-css/issues"
-  },
+  }
 }
