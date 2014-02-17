@@ -1,0 +1,7 @@
+{
+  "source.css": {
+    "editor": {
+      "foldEndPattern": "(?<!\\*)\\*\\*/|^\\s*\\}|\\/*\\s*@end\\s*\\*\\/"
+    }
+  }
+}
