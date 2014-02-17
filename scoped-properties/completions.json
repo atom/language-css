@@ -1,5 +1,5 @@
 {
-  "source.css -meta.property-list": {
+  ".source.css:not(.meta.property-list)": {
     "editor": {
       "completions": [
         "*",

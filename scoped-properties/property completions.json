@@ -1,5 +1,5 @@
 {
-  "source.css meta.property-list -meta.property-value": {
+  ".source.css .meta.property-list:not(.meta.property-value)": {
     "editor": {
       "completions": [
         "-moz-border-radius",
