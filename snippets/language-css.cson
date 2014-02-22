@@ -2,7 +2,7 @@
   '!important CSS':
     'prefix': '!'
     'body': '${1:!important}'
-  'background-color: hex'
+  'background-color: hex':
     'prefix': 'background'
     'body': 'background-color: #${1:DDD};$0'
   'clear: value':
