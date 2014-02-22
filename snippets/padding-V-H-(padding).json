@@ -1,6 +1,0 @@
-{
-  "content": "padding: ${1:20px} ${2:0px};$0",
-  "name": "padding: V H",
-  "scope": "source.css",
-  "tabTrigger": "padding"
-}

@@ -1,6 +1,0 @@
-{
-  "content": "cursor: url($1);$0",
-  "name": "cursor: url",
-  "scope": "source.css",
-  "tabTrigger": "cursor"
-}

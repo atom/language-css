@@ -1,6 +1,0 @@
-{
-  "content": "text-indent: ${1:10}px;$0",
-  "name": "text-indent: length",
-  "scope": "source.css",
-  "tabTrigger": "text"
-}
