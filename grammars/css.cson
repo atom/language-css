@@ -103,8 +103,6 @@
             'name': 'keyword.control.at-rule.media.css'
           '2':
             'name': 'punctuation.definition.keyword.css'
-          '3':
-            'name': 'support.constant.media.css'
         'end': '\\s*(?=\\{)'
         'name': 'meta.at-rule.media.css'
         'patterns': [
