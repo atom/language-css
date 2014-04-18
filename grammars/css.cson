@@ -1,9 +1,9 @@
+'scopeName': 'source.css'
+'name': 'CSS'
 'fileTypes': [
   'css'
   'css.erb'
 ]
-'keyEquivalent': '^~C'
-'name': 'CSS'
 'patterns': [
   {
     'include': '#comment-block'
@@ -505,4 +505,3 @@
         'name': 'constant.character.escape.css'
       }
     ]
-'scopeName': 'source.css'
