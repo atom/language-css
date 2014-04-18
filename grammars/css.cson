@@ -90,14 +90,14 @@
     ]
   }
   {
-    'begin': '(?=^\\s*@media\\s+|$)'
+    'begin': '(?=^\\s*@media(\\s+|$))'
     'end': '\\s*(\\})'
     'endCaptures':
       '1':
         'name': 'punctuation.section.property-list.end.css'
     'patterns': [
       {
-        'begin': '^\\s*((@)media)\\s+|$'
+        'begin': '^\\s*((@)media)(\\s+|$)'
         'beginCaptures':
           '1':
             'name': 'keyword.control.at-rule.media.css'
