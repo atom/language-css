@@ -132,7 +132,7 @@
         'name': 'keyword.control.at-rule.page.css'
       '2':
         'name': 'punctuation.definition.keyword.css'
-    'end': '\\s*((?=\\{|\\:|$))'
+    'end': '\\s*((?=[{:]|$))'
     'name': 'meta.at-rule.page.css'
     'patterns': [
       {
