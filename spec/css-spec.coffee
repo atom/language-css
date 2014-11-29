@@ -6,7 +6,7 @@ describe 'CSS grammar', ->
       atom.packages.activatePackage('language-css')
 
     runs ->
-      grammar = atom.syntax.grammarForScopeName('source.css')
+      grammar = atom.grammars.grammarForScopeName('source.css')
 
   it 'parses the grammar', ->
     expect(grammar).toBeTruthy()
