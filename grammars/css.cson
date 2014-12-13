@@ -577,7 +577,7 @@
     'name': 'string.quoted.double.css'
     'patterns': [
       {
-        'match': '\\\\(\\d{1,6}|.)'
+        'match': '\\\\([a-fA-F0-9]{1,6}|.)'
         'name': 'constant.character.escape.css'
       }
     ]
@@ -593,7 +593,7 @@
     'name': 'string.quoted.single.css'
     'patterns': [
       {
-        'match': '\\\\.'
+        'match': '\\\\([a-fA-F0-9]{1,6}|.)'
         'name': 'constant.character.escape.css'
       }
     ]
