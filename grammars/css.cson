@@ -463,7 +463,7 @@
         'name': 'entity.name.tag.css'
       }
       {
-        'match': '\\b([a-zA-Z0-9]+(-[a-zA-Z0-9]+)+)(?=\\.|\\s++[^:]|\\s*[,{]|:(link|visited|hover|active|focus|target|lang|disabled|enabled|checked|indeterminate|root|nth-child()|nth-last-child()|nth-of-type()|nth-last-of-type()|first-child|last-child|first-of-type|last-of-type|only-child|only-of-type|empty|not|valid|invalid)(\\([0-9A-Za-z]*\\))?)'
+        'match': '\\b([a-zA-Z0-9]+(-[a-zA-Z0-9]+)+)(?=\\.|\\s++[^:]|\\s*[,{]|:(link|visited|hover|active|focus|target|lang|disabled|enabled|checked|indeterminate|root|nth-child()|nth-last-child()|nth-of-type()|nth-last-of-type()|first-child|last-child|first-of-type|last-of-type|only-child|only-of-type|empty|not|valid|invalid|:shadow)(\\([0-9A-Za-z]*\\))?)'
         'name': 'entity.name.tag.custom.css'
       }
       {
@@ -543,6 +543,13 @@
           '1':
             'name': 'punctuation.definition.entity.css'
         'match': '(:)(active|hover|link|visited|focus)\\b'
+        'name': 'entity.other.attribute-name.pseudo-class.css'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.entity.css'
+        'match': '(::)(shadow)\\b'
         'name': 'entity.other.attribute-name.pseudo-class.css'
       }
       {
