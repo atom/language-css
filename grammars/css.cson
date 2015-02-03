@@ -318,7 +318,7 @@
         'captures':
           '1':
             'name': 'keyword.other.unit.css'
-        'match': '(?x)\n\t\t\t\t\t    (?:-|\\+)?(?:(?:[0-9]+(?:\\.[0-9]+)?)|(?:\\.[0-9]+))\n\t\t\t\t\t    ((?:px|pt|ch|cm|mm|in|r?em|ex|pc|deg|g?rad|dpi|dpcm|dppx|fr|s|turn|vh|vmax|vmin|vw)\\b|%)?\n\t\t\t\t\t'
+        'match': '(?x)\n\t\t\t\t\t    (?:-|\\+)?(?:(?:[0-9]+(?:\\.[0-9]+)?)|(?:\\.[0-9]+))\n\t\t\t\t\t    ((?:px|pt|ch|cm|mm|in|r?em|ex|pc|deg|g?rad|dpi|dpcm|dppx|fr|ms|s|turn|vh|vmax|vmin|vw)\\b|%)?\n\t\t\t\t\t'
         'name': 'constant.numeric.css'
       }
     ]
