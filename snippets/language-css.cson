@@ -11,6 +11,9 @@
   'color: hex':
     'prefix': 'color'
     'body': 'color: #${1:DDD};$0'
+  'Start Docblock':
+    'prefix': '/**'
+    'body': '/**\n * $1\n */$0'
   'display: block':
     'prefix': 'block'
     'body': 'display: block;$0'
