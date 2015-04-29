@@ -3,3 +3,7 @@
     'commentStart': '/*'
     'commentEnd': '*/'
     'foldEndPattern': '(?<!\\*)\\*\\*/|^\\s*\\}|\\/*\\s*@end\\s*\\*\\/'
+    'completions':
+      'selector':
+        'selector': '.css.selector'
+        'typePriority': 1
