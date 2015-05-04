@@ -3,7 +3,8 @@
     'commentStart': '/*'
     'commentEnd': '*/'
     'foldEndPattern': '(?<!\\*)\\*\\*/|^\\s*\\}|\\/*\\s*@end\\s*\\*\\/'
-    'completions':
+  'autocomplete':
+    'symbols':
       'selector':
         'selector': '.css.selector'
         'typePriority': 1
