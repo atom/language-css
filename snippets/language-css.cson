@@ -22,3 +22,25 @@
     'body': '@media ${1:query} {\n\t$2\n}$0'
     'description': 'A set of nested statements with a condition defined by a media query.'
     'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/@media'
+
+'.source.css .meta.property-value':
+  'rgb(red, green, blue)':
+    'prefix': 'rgb'
+    'body': "rgb(${1:255}, ${2:0}, ${3:0})${4:;}$0"
+    'description': "Creates a Color from red (0-255), green (0-255), and blue (0-255)."
+    'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb()'
+  'rgba(red, green, blue, alpha)':
+    'prefix': 'rgba'
+    'body': "rgba(${1:255}, ${2:0}, ${3:0}, ${4:0.5})${5:;}$0"
+    'description': "Creates a Color from red (0-255), green (0-255), blue (0-255), and alpha (0-1)."
+    'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgba()'
+  'hsl(hue, saturation, lightness)':
+    'prefix': 'hsl'
+    'body': "hsl(${1:360}, ${2:100%}, ${3:100%})${4:;}$0"
+    'description': "Creates a Color from hue (0-360), saturation (0-100%), and lightness (0-100%)."
+    'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsl()'
+  'hsla(hue, saturation, lightness, alpha)':
+    'prefix': 'hsla'
+    'body': "hsla(${1:360}, ${2:100%}, ${3:100%}, ${4:0.5})${5:;}$0"
+    'description': "Creates a Color from hue (0-360), saturation (0-100%), lightness (0-100%), and alpha (0-1)."
+    'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsla()'
