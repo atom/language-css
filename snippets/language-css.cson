@@ -22,3 +22,16 @@
     'body': '@media ${1:query} {\n\t$2\n}$0'
     'description': 'A set of nested statements with a condition defined by a media query.'
     'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/@media'
+
+# We dont want the snippets to show in properties
+'.source.css .meta':
+  '!important':
+    'prefix': '!'
+  '@import':
+    'prefix': 'import'
+  '@charset':
+    'prefix': 'charset'
+  '@font-face':
+    'prefix': 'fontface'
+  '@media':
+    'prefix': 'media'
