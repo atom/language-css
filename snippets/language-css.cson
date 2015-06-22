@@ -24,7 +24,7 @@
     'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/@media'
 
 # We dont want the snippets to show in properties
-'.source.css .meta':
+'.source.css .meta.property-list':
   '!important':
     'prefix': '!'
   '@import':
