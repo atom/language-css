@@ -12,6 +12,20 @@ describe 'CSS grammar', ->
     expect(grammar).toBeTruthy()
     expect(grammar.scopeName).toBe 'source.css'
 
+  describe 'property-list', ->
+    it 'tokenizes the property-name and property-value', ->
+      {tokens} = grammar.tokenizeLine 'very-custom { color: inherit; }'
+      expect(tokens[4]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(tokens[7]).toEqual value: 'inherit', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      expect(tokens[8]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.terminator.rule.css']
+      expect(tokens[10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+    it 'tokenizes an incomplete inline property-list', ->
+      {tokens} = grammar.tokenizeLine 'very-custom { color: inherit}'
+      expect(tokens[4]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(tokens[7]).toEqual value: 'inherit', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      expect(tokens[8]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.property-list.end.css']
+
   describe 'custom elements', ->
     it 'tokenizes them as tags', ->
       {tokens} = grammar.tokenizeLine 'very-custom { color: red; }'
