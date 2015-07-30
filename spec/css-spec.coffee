@@ -26,6 +26,19 @@ describe 'CSS grammar', ->
       expect(tokens[7]).toEqual value: 'inherit', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
       expect(tokens[8]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.property-list.end.css']
 
+    it 'tokenizes multiple lines of incomplete property-list', ->
+      lines = grammar.tokenizeLines '''
+        very-custom { color: inherit }
+        another-one { display: none; }
+      '''
+      expect(lines[0][0]).toEqual value: 'very-custom', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+      expect(lines[0][4]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(lines[0][7]).toEqual value: 'inherit', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      expect(lines[0][9]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.property-list.end.css']
+
+      expect(lines[1][0]).toEqual value: 'another-one', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+      expect(lines[1][10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
   describe 'custom elements', ->
     it 'tokenizes them as tags', ->
       {tokens} = grammar.tokenizeLine 'very-custom { color: red; }'
