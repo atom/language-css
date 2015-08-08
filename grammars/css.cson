@@ -488,7 +488,7 @@
         'captures':
           '1':
             'name': 'punctuation.definition.entity.css'
-        'match': '(:+)(after|before|first-letter|first-line|(-(moz|webkit|ms)-)?selection)\\b'
+        'match': '(:+)(after|before|content|first-letter|first-line|host|(-(moz|webkit|ms)-)?selection)\\b'
         'name': 'entity.other.attribute-name.pseudo-element.css'
       }
       {
