@@ -456,7 +456,7 @@
       }
     ]
   'selector':
-    'begin': '\\s*(?=[:.*#a-zA-Z])'
+    'begin': '\\s*(?=[\\[:.*#a-zA-Z])'
     'end': '(?=[/@{)])'
     'name': 'meta.selector.css'
     'patterns': [
