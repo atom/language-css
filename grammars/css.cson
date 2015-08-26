@@ -27,6 +27,9 @@
       {
         'include': '#string-single'
       }
+      {
+        'include': '#comment-block'
+      }
     ]
   }
   {
@@ -44,6 +47,9 @@
       }
       {
         'include': '#string-single'
+      }
+      {
+        'include': '#comment-block'
       }
       {
         'begin': '\\s*(url)\\s*(\\()\\s*'
@@ -66,6 +72,9 @@
           }
           {
             'include': '#string-double'
+          }
+          {
+            'include': '#comment-block'
           }
         ]
       }
@@ -261,6 +270,9 @@
         'name': 'punctuation.definition.arbitrary-repetition.css'
     'patterns': [
       {
+        'include': '#comment-block'
+      }
+      {
         'begin': '\\s*(and)?\\s*(\\()\\s*'
         'beginCaptures':
           '1':
@@ -293,6 +305,9 @@
           }
           {
             'include': '#numeric-values'
+          }
+          {
+            'include': '#comment-block'
           }
         ]
       }
