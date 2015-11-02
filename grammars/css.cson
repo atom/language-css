@@ -12,11 +12,11 @@
     'include': '#selector'
   }
   {
-    'begin': '\\s*((@)charset\\b)\\s*'
+    'begin': '(@)charset\\b'
     'captures':
-      '1':
+      '0':
         'name': 'keyword.control.at-rule.charset.css'
-      '2':
+      '1':
         'name': 'punctuation.definition.keyword.css'
     'end': '\\s*((?=;|$))'
     'name': 'meta.at-rule.charset.css'
@@ -27,14 +27,17 @@
       {
         'include': '#string-single'
       }
+      {
+        'include': '#comment-block'
+      }
     ]
   }
   {
-    'begin': '\\s*((@)import\\b)\\s*'
+    'begin': '(@)import\\b'
     'captures':
-      '1':
+      '0':
         'name': 'keyword.control.at-rule.import.css'
-      '2':
+      '1':
         'name': 'punctuation.definition.keyword.css'
     'end': '\\s*((?=;|\\}))'
     'name': 'meta.at-rule.import.css'
@@ -44,6 +47,9 @@
       }
       {
         'include': '#string-single'
+      }
+      {
+        'include': '#comment-block'
       }
       {
         'begin': '\\s*(url)\\s*(\\()\\s*'
@@ -67,6 +73,9 @@
           {
             'include': '#string-double'
           }
+          {
+            'include': '#comment-block'
+          }
         ]
       }
       {
@@ -75,7 +84,7 @@
     ]
   }
   {
-    'begin': '^\\s*((@)font-face)\\s*(?=\\{)'
+    'begin': '((@)font-face)\\s*(?=\\{)'
     'beginCaptures':
       '1':
         'name': 'keyword.control.at-rule.font-face.css'
@@ -90,14 +99,14 @@
     ]
   }
   {
-    'begin': '(?=^\\s*@media(\\s+|$))'
+    'begin': '(?=@media\\b)'
     'end': '\\s*(\\})'
     'endCaptures':
       '1':
         'name': 'punctuation.section.property-list.end.css'
     'patterns': [
       {
-        'begin': '^\\s*((@)media)(\\s+|$)'
+        'begin': '((@)media)\\b'
         'beginCaptures':
           '1':
             'name': 'keyword.control.at-rule.media.css'
@@ -126,11 +135,11 @@
     ]
   }
   {
-    'begin': '\\s*((@)page\\b)\\s*'
+    'begin': '(@)page\\b'
     'captures':
-      '1':
+      '0':
         'name': 'keyword.control.at-rule.page.css'
-      '2':
+      '1':
         'name': 'punctuation.definition.keyword.css'
     'end': '\\s*((?=[{:]|$))'
     'name': 'meta.at-rule.page.css'
@@ -141,7 +150,7 @@
     ]
   }
   {
-    'begin': '\\s*((@)namespace\\b)\\s*(?=url)'
+    'begin': '((@)namespace\\b)\\s*(?=url)'
     'captures':
       '1':
         'name': 'keyword.control.at-rule.namespace.css'
@@ -165,7 +174,7 @@
     ]
   }
   {
-    'begin': '\\s*((@)namespace) ([\\w-]*)\\s*'
+    'begin': '((@)namespace) ([\\w-]*)'
     'captures':
       '1':
         'name': 'keyword.control.at-rule.namespace.scss'
@@ -261,6 +270,9 @@
         'name': 'punctuation.definition.arbitrary-repetition.css'
     'patterns': [
       {
+        'include': '#comment-block'
+      }
+      {
         'begin': '\\s*(and)?\\s*(\\()\\s*'
         'beginCaptures':
           '1':
@@ -293,6 +305,9 @@
           }
           {
             'include': '#numeric-values'
+          }
+          {
+            'include': '#comment-block'
           }
         ]
       }
