@@ -20,6 +20,32 @@ describe 'CSS grammar', ->
       expect(tokens[8]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.terminator.rule.css']
       expect(tokens[10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
 
+    # Needs more complex examples
+    it 'tokenizes complex selectors', ->
+      {tokens} = grammar.tokenizeLine '[disabled], [disabled] + p'
+      expect(tokens[0]).toEqual value: '[', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
+      expect(tokens[1]).toEqual value: 'disabled', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "entity.other.attribute-name.attribute.css"]
+      expect(tokens[2]).toEqual value: ']', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
+      expect(tokens[3]).toEqual value: ', ', scopes: ["source.css", "meta.selector.css"]
+      expect(tokens[4]).toEqual value: '[', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
+      expect(tokens[5]).toEqual value: 'disabled', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "entity.other.attribute-name.attribute.css"]
+      expect(tokens[6]).toEqual value: ']', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
+      expect(tokens[7]).toEqual value: ' + ', scopes: ["source.css", "meta.selector.css"]
+      expect(tokens[8]).toEqual value: 'p', scopes: ["source.css", "meta.selector.css", "entity.name.tag.css"]
+
+    it 'tokenizes correct numeric values', ->
+      {tokens} = grammar.tokenizeLine 'div { font-size: 14px; }'
+      expect(tokens[7]).toEqual value: '14', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+      expect(tokens[8]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+
+    it 'doesn\'t tokenize incorrect numeric values (1)', ->
+      {tokens} = grammar.tokenizeLine 'div { font-size: test14px; }'
+      expect(tokens[7]).toEqual value: 'test14px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+
+    it 'doesn\'t tokenize incorrect numeric values (2)', ->
+      {tokens} = grammar.tokenizeLine 'div { font-size: test-14px; }'
+      expect(tokens[7]).toEqual value: 'test-14px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+
     it 'tokenizes an incomplete inline property-list', ->
       {tokens} = grammar.tokenizeLine 'very-custom { color: inherit}'
       expect(tokens[4]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
