@@ -33,6 +33,19 @@ describe 'CSS grammar', ->
       expect(tokens[7]).toEqual value: ' + ', scopes: ["source.css", "meta.selector.css"]
       expect(tokens[8]).toEqual value: 'p', scopes: ["source.css", "meta.selector.css", "entity.name.tag.css"]
 
+    it 'tokenizes correct numeric values', ->
+      {tokens} = grammar.tokenizeLine 'div { font-size: 14px; }'
+      expect(tokens[7]).toEqual value: '14', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+      expect(tokens[8]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+
+    it 'doesn\'t tokenize incorrect numeric values (1)', ->
+      {tokens} = grammar.tokenizeLine 'div { font-size: test14px; }'
+      expect(tokens[7]).toEqual value: 'test14px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+
+    it 'doesn\'t tokenize incorrect numeric values (2)', ->
+      {tokens} = grammar.tokenizeLine 'div { font-size: test-14px; }'
+      expect(tokens[7]).toEqual value: 'test-14px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+
     it 'tokenizes an incomplete inline property-list', ->
       {tokens} = grammar.tokenizeLine 'very-custom { color: inherit}'
       expect(tokens[4]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
