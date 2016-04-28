@@ -179,3 +179,25 @@ describe 'CSS grammar', ->
       expect(tokens[10]).toEqual value: ' comment ', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css']
       expect(tokens[11]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
+
+  describe 'inline comments', ->
+    it 'on same line', ->
+      {tokens} = grammar.tokenizeLine 'section {border:4px/*padding:1px*/}'
+
+      expect(tokens[7].value).toBe '/*'
+      expect(tokens[7].scopes).toContain 'comment.block.css'
+      expect(tokens[8]).toEqual value: 'padding:1px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css']
+      expect(tokens[9].value).toBe '*/'
+      expect(tokens[9].scopes).toContain 'comment.block.css'
+
+    it 'on mulit-line', ->
+      lines = grammar.tokenizeLines """
+        section {
+          border:4px /*1px;
+          padding:1px*/
+      }
+      """
+
+      expect(lines[1][7]).toEqual value: '1px;', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css']
+      expect(lines[2][0].scopes).toContain 'comment.block.css'
+      expect(lines[2][1].scopes).toContain 'comment.block.css'

@@ -468,6 +468,9 @@
         'name': 'meta.property-value.css'
         'patterns': [
           {
+            'include': '#comment-block'
+          }
+          {
             'include': '#property-values'
           }
         ]
