@@ -39,14 +39,26 @@
         'name': 'keyword.control.at-rule.import.css'
       '1':
         'name': 'punctuation.definition.keyword.css'
-    'end': '\\s*((?=;|\\}))'
+    'end': '\\s*(;)'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.terminator.rule.css'
     'name': 'meta.at-rule.import.css'
     'patterns': [
       {
-        'include': '#string-double'
-      }
-      {
-        'include': '#string-single'
+        'begin': '\\s*(?=([\\\'"]))'
+        'end': '(?<=\\1)'
+        'patterns': [
+          {
+            'include': '#string-double'
+          }
+          {
+            'include': '#string-single'
+          }
+          {
+            'include': '#comment-block'
+          }
+        ]
       }
       {
         'include': '#comment-block'

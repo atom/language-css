@@ -179,3 +179,37 @@ describe 'CSS grammar', ->
       expect(tokens[10]).toEqual value: ' comment ', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css']
       expect(tokens[11]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
+
+  describe 'imports', ->
+    it 'tokenizes plain import', ->
+      {tokens} = grammar.tokenizeLine '@import \'custom.css\';'
+
+      expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
+      expect(tokens[1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
+      expect(tokens[3]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[4]).toEqual value: 'custom.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.single.css']
+      expect(tokens[5]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+      expect(tokens[6]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.terminator.rule.css']
+
+    it 'tokenizes plain import with double quote', ->
+      {tokens} = grammar.tokenizeLine '@import "custom.css";'
+
+      expect(tokens[3]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+
+    it 'tokenizes plain import with url link', ->
+      {tokens} = grammar.tokenizeLine '@import url(\'custom.css\');'
+
+      expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'support.function.url.css']
+      expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+      expect(tokens[5]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[6]).toEqual value: 'custom.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.single.css']
+      expect(tokens[7]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+      expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+
+    it 'tokenizes import with media query', ->
+      {tokens} = grammar.tokenizeLine '@import "custom.css" screen, projection;'
+
+      expect(tokens[7]).toEqual value: 'screen', scopes: ['source.css', 'meta.at-rule.import.css', 'support.constant.media.css']
+      expect(tokens[8]).toEqual value: ',', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.definition.arbitrary-repetition.css']
+      expect(tokens[10]).toEqual value: 'projection', scopes: ['source.css', 'meta.at-rule.import.css', 'support.constant.media.css']
