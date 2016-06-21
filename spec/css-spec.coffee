@@ -179,3 +179,16 @@ describe 'CSS grammar', ->
       expect(tokens[10]).toEqual value: ' comment ', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css']
       expect(tokens[11]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
+
+  describe 'selector', ->
+    it 'tokenizes :lang() pseudo class', ->
+      {tokens} = grammar.tokenizeLine ':lang(ja,zh-Hans-CN,*-CH) {}'
+      expect(tokens[0]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+      expect(tokens[1]).toEqual value: 'lang', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+      expect(tokens[2]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+      expect(tokens[3]).toEqual value: 'ja', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'support.constant.language-range.css']
+      expect(tokens[4]).toEqual value: ',', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'punctuation.separator.css']
+      expect(tokens[5]).toEqual value: 'zh-Hans-CN', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'support.constant.language-range.css']
+      expect(tokens[6]).toEqual value: ',', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'punctuation.separator.css']
+      expect(tokens[7]).toEqual value: '*-CH', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'support.constant.language-range.css']
+      expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
