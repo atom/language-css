@@ -184,13 +184,19 @@ describe 'CSS grammar', ->
     it 'on same line', ->
       {tokens} = grammar.tokenizeLine 'section {border:4px/*padding:1px*/}'
 
-      expect(tokens[7].value).toBe '/*'
-      expect(tokens[7].scopes).toContain 'comment.block.css'
+      expect(tokens[0]).toEqual value: 'section', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+      expect(tokens[1]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+      expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+      expect(tokens[3]).toEqual value: 'border', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(tokens[4]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.key-value.css']
+      expect(tokens[5]).toEqual value: '4', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+      expect(tokens[6]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+      expect(tokens[7]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[8]).toEqual value: 'padding:1px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css']
-      expect(tokens[9].value).toBe '*/'
-      expect(tokens[9].scopes).toContain 'comment.block.css'
+      expect(tokens[9]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+      expect(tokens[10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.property-list.end.css']
 
-    it 'on mulit-line', ->
+    it 'on multi-line', ->
       lines = grammar.tokenizeLines """
         section {
           border:4px /*1px;
@@ -198,6 +204,24 @@ describe 'CSS grammar', ->
       }
       """
 
+      expect(lines[1][5]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+      expect(lines[1][6]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(lines[1][7]).toEqual value: '1px;', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css']
-      expect(lines[2][0].scopes).toContain 'comment.block.css'
-      expect(lines[2][1].scopes).toContain 'comment.block.css'
+
+      expect(lines[2][0]).toEqual value: '    padding:1px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css']
+      expect(lines[2][1]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+
+      expect(lines[3][0]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.property-list.end.css']
+
+  describe 'selector', ->
+    it 'tokenizes :lang() pseudo class', ->
+      {tokens} = grammar.tokenizeLine ':lang(ja,zh-Hans-CN,*-CH) {}'
+      expect(tokens[0]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+      expect(tokens[1]).toEqual value: 'lang', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+      expect(tokens[2]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+      expect(tokens[3]).toEqual value: 'ja', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'support.constant.language-range.css']
+      expect(tokens[4]).toEqual value: ',', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'punctuation.separator.css']
+      expect(tokens[5]).toEqual value: 'zh-Hans-CN', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'support.constant.language-range.css']
+      expect(tokens[6]).toEqual value: ',', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'punctuation.separator.css']
+      expect(tokens[7]).toEqual value: '*-CH', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'support.constant.language-range.css']
+      expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
