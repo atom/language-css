@@ -180,8 +180,7 @@ describe 'CSS grammar', ->
       expect(tokens[11]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
 
-  describe 'inline comments', ->
-    it 'on same line', ->
+    it 'tokenizes inline comments on same line', ->
       {tokens} = grammar.tokenizeLine 'section {border:4px/*padding:1px*/}'
 
       expect(tokens[0]).toEqual value: 'section', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
@@ -196,7 +195,7 @@ describe 'CSS grammar', ->
       expect(tokens[9]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.property-list.end.css']
 
-    it 'on multi-line', ->
+    it 'tokenizes inline comments on multi-line', ->
       lines = grammar.tokenizeLines """
         section {
           border:4px /*1px;
