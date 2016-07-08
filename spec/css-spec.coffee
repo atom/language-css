@@ -22,7 +22,7 @@ describe 'CSS grammar', ->
 
     # Needs more complex examples
     it 'tokenizes complex selectors', ->
-      {tokens} = grammar.tokenizeLine '[disabled], [disabled] + p'
+      {tokens} = grammar.tokenizeLine '[disabled], [disabled] + p {}'
       expect(tokens[0]).toEqual value: '[', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
       expect(tokens[1]).toEqual value: 'disabled', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "entity.other.attribute-name.attribute.css"]
       expect(tokens[2]).toEqual value: ']', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
@@ -32,6 +32,9 @@ describe 'CSS grammar', ->
       expect(tokens[6]).toEqual value: ']', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
       expect(tokens[7]).toEqual value: ' + ', scopes: ["source.css", "meta.selector.css"]
       expect(tokens[8]).toEqual value: 'p', scopes: ["source.css", "meta.selector.css", "entity.name.tag.css"]
+      expect(tokens[9]).toEqual value: ' ', scopes: ["source.css", "meta.selector.css"]
+      expect(tokens[10]).toEqual value: '{', scopes: ["source.css", "meta.property-list.css", "punctuation.section.property-list.begin.css"]
+      expect(tokens[11]).toEqual value: '}', scopes: ["source.css", "meta.property-list.css", "punctuation.section.property-list.end.css"]
 
     it 'tokenizes correct numeric values', ->
       {tokens} = grammar.tokenizeLine 'div { font-size: 14px; }'
