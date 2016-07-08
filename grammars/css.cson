@@ -487,11 +487,11 @@
     'name': 'meta.selector.css'
     'patterns': [
       {
-        'match': '\\b(a|abbr|acronym|address|area|article|aside|audio|b|base|bdi|bdo|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|eventsource|fieldset|figure|figcaption|footer|form|frame|frameset|(h[1-6])|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|math|menu|menuitem|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|picture|pre|progress|q|rb|rp|rt|rtc|ruby|s|samp|script|section|select|small|source|span|strike|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr)\\b(?=\\.|\\s++[^:]|\\s*[,{]|(::?)[a-z]+|\\[[a-z-\\(\\)]+\\])'
+        'match': '\\b(?<=\\s|^|,)(?<![\\.\\:\\)\\]])(a|abbr|acronym|address|area|article|aside|audio|b|base|bdi|bdo|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|eventsource|fieldset|figure|figcaption|footer|form|frame|frameset|(h[1-6])|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|math|menu|menuitem|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|picture|pre|progress|q|rb|rp|rt|rtc|ruby|s|samp|script|section|select|small|source|span|strike|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr)\\b(?=(?:\\.[a-z-]+|::?[a-z-]+(\\(.*\\))?|\\[.+\\])*\\s*\\{)'
         'name': 'entity.name.tag.css'
       }
       {
-        'match': '\\b([a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)\\b(?=\\.|\\s++[^:]|\\s*[,{]|(::?)[a-z]+|\\[[a-z-\\(\\)]+\\])'
+        'match': '\\b(?<=\\s|^|,)(?<![\\.\\:\\)\\]])([a-zA-Z0-9-]*)\\b(?=(?:\\.[a-z-]+|::?[a-z-]+(\\(.*\\))?|\\[.+\\])*\\s*\\{)'
         'name': 'entity.name.tag.custom.css'
       }
       {
