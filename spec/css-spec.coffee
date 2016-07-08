@@ -37,7 +37,7 @@ describe 'CSS grammar', ->
       expect(tokens[11]).toEqual value: '}', scopes: ["source.css", "meta.property-list.css", "punctuation.section.property-list.end.css"]
 
     it 'tokenizes long selectors', ->
-      {tokens} = grammar.tokenizeLine "custom-tag[attribute^='test']:active:nth-child(n+1)::after {}"
+      {tokens} = grammar.tokenizeLine "custom-tag[attribute^='test']:active:nth-child(n+1) custom-tag, custom-tag::after {}"
 
       expect(tokens[0]).toEqual value: 'custom-tag', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
       expect(tokens[1]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
@@ -54,11 +54,15 @@ describe 'CSS grammar', ->
       expect(tokens[12]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
       expect(tokens[13]).toEqual value: 'n+1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
       expect(tokens[14]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
-      expect(tokens[15]).toEqual value: '::', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
-      expect(tokens[16]).toEqual value: 'after', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
-      expect(tokens[17]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
-      expect(tokens[18]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
-      expect(tokens[19]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+      expect(tokens[15]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+      expect(tokens[16]).toEqual value: 'custom-tag', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+      expect(tokens[17]).toEqual value: ', ', scopes: ['source.css', 'meta.selector.css']
+      expect(tokens[18]).toEqual value: 'custom-tag', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+      expect(tokens[19]).toEqual value: '::', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
+      expect(tokens[20]).toEqual value: 'after', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+      expect(tokens[21]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+      expect(tokens[22]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+      expect(tokens[23]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
 
     it 'tokenizes correct numeric values', ->
       {tokens} = grammar.tokenizeLine 'div { font-size: 14px; }'
