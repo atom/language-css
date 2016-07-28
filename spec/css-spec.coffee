@@ -13,6 +13,10 @@ describe 'CSS grammar', ->
     expect(grammar.scopeName).toBe 'source.css'
 
   describe 'selectors', ->
+    it 'tokenizes type selector p', ->
+      {tokens} = grammar.tokenizeLine 'p {}'
+      expect(tokens[0]).toEqual value: 'p', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+
     it 'tokenizes :lang() pseudo class', ->
       {tokens} = grammar.tokenizeLine ':lang(ja,zh-Hans-CN,*-CH) {}'
       expect(tokens[0]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
