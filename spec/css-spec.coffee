@@ -46,6 +46,18 @@ describe 'CSS grammar', ->
       expect(tokens[7]).toEqual value: ' + ', scopes: ["source.css", "meta.selector.css"]
       expect(tokens[8]).toEqual value: 'p', scopes: ["source.css", "meta.selector.css", "entity.name.tag.css"]
 
+    describe 'id selectors', ->
+      it 'tokenizes a standalone id selector', ->
+        {tokens} = grammar.tokenizeLine '#ch-1 {}'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'ch-1', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+
+      it 'tokenizes an id selector preceded by a type selector', ->
+        {tokens} = grammar.tokenizeLine 'h1#ch-1 {}'
+        expect(tokens[0]).toEqual value: 'h1', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(tokens[1]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[2]).toEqual value: 'ch-1', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+
     describe 'custom elements', ->
       it 'tokenizes them as tags', ->
         {tokens} = grammar.tokenizeLine 'very-custom { color: red; }'
