@@ -46,6 +46,20 @@ describe 'CSS grammar', ->
       expect(tokens[7]).toEqual value: ' + ', scopes: ["source.css", "meta.selector.css"]
       expect(tokens[8]).toEqual value: 'p', scopes: ["source.css", "meta.selector.css", "entity.name.tag.css"]
 
+    describe 'class selectors', ->
+      it 'tokenizes a standalone class selector', ->
+        {tokens} = grammar.tokenizeLine '._V8- {}'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '_V8-', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+
+      it 'tokenizes class selectors preceded by a type selector', ->
+        {tokens} = grammar.tokenizeLine 'p._V8-.engine {}'
+        expect(tokens[0]).toEqual value: 'p', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(tokens[1]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[2]).toEqual value: '_V8-', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+        expect(tokens[3]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[4]).toEqual value: 'engine', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+
     describe 'id selectors', ->
       it 'tokenizes a standalone id selector', ->
         {tokens} = grammar.tokenizeLine '#ch-1 {}'
