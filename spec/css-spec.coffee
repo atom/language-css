@@ -35,7 +35,7 @@ describe 'CSS grammar', ->
 
     # Needs more complex examples
     it 'tokenizes complex selectors', ->
-      {tokens} = grammar.tokenizeLine '[disabled], [disabled] + p'
+      {tokens} = grammar.tokenizeLine '[disabled], [disabled] + p {}'
       expect(tokens[0]).toEqual value: '[', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
       expect(tokens[1]).toEqual value: 'disabled', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "entity.other.attribute-name.attribute.css"]
       expect(tokens[2]).toEqual value: ']', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
@@ -45,6 +45,37 @@ describe 'CSS grammar', ->
       expect(tokens[6]).toEqual value: ']', scopes: ["source.css", "meta.selector.css", "meta.attribute-selector.css", "punctuation.definition.entity.css"]
       expect(tokens[7]).toEqual value: ' + ', scopes: ["source.css", "meta.selector.css"]
       expect(tokens[8]).toEqual value: 'p', scopes: ["source.css", "meta.selector.css", "entity.name.tag.css"]
+      expect(tokens[9]).toEqual value: ' ', scopes: ["source.css", "meta.selector.css"]
+      expect(tokens[10]).toEqual value: '{', scopes: ["source.css", "meta.property-list.css", "punctuation.section.property-list.begin.css"]
+      expect(tokens[11]).toEqual value: '}', scopes: ["source.css", "meta.property-list.css", "punctuation.section.property-list.end.css"]
+
+    it 'tokenizes long selectors', ->
+      {tokens} = grammar.tokenizeLine "custom-tag[attribute^='test']:active:nth-child(n+1) custom-tag, custom-tag::after {}"
+
+      expect(tokens[0]).toEqual value: 'custom-tag', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+      expect(tokens[1]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+      expect(tokens[2]).toEqual value: 'attribute', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.attribute.css']
+      expect(tokens[3]).toEqual value: '^=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.operator.css']
+      expect(tokens[4]).toEqual value: '\'', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.attribute-value.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[5]).toEqual value: 'test', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.attribute-value.css']
+      expect(tokens[6]).toEqual value: '\'', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.attribute-value.css', 'punctuation.definition.string.end.css']
+      expect(tokens[7]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+      expect(tokens[8]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+      expect(tokens[9]).toEqual value: 'active', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+      expect(tokens[10]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+      expect(tokens[11]).toEqual value: 'nth-child', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+      expect(tokens[12]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+      expect(tokens[13]).toEqual value: 'n+1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+      expect(tokens[14]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+      expect(tokens[15]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+      expect(tokens[16]).toEqual value: 'custom-tag', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+      expect(tokens[17]).toEqual value: ', ', scopes: ['source.css', 'meta.selector.css']
+      expect(tokens[18]).toEqual value: 'custom-tag', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+      expect(tokens[19]).toEqual value: '::', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
+      expect(tokens[20]).toEqual value: 'after', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+      expect(tokens[21]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+      expect(tokens[22]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+      expect(tokens[23]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
 
     describe 'class selectors', ->
       it 'tokenizes a standalone class selector', ->
