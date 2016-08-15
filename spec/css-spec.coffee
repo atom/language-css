@@ -47,18 +47,41 @@ describe 'CSS grammar', ->
       expect(tokens[8]).toEqual value: 'p', scopes: ["source.css", "meta.selector.css", "entity.name.tag.css"]
 
     describe 'class selectors', ->
-      it 'tokenizes a standalone class selector', ->
-        {tokens} = grammar.tokenizeLine '._V8- {}'
+      it 'tokenizes .étendard as class selector', ->
+        {tokens} = grammar.tokenizeLine '.étendard'
         expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
-        expect(tokens[1]).toEqual value: '_V8-', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+        expect(tokens[1]).toEqual value: 'étendard', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
 
-      it 'tokenizes class selectors preceded by a type selector', ->
-        {tokens} = grammar.tokenizeLine 'p._V8-.engine {}'
-        expect(tokens[0]).toEqual value: 'p', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
-        expect(tokens[1]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
-        expect(tokens[2]).toEqual value: '_V8-', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
-        expect(tokens[3]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
-        expect(tokens[4]).toEqual value: 'engine', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+      it 'tokenizes .スポンサー as class selector', ->
+        {tokens} = grammar.tokenizeLine '.スポンサー{}'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'スポンサー', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+
+      it 'tokenizes .-- as class selector', ->
+        {tokens} = grammar.tokenizeLine '.-- {}'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '--', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+
+      it 'tokenizes ._ as class selector', ->
+        {tokens} = grammar.tokenizeLine '._ {}'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '_', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+
+      it 'does not tokenize .B&W as class selector', ->
+        {tokens} = grammar.tokenizeLine '.B&W {}'
+        expect(tokens[0]).toEqual value: '.B&W ', scopes: ['source.css', 'meta.selector.css']
+
+      it 'does not tokenize .666 as class selector', ->
+        {tokens} = grammar.tokenizeLine '.666 {}'
+        expect(tokens[0]).toEqual value: '.666 ', scopes: ['source.css', 'meta.selector.css']
+
+      it 'does not tokenize .-911- as class selector', ->
+        {tokens} = grammar.tokenizeLine '.-911- {}'
+        expect(tokens[0]).toEqual value: '.-911- ', scopes: ['source.css', 'meta.selector.css']
+
+      it 'does not tokenize .- as class selector', ->
+        {tokens} = grammar.tokenizeLine '.- {}'
+        expect(tokens[0]).toEqual value: '.- ', scopes: ['source.css', 'meta.selector.css']
 
     describe 'id selectors', ->
       it 'tokenizes a standalone id selector', ->
