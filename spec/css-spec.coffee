@@ -302,3 +302,14 @@ describe 'CSS grammar', ->
       expect(lines[2][1]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
 
       expect(lines[3][0]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.property-list.end.css']
+
+  describe 'CSS Animations', ->
+    it 'does not confuse animation names with predefined keywords', ->
+      tokens = grammar.tokenizeLines '''
+        .animated {
+          animation-name: orphan-black;
+          animation-name: line-scale;
+        }
+      '''
+      expect(tokens[1][4]).toEqual value: 'orphan-black', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+      expect(tokens[2][4]).toEqual value: 'line-scale', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
