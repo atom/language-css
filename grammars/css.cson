@@ -373,7 +373,7 @@
         'name': 'support.constant.property-value.css'
       }
       {
-        'match': '(?<![\\w-])(upper-roman|upper-latin|upper-alpha|square|lower-roman|lower-latin|lower-greek|lower-alpha|katakana-iroha|katakana|hiragana-iroha|hiragana|hebrew|georgian|disc|decimal-leading-zero|decimal|cjk-ideographic|circle|armenian)(?![\\w-])'
+        'match': '(?<![\\w-])(upper-roman|upper-latin|upper-armenian|upper-alpha|trad-chinese-informal|trad-chinese-formal|tibetan|thai|telugu|square|simp-chinese-informal|simp-chinese-formal|persian|oriya|myanmar|mongolian|malayalam|lower-roman|lower-latin|lower-greek|lower-armenian|lower-alpha|lao|korean-hanja-informal|korean-hanja-formal|korean-hangul-formal|khmer|katakana-iroha|katakana|kannada|hiragana-iroha|hiragana|hebrew|gurmukhi|gujarati|georgian|disc|devanagari|decimal-leading-zero|decimal|cjk-ideographic|cjk-heavenly-stem|cjk-earthly-branch|circle|cambodian|bengali|armenian|arabic-indic)(?![\\w-])'
         'name': 'support.constant.property-value.list-style-type.css'
       }
       {
