@@ -187,6 +187,20 @@ describe 'CSS grammar', ->
       expect(tokens[1][12]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
 
     describe 'values', ->
+      it 'tokenizes color keywords', ->
+        {tokens} = grammar.tokenizeLine '#jon { color: snow; }'
+        expect(tokens[8]).toEqual value: 'snow', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.color.w3c-extended-color-name.css']
+
+      it 'tokenizes common font names', ->
+        {tokens} = grammar.tokenizeLine 'p { font-family: Verdana, Helvetica, sans-serif; }'
+        expect(tokens[7]).toEqual value: 'Verdana', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
+        expect(tokens[9]).toEqual value: 'Helvetica', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
+        expect(tokens[11]).toEqual value: 'sans-serif', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
+
+      it 'tokenizes predefined list style types', ->
+        {tokens} = grammar.tokenizeLine 'ol.myth { list-style-type: cjk-earthly-branch }'
+        expect(tokens[9]).toEqual value: 'cjk-earthly-branch', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.list-style-type.css']
+
       it 'tokenizes numeric values', ->
         {tokens} = grammar.tokenizeLine 'div { font-size: 14px; }'
         expect(tokens[7]).toEqual value: '14', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
@@ -199,16 +213,6 @@ describe 'CSS grammar', ->
       it 'does not tokenize incorrect numeric values (2)', ->
         {tokens} = grammar.tokenizeLine 'div { font-size: test-14px; }'
         expect(tokens[7]).toEqual value: 'test-14px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
-
-      it 'tokenizes color keywords', ->
-        {tokens} = grammar.tokenizeLine '#jon { color: snow; }'
-        expect(tokens[8]).toEqual value: 'snow', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.color.w3c-extended-color-name.css']
-
-      it 'tokenizes common font names', ->
-        {tokens} = grammar.tokenizeLine 'p { font-family: Verdana, Helvetica, sans-serif; }'
-        expect(tokens[7]).toEqual value: 'Verdana', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
-        expect(tokens[9]).toEqual value: 'Helvetica', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
-        expect(tokens[11]).toEqual value: 'sans-serif', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
 
   describe 'character escapes', ->
     it 'can handle long hexadecimal escape sequences in single-quoted strings', ->
