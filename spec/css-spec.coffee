@@ -200,6 +200,16 @@ describe 'CSS grammar', ->
         {tokens} = grammar.tokenizeLine 'div { font-size: test-14px; }'
         expect(tokens[7]).toEqual value: 'test-14px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
 
+      it 'tokenizes color keywords', ->
+        {tokens} = grammar.tokenizeLine '#jon { color: snow; }'
+        expect(tokens[8]).toEqual value: 'snow', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.color.w3c-extended-color-name.css']
+
+      it 'tokenizes common font names', ->
+        {tokens} = grammar.tokenizeLine 'p { font-family: Verdana, Helvetica, sans-serif; }'
+        expect(tokens[7]).toEqual value: 'Verdana', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
+        expect(tokens[9]).toEqual value: 'Helvetica', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
+        expect(tokens[11]).toEqual value: 'sans-serif', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
+
   describe 'character escapes', ->
     it 'can handle long hexadecimal escape sequences in single-quoted strings', ->
       {tokens} = grammar.tokenizeLine "very-custom { content: '\\c0ffee' }"
