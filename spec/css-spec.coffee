@@ -84,16 +84,41 @@ describe 'CSS grammar', ->
         expect(tokens[0]).toEqual value: '.- ', scopes: ['source.css', 'meta.selector.css']
 
     describe 'id selectors', ->
-      it 'tokenizes a standalone id selector', ->
-        {tokens} = grammar.tokenizeLine '#ch-1 {}'
+      it 'tokenizes id selectors consisting of alphabetical characters', ->
+        {tokens} = grammar.tokenizeLine '#unicorn {}'
         expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
-        expect(tokens[1]).toEqual value: 'ch-1', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+        expect(tokens[1]).toEqual value: 'unicorn', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
 
-      it 'tokenizes an id selector preceded by a type selector', ->
-        {tokens} = grammar.tokenizeLine 'h1#ch-1 {}'
-        expect(tokens[0]).toEqual value: 'h1', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
-        expect(tokens[1]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
-        expect(tokens[2]).toEqual value: 'ch-1', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+      it 'tokenizes id selectors containing simplified Chinese characters', ->
+        {tokens} = grammar.tokenizeLine '#洪荒之力'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '洪荒之力', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+
+      it 'tokenizes id selectors containing digits, "-", and "_"', ->
+        {tokens} = grammar.tokenizeLine '#_zer0-day{}'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '_zer0-day', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+
+      it 'tokenizes id selectors beginning with two hyphens', ->
+        {tokens} = grammar.tokenizeLine '#--d3bug-- {}'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '--d3bug--', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+
+      it 'does not tokenize hash tokens containing "!"', ->
+        {tokens} = grammar.tokenizeLine '#sort! {}'
+        expect(tokens[0]).toEqual value: '#sort! ', scopes: ['source.css', 'meta.selector.css']
+
+      it 'does not tokenize hash tokens beginning with a digit', ->
+        {tokens} = grammar.tokenizeLine '#666 {}'
+        expect(tokens[0]).toEqual value: '#666 ', scopes: ['source.css', 'meta.selector.css']
+
+      it 'does not tokenize hash tokens beginning with "-" followed by a digit', ->
+        {tokens} = grammar.tokenizeLine '#-911- {}'
+        expect(tokens[0]).toEqual value: '#-911- ', scopes: ['source.css', 'meta.selector.css']
+
+      it 'does not tokenize the hash token consisting of only a hyphen', ->
+        {tokens} = grammar.tokenizeLine '#- {}'
+        expect(tokens[0]).toEqual value: '#- ', scopes: ['source.css', 'meta.selector.css']
 
     describe 'custom elements', ->
       it 'tokenizes them as tags', ->
