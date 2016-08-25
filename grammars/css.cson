@@ -500,10 +500,10 @@
             'name': 'punctuation.definition.entity.css'
         'match': '''(?x)
           (\\.)
-          -?+                   # possessive to avoid matching '-' followed by <0-9>
+          -?+                   # possessive to avoid matching '-' followed by [0-9]
           [\\w-&&[^0-9]]        # Do NOT change 0-9 to \d, they are not the same.
           [\\w-]*+
-          (?=$|[\\s,.:{>+~|])   # necessary to avoid matching, e.g., '.B' in '.B&W'
+          (?=$|[\\s,.:{>+~|])   # to avoid matching '.B' in '.B&W'
         '''
         'name': 'entity.other.attribute-name.class.css'
       }
@@ -511,7 +511,13 @@
         'captures':
           '1':
             'name': 'punctuation.definition.entity.css'
-        'match': '(#)[a-zA-Z][a-zA-Z0-9_-]*'
+        'match': '''(?x)
+          (\\#)
+          -?+                   # possessive to avoid matching '-' followed by [0-9]
+          [\\w-&&[^0-9]]        # Do NOT change 0-9 to \d, they are not the same.
+          [\\w-]*+
+          (?=$|[\\s,.:{>+~|])   # to avoid matching '#sort' in '#sort!'
+        '''
         'name': 'entity.other.attribute-name.id.css'
       }
       {
