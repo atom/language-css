@@ -352,3 +352,24 @@ describe 'CSS grammar', ->
       '''
       expect(tokens[1][4]).toEqual value: 'orphan-black', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
       expect(tokens[2][4]).toEqual value: 'line-scale', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+
+  describe 'CSS Transforms', ->
+    it 'tokenizes transform functions', ->
+      tokens = grammar.tokenizeLines '''
+        .transformed {
+          transform: matrix(0, 1.5, -1.5, 0, 0, 100px);
+          transform: rotate(90deg) translateX(100px) scale(1.5);
+        }
+      '''
+      expect(tokens[1][1]).toEqual value: 'transform', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(tokens[1][2]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.key-value.css']
+      expect(tokens[1][4]).toEqual value: 'matrix', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
+      expect(tokens[1][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.function.css']
+      expect(tokens[1][6]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+      expect(tokens[1][7]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.css']
+      expect(tokens[1][12]).toEqual value: '-1.5', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+      expect(tokens[1][22]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+      expect(tokens[1][23]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.function.css']
+      expect(tokens[2][4]).toEqual value: 'rotate', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
+      expect(tokens[2][10]).toEqual value: 'translateX', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
+      expect(tokens[2][16]).toEqual value: 'scale', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']

@@ -434,6 +434,36 @@
         ]
       }
       {
+        'begin': '''(?x)
+          (?<![\\w-])
+          (
+            matrix(?:3d)?
+          | (?:translate|scale|rotate)(?:[XYZ]|3d)?
+          | skew[XY]?
+          | perspective
+          )
+          \\s*(\\()
+        '''
+        'beginCaptures':
+          '1':
+            'name': 'support.function.transform.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'patterns': [
+          {
+            'include': '#numeric-values'
+          }
+          {
+            'match': ','
+            'name': 'punctuation.separator.css'
+          }
+        ]
+      }
+      {
         'match': '\\!\\s*important'
         'name': 'keyword.other.important.css'
       }
