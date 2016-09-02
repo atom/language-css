@@ -525,8 +525,8 @@
         'name': 'entity.name.tag.css'
       }
       {
-        'match': '\\b([a-zA-Z0-9]+(-[a-zA-Z0-9]+)+)(?=\\.|\\s++[^:]|\\s*[,{]|:(link|visited|hover|active|focus|target|lang|disabled|enabled|checked|indeterminate|root|nth-child()|nth-last-child()|nth-of-type()|nth-last-of-type()|first-child|last-child|first-of-type|last-of-type|only-child|only-of-type|empty|not|valid|invalid|:shadow)(\\([0-9A-Za-z]*\\))?)'
-        'name': 'entity.name.tag.custom.css'
+        'match': '\\*'
+        'name': 'entity.name.tag.wildcard.css'
       }
       {
         'captures':
@@ -553,10 +553,6 @@
           (?=$|[\\s,.:{>+~|])   # to avoid matching '#sort' in '#sort!'
         '''
         'name': 'entity.other.attribute-name.id.css'
-      }
-      {
-        'match': '\\*'
-        'name': 'entity.name.tag.wildcard.css'
       }
       {
         'captures':
@@ -670,6 +666,10 @@
             'name': 'punctuation.definition.entity.css'
         'match': '(?i)(\\[)\\s*(-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)(?:\\s*([~|^$*]?=)\\s*(?:(-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)|((?>([\'"])(?:[^\\\\]|\\\\.)*?(\\6)))))?\\s*(\\])'
         'name': 'meta.attribute-selector.css'
+      }
+      {
+        'match': '(?<![\\w-])[a-z][\\w&&[^A-Z]]*+-[\\w-&&[^A-Z]]+'
+        'name': 'entity.name.tag.custom.css'
       }
     ]
   'string-double':

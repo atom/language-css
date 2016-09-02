@@ -13,16 +13,16 @@ describe 'CSS grammar', ->
     expect(grammar.scopeName).toBe 'source.css'
 
   describe 'selectors', ->
-    it 'tokenizes type selector p', ->
+    it 'tokenizes type selectors', ->
       {tokens} = grammar.tokenizeLine 'p {}'
       expect(tokens[0]).toEqual value: 'p', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
 
     it 'tokenizes the universal selector', ->
-      {tokens} = grammar.tokenizeLine '* {}'
+      {tokens} = grammar.tokenizeLine '*'
       expect(tokens[0]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.wildcard.css']
 
     it 'tokenizes :lang() pseudo class', ->
-      {tokens} = grammar.tokenizeLine ':lang(ja,zh-Hans-CN,*-CH) {}'
+      {tokens} = grammar.tokenizeLine ':lang(ja,zh-Hans-CN,*-CH)'
       expect(tokens[0]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
       expect(tokens[1]).toEqual value: 'lang', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
       expect(tokens[2]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
@@ -46,6 +46,24 @@ describe 'CSS grammar', ->
       expect(tokens[7]).toEqual value: ' + ', scopes: ["source.css", "meta.selector.css"]
       expect(tokens[8]).toEqual value: 'p', scopes: ["source.css", "meta.selector.css", "entity.name.tag.css"]
 
+    describe 'custom elements (as type selectors)', ->
+      it 'only tokenizes identifiers beginning with [a-z] as custom element', ->
+        {tokens} = grammar.tokenizeLine 'pearl-1941 1941-pearl -pearl-1941'
+        expect(tokens[0]).toEqual value: 'pearl-1941', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+        expect(tokens[1]).toEqual value: ' 1941-pearl -pearl-1941', scopes: ['source.css', 'meta.selector.css']
+
+      it 'tokenizes custom elements containing non-ASCII letters', ->
+        {tokens} = grammar.tokenizeLine 'pokémon-ピカチュウ'
+        expect(tokens[0]).toEqual value: 'pokémon-ピカチュウ', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+
+      it 'does not tokenize identifiers containing [A-Z] as custom element', ->
+        {tokens} = grammar.tokenizeLine 'Basecamp-schedule basecamp-Schedule'
+        expect(tokens[0]).toEqual value: 'Basecamp-schedule basecamp-Schedule', scopes: ['source.css', 'meta.selector.css']
+
+      it 'does not tokenize identifiers without hyphens as custom element', ->
+        {tokens} = grammar.tokenizeLine 'halo_night'
+        expect(tokens[0]).toEqual value: 'halo_night', scopes: ['source.css', 'meta.selector.css']
+
     describe 'class selectors', ->
       it 'tokenizes .étendard as class selector', ->
         {tokens} = grammar.tokenizeLine '.étendard'
@@ -53,39 +71,39 @@ describe 'CSS grammar', ->
         expect(tokens[1]).toEqual value: 'étendard', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
 
       it 'tokenizes .スポンサー as class selector', ->
-        {tokens} = grammar.tokenizeLine '.スポンサー{}'
+        {tokens} = grammar.tokenizeLine '.スポンサー'
         expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
         expect(tokens[1]).toEqual value: 'スポンサー', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
 
       it 'tokenizes .-- as class selector', ->
-        {tokens} = grammar.tokenizeLine '.-- {}'
+        {tokens} = grammar.tokenizeLine '.--'
         expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
         expect(tokens[1]).toEqual value: '--', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
 
       it 'tokenizes ._ as class selector', ->
-        {tokens} = grammar.tokenizeLine '._ {}'
+        {tokens} = grammar.tokenizeLine '._'
         expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
         expect(tokens[1]).toEqual value: '_', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
 
       it 'does not tokenize .B&W as class selector', ->
-        {tokens} = grammar.tokenizeLine '.B&W {}'
-        expect(tokens[0]).toEqual value: '.B&W ', scopes: ['source.css', 'meta.selector.css']
+        {tokens} = grammar.tokenizeLine '.B&W'
+        expect(tokens[0]).toEqual value: '.B&W', scopes: ['source.css', 'meta.selector.css']
 
       it 'does not tokenize .666 as class selector', ->
-        {tokens} = grammar.tokenizeLine '.666 {}'
-        expect(tokens[0]).toEqual value: '.666 ', scopes: ['source.css', 'meta.selector.css']
+        {tokens} = grammar.tokenizeLine '.666'
+        expect(tokens[0]).toEqual value: '.666', scopes: ['source.css', 'meta.selector.css']
 
       it 'does not tokenize .-911- as class selector', ->
-        {tokens} = grammar.tokenizeLine '.-911- {}'
-        expect(tokens[0]).toEqual value: '.-911- ', scopes: ['source.css', 'meta.selector.css']
+        {tokens} = grammar.tokenizeLine '.-911-'
+        expect(tokens[0]).toEqual value: '.-911-', scopes: ['source.css', 'meta.selector.css']
 
       it 'does not tokenize .- as class selector', ->
-        {tokens} = grammar.tokenizeLine '.- {}'
-        expect(tokens[0]).toEqual value: '.- ', scopes: ['source.css', 'meta.selector.css']
+        {tokens} = grammar.tokenizeLine '.-'
+        expect(tokens[0]).toEqual value: '.-', scopes: ['source.css', 'meta.selector.css']
 
     describe 'id selectors', ->
       it 'tokenizes id selectors consisting of alphabetical characters', ->
-        {tokens} = grammar.tokenizeLine '#unicorn {}'
+        {tokens} = grammar.tokenizeLine '#unicorn'
         expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
         expect(tokens[1]).toEqual value: 'unicorn', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
 
@@ -95,89 +113,54 @@ describe 'CSS grammar', ->
         expect(tokens[1]).toEqual value: '洪荒之力', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
 
       it 'tokenizes id selectors containing digits, "-", and "_"', ->
-        {tokens} = grammar.tokenizeLine '#_zer0-day{}'
+        {tokens} = grammar.tokenizeLine '#_zer0-day'
         expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
         expect(tokens[1]).toEqual value: '_zer0-day', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
 
       it 'tokenizes id selectors beginning with two hyphens', ->
-        {tokens} = grammar.tokenizeLine '#--d3bug-- {}'
+        {tokens} = grammar.tokenizeLine '#--d3bug--'
         expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
         expect(tokens[1]).toEqual value: '--d3bug--', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
 
       it 'does not tokenize hash tokens containing "!"', ->
-        {tokens} = grammar.tokenizeLine '#sort! {}'
-        expect(tokens[0]).toEqual value: '#sort! ', scopes: ['source.css', 'meta.selector.css']
+        {tokens} = grammar.tokenizeLine '#sort!'
+        expect(tokens[0]).toEqual value: '#sort!', scopes: ['source.css', 'meta.selector.css']
 
       it 'does not tokenize hash tokens beginning with a digit', ->
-        {tokens} = grammar.tokenizeLine '#666 {}'
-        expect(tokens[0]).toEqual value: '#666 ', scopes: ['source.css', 'meta.selector.css']
+        {tokens} = grammar.tokenizeLine '#666'
+        expect(tokens[0]).toEqual value: '#666', scopes: ['source.css', 'meta.selector.css']
 
       it 'does not tokenize hash tokens beginning with "-" followed by a digit', ->
-        {tokens} = grammar.tokenizeLine '#-911- {}'
-        expect(tokens[0]).toEqual value: '#-911- ', scopes: ['source.css', 'meta.selector.css']
+        {tokens} = grammar.tokenizeLine '#-911-'
+        expect(tokens[0]).toEqual value: '#-911-', scopes: ['source.css', 'meta.selector.css']
 
       it 'does not tokenize the hash token consisting of only a hyphen', ->
-        {tokens} = grammar.tokenizeLine '#- {}'
-        expect(tokens[0]).toEqual value: '#- ', scopes: ['source.css', 'meta.selector.css']
+        {tokens} = grammar.tokenizeLine '#-'
+        expect(tokens[0]).toEqual value: '#-', scopes: ['source.css', 'meta.selector.css']
 
-    describe 'custom elements', ->
-      it 'tokenizes them as tags', ->
-        {tokens} = grammar.tokenizeLine 'very-custom { color: red; }'
-        expect(tokens[0]).toEqual value: 'very-custom', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
-
-        {tokens} = grammar.tokenizeLine 'very-very-custom { color: red; }'
-        expect(tokens[0]).toEqual value: 'very-very-custom', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
-
-      it 'tokenizes them with pseudo selectors', ->
-        {tokens} = grammar.tokenizeLine 'very-custom:hover { color: red; }'
-        expect(tokens[0]).toEqual value: 'very-custom', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
-        expect(tokens[1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
-        expect(tokens[2]).toEqual value: 'hover', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
-
-        {tokens} = grammar.tokenizeLine 'very-custom::shadow { color: red; }'
-        expect(tokens[0]).toEqual value: 'very-custom', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
-        expect(tokens[1]).toEqual value: '::', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
-        expect(tokens[2]).toEqual value: 'shadow', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
-
-      it 'tokenizes them with class selectors', ->
-        {tokens} = grammar.tokenizeLine 'very-custom.class { color: red; }'
+    describe 'compound selectors', ->
+      it 'tokenizes type selector with class selector', ->
+        {tokens} = grammar.tokenizeLine 'very-custom.class'
         expect(tokens[0]).toEqual value: 'very-custom', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
         expect(tokens[1]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
         expect(tokens[2]).toEqual value: 'class', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
 
-      it 'does not confuse them with properties', ->
-        lines = grammar.tokenizeLines """
-          body {
-            border-width: 2;
-            font-size : 2;
-            background-image  : none;
-          }
-        """
+      it 'tokenizes type selector with pseudo class', ->
+        {tokens} = grammar.tokenizeLine 'very-custom:hover'
+        expect(tokens[0]).toEqual value: 'very-custom', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+        expect(tokens[1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+        expect(tokens[2]).toEqual value: 'hover', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
 
-        expect(lines[1][0]).toEqual value: '  ', scopes: ['source.css', 'meta.property-list.css']
-        expect(lines[1][1]).toEqual value: 'border-width', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
-        expect(lines[1][2]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.key-value.css']
-        expect(lines[1][3]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
-        expect(lines[1][4]).toEqual value: '2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
-
-        expect(lines[2][0]).toEqual value: '  ', scopes: ['source.css', 'meta.property-list.css']
-        expect(lines[2][1]).toEqual value: 'font-size', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
-        expect(lines[2][2]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
-        expect(lines[2][3]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.key-value.css']
-        expect(lines[2][4]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
-        expect(lines[2][5]).toEqual value: '2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
-
-        expect(lines[3][0]).toEqual value: '  ', scopes: ['source.css', 'meta.property-list.css']
-        expect(lines[3][1]).toEqual value: 'background-image', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
-        expect(lines[3][2]).toEqual value: '  ', scopes: ['source.css', 'meta.property-list.css']
-        expect(lines[3][3]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.key-value.css']
-        expect(lines[3][4]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
-        expect(lines[3][5]).toEqual value: 'none', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      it 'tokenizes type selector with pseudo element', ->
+        {tokens} = grammar.tokenizeLine 'very-custom::shadow'
+        expect(tokens[0]).toEqual value: 'very-custom', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+        expect(tokens[1]).toEqual value: '::', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+        expect(tokens[2]).toEqual value: 'shadow', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
 
   describe 'property lists (declaration blocks)', ->
     it 'tokenizes inline property lists', ->
-      {tokens} = grammar.tokenizeLine 'div { color: inherit; }'
-      expect(tokens[4]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      {tokens} = grammar.tokenizeLine 'div { font-size: inherit; }'
+      expect(tokens[4]).toEqual value: 'font-size', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
       expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.key-value.css']
       expect(tokens[7]).toEqual value: 'inherit', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
       expect(tokens[8]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.terminator.rule.css']
