@@ -498,13 +498,11 @@
         'beginCaptures':
           '1':
             'name': 'punctuation.separator.key-value.css'
-        'end': '\\s*(;)|(\\})'
+        'end': '\\s*(;)|\\s*(?=}|\\))'
         'endCaptures':
           '1':
             'name': 'punctuation.terminator.rule.css'
-          '2':
-            'name': 'punctuation.section.property-list.end.css'
-        'name': 'meta.property-value.css'
+        'contentName': 'meta.property-value.css'
         'patterns': [
           {
             'include': '#comment-block'
