@@ -556,14 +556,22 @@
         'captures':
           '1':
             'name': 'punctuation.definition.entity.css'
-        'match': '(:+)(after|before|content|first-letter|first-line|host|(-(moz|webkit|ms)-)?selection)\\b'
+          '2':
+            'name': 'punctuation.definition.entity.css'
+        'match': '''(?x)
+          (?:
+            (::?+)(?:after|before|first-letter|first-line|(?:-(?:webkit|moz|ms)-)[a-z-]++)
+          | (::)(?:content|selection)
+          )
+          (?![\\w-])
+        '''
         'name': 'entity.other.attribute-name.pseudo-element.css'
       }
       {
         'captures':
           '1':
             'name': 'punctuation.definition.entity.css'
-        'match': '(:)((first|last|only)-child|(first|last|only)-of-type|empty|root|target|first|left|right)\\b'
+        'match': '(:)((first|last|only)-child|(first|last|only)-of-type|empty|root|target|first|left|right|host)\\b'
         'name': 'entity.other.attribute-name.pseudo-class.css'
       }
       {
