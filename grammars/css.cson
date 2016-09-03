@@ -561,7 +561,7 @@
         'match': '''(?x)
           (?:
             (::?+)(?:after|before|first-letter|first-line|(?:-(?:webkit|moz|ms)-)[a-z-]++)
-          | (::)(?:content|selection)
+          | (::)(?:backdrop|content|placeholder|selection)
           )
           (?![\\w-])
         '''
