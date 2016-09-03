@@ -137,6 +137,37 @@ describe 'CSS grammar', ->
         {tokens} = grammar.tokenizeLine '#-'
         expect(tokens[0]).toEqual value: '#-', scopes: ['source.css', 'meta.selector.css']
 
+    describe 'pseudo-elements', ->
+      # :first-line, :first-letter, :before and :after
+      it 'tokenizes both : and :: notations for pseudo-elements introduced in CSS 1 and 2', ->
+        {tokens} = grammar.tokenizeLine '.opening:first-letter'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'opening', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+        expect(tokens[2]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
+        expect(tokens[3]).toEqual value: 'first-letter', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+
+        {tokens} = grammar.tokenizeLine 'q::after'
+        expect(tokens[0]).toEqual value: 'q', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(tokens[1]).toEqual value: '::', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
+        expect(tokens[2]).toEqual value: 'after', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+
+      it 'tokenizes both : and :: notations for vendor-prefixed pseudo-elements', ->
+        {tokens} = grammar.tokenizeLine ':-ms-input-placeholder'
+        expect(tokens[0]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '-ms-input-placeholder', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+
+        {tokens} = grammar.tokenizeLine '::-webkit-input-placeholder'
+        expect(tokens[0]).toEqual value: '::', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '-webkit-input-placeholder', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+
+      it 'only tokenizes the :: notation for other pseudo-elements', ->
+        {tokens} = grammar.tokenizeLine '::selection'
+        expect(tokens[0]).toEqual value: '::', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'selection', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+
+        {tokens} = grammar.tokenizeLine ':selection'
+        expect(tokens[0]).toEqual value: ':selection', scopes: ['source.css', 'meta.selector.css']
+
     describe 'compound selectors', ->
       it 'tokenizes the combination of type selectors followed by class selectors', ->
         {tokens} = grammar.tokenizeLine 'very-custom.class'
