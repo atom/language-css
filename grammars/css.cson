@@ -483,6 +483,10 @@
         'include': '#comment-block'
       }
       {
+        'match': '--([A-Za-z0-9_-]+)'
+        'name': 'variable.scss'
+      }
+      {
         'begin': '(?<![-a-z])(?=[-a-z])'
         'end': '$|(?![-a-z])'
         'name': 'meta.property-name.css'
