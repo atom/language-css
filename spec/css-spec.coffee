@@ -228,6 +228,10 @@ describe 'CSS grammar', ->
       expect(tokens[1][10]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
       expect(tokens[1][12]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
 
+    it 'tokenizes custom properties', ->
+      {tokens} = grammar.tokenizeLine ':root { --white: #FFF; }'
+      expect(tokens[5]).toEqual value: '--white', scopes: ['source.css', 'meta.property-list.css', 'variable.css']
+
     describe 'values', ->
       it 'tokenizes color keywords', ->
         {tokens} = grammar.tokenizeLine '#jon { color: snow; }'

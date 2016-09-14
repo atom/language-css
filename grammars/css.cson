@@ -483,7 +483,8 @@
         'include': '#comment-block'
       }
       {
-        'match': '--([A-Za-z0-9_-]+)'
+        'match': '--[\\w-]+'
+        'comment': 'Custom Properties'
         'name': 'variable.css'
       }
       {
