@@ -355,7 +355,7 @@
             'name': 'support.function.misc.css'
         'patterns': [
           'name': 'variable.argument.css'
-          'match': '.'
+          'match': '--[\\w-]+'
         ]
       }
       {

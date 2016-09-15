@@ -269,6 +269,10 @@ describe 'CSS grammar', ->
         {tokens} = grammar.tokenizeLine '.edge { display: -ms-grid; }'
         expect(tokens[8]).toEqual value: '-ms-grid', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
 
+      it 'tokenizes custom variables', ->
+        {tokens} = grammar.tokenizeLine 'div { color: var(--primary-color) }'
+        expect(tokens[9]).toEqual value: '--primary-color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'variable.argument.css']
+
   describe 'escape sequences', ->
     it 'tokenizes escape sequences in single-quoted strings', ->
       {tokens} = grammar.tokenizeLine "very-custom { content: '\\c0ffee' }"
