@@ -177,18 +177,18 @@
     'begin': '((@)namespace) ([\\w-]*)'
     'captures':
       '1':
-        'name': 'keyword.control.at-rule.namespace.scss'
+        'name': 'keyword.control.at-rule.namespace.css'
       '2':
-        'name': 'punctuation.definition.keyword.scss'
+        'name': 'punctuation.definition.keyword.css'
       '3':
-        'name': 'entity.name.function.scss'
+        'name': 'entity.name.function.css'
     'comment': 'Namespace'
     'end': '\\s*((?=;|$))'
-    'name': 'meta.at-rule.namespace.scss'
+    'name': 'meta.at-rule.namespace.css'
     'patterns': [
       {
         'match': '\\s*(\\$[A-Za-z0-9_-]+\\b)\\s*'
-        'name': 'variable.scss'
+        'name': 'variable.css'
       }
       {
         'include': '#property-values'
@@ -355,7 +355,7 @@
             'name': 'support.function.misc.css'
         'patterns': [
           'name': 'variable.argument.css'
-          'match': '.'
+          'match': '--[\\w-]+'
         ]
       }
       {
@@ -481,6 +481,11 @@
     'patterns': [
       {
         'include': '#comment-block'
+      }
+      {
+        'match': '--[\\w-]+'
+        'comment': 'Custom Properties'
+        'name': 'variable.css'
       }
       {
         'begin': '(?<![-a-z])(?=[-a-z])'
