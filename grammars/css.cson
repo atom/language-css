@@ -566,7 +566,7 @@
         'match': '''(?x)
           (?:
             (::?+)(?:after|before|first-letter|first-line|(?:-(?:webkit|moz|ms)-)[a-z-]++)
-          | (::)(?:backdrop|content|placeholder|selection)
+          | (::)(?:backdrop|content|placeholder|selection|shadow)
           )
           (?![\\w-])
         '''
@@ -648,13 +648,6 @@
           '1':
             'name': 'punctuation.definition.entity.css'
         'match': '(:)(active|hover|link|visited|focus)\\b'
-        'name': 'entity.other.attribute-name.pseudo-class.css'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.css'
-        'match': '(::)(shadow)\\b'
         'name': 'entity.other.attribute-name.pseudo-class.css'
       }
       {
