@@ -564,9 +564,14 @@
         'match': '''(?x)
           (:)
           (
-            active|hover|link|visited|focus
-          | (first|last|only)-child|(first|last|only)-of-type|empty|root|target|first|left|right|host
-          | checked|enabled|default|disabled|in-range|indeterminate|invalid|optional|out-of-range|read-only|read-write|required|valid
+            link|target|visited                                     # location
+          | active|focus|hover                                      # user action
+          | default|disabled|enabled|read-only|read-write           # input control state
+          | checked|indeterminate                                   # input value state
+          | in-range|invalid|optional|out-of-range|required|valid   # input value-checking
+          | empty|(first|last|only)-(child|of-type)|root            # tree-structural
+          | first|left|right                                        # @page
+          | host                                                    # shadow DOM
           )(?![\\w-])
         '''
         'name': 'entity.other.attribute-name.pseudo-class.css'
