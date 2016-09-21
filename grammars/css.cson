@@ -592,6 +592,30 @@
         'name': 'entity.other.attribute-name.pseudo-element.css'
       }
       {
+        'captures':
+          '1':
+            'name': 'entity.other.attribute-name.pseudo-class.css'
+          '2':
+            'name': 'punctuation.definition.entity.css'
+          '3':
+            'name': 'punctuation.section.function.css'
+          '4':
+            'name': 'meta.language-ranges.css'
+            'patterns': [
+              {
+                'match': '[a-zA-Z\\*]+(\\-[a-zA-Z\\*]+)*'
+                'name': 'support.constant.language-range.css'
+              }
+              {
+                'match': ','
+                'name': 'punctuation.separator.css'
+              }
+            ]
+          '5':
+            'name': 'punctuation.section.function.css'
+        'match': '((:)lang)(\\()(.*?)(\\))'
+      }
+      {
         'begin': '((:)not)(\\()'
         'beginCaptures':
           '1':
@@ -623,30 +647,6 @@
           '5':
             'name': 'punctuation.section.function.css'
         'match': '((:)nth-(?:(?:last-)?child|(?:last-)?of-type))(\\()(\\-?(?:\\d+n?|n)(?:\\+\\d+)?|even|odd)(\\))'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'entity.other.attribute-name.pseudo-class.css'
-          '2':
-            'name': 'punctuation.definition.entity.css'
-          '3':
-            'name': 'punctuation.section.function.css'
-          '4':
-            'name': 'meta.language-ranges.css'
-            'patterns': [
-              {
-                'match': '[a-zA-Z\\*]+(\\-[a-zA-Z\\*]+)*'
-                'name': 'support.constant.language-range.css'
-              }
-              {
-                'match': ','
-                'name': 'punctuation.separator.css'
-              }
-            ]
-          '5':
-            'name': 'punctuation.section.function.css'
-        'match': '((:)lang)(\\()(.*?)(\\))'
       }
       {
         'captures':
