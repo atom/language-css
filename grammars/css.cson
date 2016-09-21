@@ -561,6 +561,20 @@
         'captures':
           '1':
             'name': 'punctuation.definition.entity.css'
+        'match': '''(?x)
+          (:)
+          (
+            active|hover|link|visited|focus
+          | (first|last|only)-child|(first|last|only)-of-type|empty|root|target|first|left|right|host
+          | checked|enabled|default|disabled|in-range|indeterminate|invalid|optional|out-of-range|read-only|read-write|required|valid
+          )(?![\\w-])
+        '''
+        'name': 'entity.other.attribute-name.pseudo-class.css'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.entity.css'
           '2':
             'name': 'punctuation.definition.entity.css'
         'match': '''(?x)
@@ -571,20 +585,6 @@
           (?![\\w-])
         '''
         'name': 'entity.other.attribute-name.pseudo-element.css'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.css'
-        'match': '(:)((first|last|only)-child|(first|last|only)-of-type|empty|root|target|first|left|right|host)\\b'
-        'name': 'entity.other.attribute-name.pseudo-class.css'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.css'
-        'match': '(:)(checked|enabled|default|disabled|in-range|indeterminate|invalid|optional|out-of-range|read-only|read-write|required|valid)\\b'
-        'name': 'entity.other.attribute-name.pseudo-class.ui-state.css'
       }
       {
         'begin': '((:)not)(\\()'
@@ -642,13 +642,6 @@
           '5':
             'name': 'punctuation.section.function.css'
         'match': '((:)lang)(\\()(.*?)(\\))'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.css'
-        'match': '(:)(active|hover|link|visited|focus)\\b'
-        'name': 'entity.other.attribute-name.pseudo-class.css'
       }
       {
         'captures':
