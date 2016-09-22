@@ -607,8 +607,42 @@
             'name': 'punctuation.section.function.css'
         'patterns': [
           {
-            'match': '[a-zA-Z\\*]+(\\-[a-zA-Z\\*]+)*'
+            'match': '(?<=[(,\\s])[a-zA-Z]+(-[a-zA-Z0-9]*+)*+(?=[),\\s])'
             'name': 'support.constant.language-range.css'
+          }
+          {
+            'begin': '"'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.string.begin.css'
+            'end': '"'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.string.end.css'
+            'name': 'string.quoted.double.css'
+            'patterns': [
+              {
+                'match': '(?<=["\\s])[a-zA-Z*]+(-[a-zA-Z0-9*]*+)*+(?=["\\s])'
+                'name': 'support.constant.language-range.css'
+              }
+            ]
+          }
+          {
+            'begin': "'"
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.string.begin.css'
+            'end': "'"
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.string.end.css'
+            'name': 'string.quoted.single.css'
+            'patterns': [
+              {
+                'match': "(?<=['\\s])[a-zA-Z*]+(-[a-zA-Z0-9*]*+)*+(?=['\\s])"
+                'name': 'support.constant.language-range.css'
+              }
+            ]
           }
           {
             'match': ','
