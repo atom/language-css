@@ -600,7 +600,6 @@
             'name': 'punctuation.definition.entity.css'
           '3':
             'name': 'punctuation.section.function.css'
-        'contentName': 'meta.language-ranges.css'
         'end': '\\)'
         'endCaptures':
           '0':

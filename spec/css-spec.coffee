@@ -138,24 +138,24 @@ describe 'CSS grammar', ->
           expect(tokens[0]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
           expect(tokens[1]).toEqual value: 'lang', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
           expect(tokens[2]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
-          expect(tokens[3]).toEqual value: 'zh-Hans-CN', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'support.constant.language-range.css']
-          expect(tokens[4]).toEqual value: ',', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'punctuation.separator.css']
-          expect(tokens[5]).toEqual value: 'es-419', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'support.constant.language-range.css']
+          expect(tokens[3]).toEqual value: 'zh-Hans-CN', scopes: ['source.css', 'meta.selector.css', 'support.constant.language-range.css']
+          expect(tokens[4]).toEqual value: ',', scopes: ['source.css', 'meta.selector.css', 'punctuation.separator.css']
+          expect(tokens[5]).toEqual value: 'es-419', scopes: ['source.css', 'meta.selector.css', 'support.constant.language-range.css']
           expect(tokens[6]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
 
         it 'does not tokenize unquoted language ranges containing asterisks', ->
           {tokens} = grammar.tokenizeLine ':lang(zh-*-CN)'
-          expect(tokens[3]).toEqual value: 'zh-*-CN', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css']
+          expect(tokens[3]).toEqual value: 'zh-*-CN', scopes: ['source.css', 'meta.selector.css']
 
         it 'tokenizes language ranges containing asterisks quoted as strings', ->
           {tokens} = grammar.tokenizeLine ':lang("zh-*-CN",\'*-ab-\')'
-          expect(tokens[3]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-          expect(tokens[4]).toEqual value: 'zh-*-CN', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'string.quoted.double.css', 'support.constant.language-range.css']
-          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
-          expect(tokens[6]).toEqual value: ',', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'punctuation.separator.css']
-          expect(tokens[7]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
-          expect(tokens[8]).toEqual value: '*-ab-', scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'string.quoted.single.css', 'support.constant.language-range.css']
-          expect(tokens[9]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.language-ranges.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+          expect(tokens[3]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[4]).toEqual value: 'zh-*-CN', scopes: ['source.css', 'meta.selector.css', 'string.quoted.double.css', 'support.constant.language-range.css']
+          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[6]).toEqual value: ',', scopes: ['source.css', 'meta.selector.css', 'punctuation.separator.css']
+          expect(tokens[7]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[8]).toEqual value: '*-ab-', scopes: ['source.css', 'meta.selector.css', 'string.quoted.single.css', 'support.constant.language-range.css']
+          expect(tokens[9]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
 
     describe 'pseudo-elements', ->
       # :first-line, :first-letter, :before and :after
