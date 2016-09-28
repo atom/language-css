@@ -575,16 +575,16 @@
             'name': 'punctuation.definition.string.end.css'
           '8':
             'name': 'punctuation.definition.entity.css'
-        'match': '''(?ix)
+        'match': '''(?x)
           (\\[)\\s*
-          ([\\w:&&[^0-9]][\\w:.-]*)
+          ([\\w:&&[^0-9]][\\w:.-]*)\\s*
           (?:
-            \\s*([~|^$*]?=)\\s*
+            ([~|^$*]?=)\\s*
             (?:
-              (-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)
+              (-?+[a-zA-Z_\\\\\\P{ASCII}-][a-zA-Z0-9_\\\\\\P{ASCII}-]*+)
             | ((?>([\'"])(?:[^\\\\]|\\\\.)*?(\\6)))
-            )
-          )?\\s*
+            )\\s*
+          )?
           (\\])
         '''
         'name': 'meta.attribute-selector.css'
