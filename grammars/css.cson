@@ -577,7 +577,7 @@
             'name': 'punctuation.definition.entity.css'
         'match': '''(?ix)
           (\\[)\\s*
-          (-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)
+          ([\\w:&&[^0-9]][\\w:.-]*)
           (?:
             \\s*([~|^$*]?=)\\s*
             (?:
