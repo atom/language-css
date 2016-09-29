@@ -4,6 +4,17 @@
   'css'
   'css.erb'
 ]
+'firstLineMatch': '''(?xi)
+  # Emacs modeline
+  -\\*-(?:\\s*(?=[^:;\\s]+\\s*-\\*-)|(?:.*?[;\\s]|(?<=-\\*-))mode\\s*:\\s*)
+    css
+  (?=[\\s;]|(?<![-*])-\\*-).*?-\\*-
+  |
+  # Vim modeline
+  (?:(?:\\s|^)vi(?:m[<=>]?\\d+|m)?|\\sex)(?=:(?=\\s*set?\\s[^\\n:]+:)|:(?!\\s*set?\\s))(?:(?:\\s|\\s*:\\s*)\\w*(?:\\s*=(?:[^\\n\\\\\\s]|\\\\.)*)?)*[\\s:](?:filetype|ft|syntax)\\s*=
+    css
+  (?=\\s|:|$)
+'''
 'patterns': [
   {
     'include': '#comment-block'
