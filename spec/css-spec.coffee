@@ -52,6 +52,60 @@ describe 'CSS grammar', ->
         {tokens} = grammar.tokenizeLine 'halo_night'
         expect(tokens[0]).toEqual value: 'halo_night', scopes: ['source.css', 'meta.selector.css']
 
+    describe 'attribute selectors', ->
+      it 'tokenizes attribute selectors without values', ->
+        {tokens} = grammar.tokenizeLine '[title]'
+        expect(tokens[0]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'title', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.attribute.css']
+        expect(tokens[2]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+
+      it 'tokenizes attribute selectors with identifier values', ->
+        {tokens} = grammar.tokenizeLine '[hreflang|=fr]'
+        expect(tokens[0]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'hreflang', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.attribute.css']
+        expect(tokens[2]).toEqual value: '|=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.operator.css']
+        expect(tokens[3]).toEqual value: 'fr', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+        expect(tokens[4]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+
+      it 'tokenizes attribute selectors with string values', ->
+        {tokens} = grammar.tokenizeLine '[href^="http://www.w3.org/"]'
+        expect(tokens[0]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'href', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.attribute.css']
+        expect(tokens[2]).toEqual value: '^=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.operator.css']
+        expect(tokens[3]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.attribute-value.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[4]).toEqual value: 'http://www.w3.org/', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.attribute-value.css']
+        expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.attribute-value.css', 'punctuation.definition.string.end.css']
+        expect(tokens[6]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+
+      it 'tokenizes CSS qualified attribute names with wildcard prefix', ->
+        {tokens} = grammar.tokenizeLine '[*|title]'
+        expect(tokens[0]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[2]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.css']
+        expect(tokens[3]).toEqual value: 'title', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.attribute.css']
+        expect(tokens[4]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+
+      it 'tokenizes CSS qualified attribute names with namespace prefix', ->
+        {tokens} = grammar.tokenizeLine '[marvel|origin=radiation]'
+        expect(tokens[0]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'marvel', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[2]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.css']
+        expect(tokens[3]).toEqual value: 'origin', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.attribute.css']
+        expect(tokens[4]).toEqual value: '=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.operator.css']
+        expect(tokens[5]).toEqual value: 'radiation', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+        expect(tokens[6]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+
+      it 'tokenizes CSS qualified attribute names without namespace prefix', ->
+        {tokens} = grammar.tokenizeLine '[|data-hp="75"]'
+        expect(tokens[0]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.css']
+        expect(tokens[2]).toEqual value: 'data-hp', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.attribute.css']
+        expect(tokens[3]).toEqual value: '=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.operator.css']
+        expect(tokens[4]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.attribute-value.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[5]).toEqual value: '75', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.attribute-value.css']
+        expect(tokens[6]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.attribute-value.css', 'punctuation.definition.string.end.css']
+        expect(tokens[7]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+
     describe 'class selectors', ->
       it 'tokenizes class selectors containing non-ASCII letters', ->
         {tokens} = grammar.tokenizeLine '.étendard'
