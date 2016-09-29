@@ -417,3 +417,86 @@ describe 'CSS grammar', ->
       expect(tokens[2][4]).toEqual value: 'rotate', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
       expect(tokens[2][10]).toEqual value: 'translateX', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
       expect(tokens[2][16]).toEqual value: 'scale', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
+
+  describe "firstLineMatch", ->
+    it "recognises Emacs modelines", ->
+      valid = """
+        #-*- CSS -*-
+        #-*- mode: CSS -*-
+        /* -*-css-*- */
+        // -*- CSS -*-
+        /* -*- mode:CSS -*- */
+        // -*- font:bar;mode:CSS -*-
+        // -*- font:bar;mode:CSS;foo:bar; -*-
+        // -*-font:mode;mode:CSS-*-
+        // -*- foo:bar mode: css bar:baz -*-
+        " -*-foo:bar;mode:css;bar:foo-*- ";
+        " -*-font-mode:foo;mode:css;foo-bar:quux-*-"
+        "-*-font:x;foo:bar; mode : CsS; bar:foo;foooooo:baaaaar;fo:ba;-*-";
+        "-*- font:x;foo : bar ; mode : cSS ; bar : foo ; foooooo:baaaaar;fo:ba-*-";
+      """
+      for line in valid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid = """
+        /* --*css-*- */
+        /* -*-- CSS -*-
+        /* -*- -- CSS -*-
+        /* -*- CSS -;- -*-
+        // -*- CCSS -*-
+        // -*- CSS; -*-
+        // -*- css-stuff -*-
+        /* -*- model:css -*-
+        /* -*- indent-mode:css -*-
+        // -*- font:mode;CSS -*-
+        // -*- mode: -*- CSS
+        // -*- mode: I-miss-plain-old-css -*-
+        // -*-font:mode;mode:css--*-
+      """
+      for line in invalid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
+
+    it "recognises Vim modelines", ->
+      valid = """
+        vim: se filetype=css:
+        # vim: se ft=css:
+        # vim: set ft=CSS:
+        # vim: set filetype=CSS:
+        # vim: ft=CSS
+        # vim: syntax=CSS
+        # vim: se syntax=css:
+        # ex: syntax=CSS
+        # vim:ft=css
+        # vim600: ft=css
+        # vim>600: set ft=css:
+        # vi:noai:sw=3 ts=6 ft=CSS
+        # vi::::::::::noai:::::::::::: ft=CSS
+        # vim:ts=4:sts=4:sw=4:noexpandtab:ft=cSS
+        # vi:: noai : : : : sw   =3 ts   =6 ft  =Css
+        # vim: ts=4: pi sts=4: ft=CSS: noexpandtab: sw=4:
+        # vim: ts=4 sts=4: ft=css noexpandtab:
+        # vim:noexpandtab sts=4 ft=css ts=4
+        # vim:noexpandtab:ft=css
+        # vim:ts=4:sts=4 ft=css:noexpandtab:\x20
+        # vim:noexpandtab titlestring=hi\|there\\\\ ft=css ts=4
+      """
+      for line in valid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid = """
+        ex: se filetype=css:
+        _vi: se filetype=CSS:
+         vi: se filetype=CSS
+        # vim set ft=css3
+        # vim: soft=css
+        # vim: clean-syntax=css:
+        # vim set ft=css:
+        # vim: setft=CSS:
+        # vim: se ft=css backupdir=tmp
+        # vim: set ft=css set cmdheight=1
+        # vim:noexpandtab sts:4 ft:CSS ts:4
+        # vim:noexpandtab titlestring=hi\\|there\\ ft=CSS ts=4
+        # vim:noexpandtab titlestring=hi\\|there\\\\\\ ft=CSS ts=4
+      """
+      for line in invalid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
