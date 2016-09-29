@@ -562,30 +562,36 @@
           '1':
             'name': 'punctuation.definition.entity.css'
           '2':
-            'name': 'entity.other.attribute-name.attribute.css'
+            'name': 'entity.other.namespace-prefix.css'
           '3':
-            'name': 'punctuation.separator.operator.css'
+            'name': 'punctuation.separator.css'
           '4':
-            'name': 'string.unquoted.attribute-value.css'
+            'name': 'entity.other.attribute-name.attribute.css'
           '5':
-            'name': 'string.quoted.double.attribute-value.css'
+            'name': 'punctuation.separator.operator.css'
           '6':
-            'name': 'punctuation.definition.string.begin.css'
+            'name': 'string.unquoted.attribute-value.css'
           '7':
-            'name': 'punctuation.definition.string.end.css'
+            'name': 'string.quoted.double.attribute-value.css'
           '8':
+            'name': 'punctuation.definition.string.begin.css'
+          '9':
+            'name': 'punctuation.definition.string.end.css'
+          '10':
             'name': 'punctuation.definition.entity.css'
         'match': '''(?x)
           (\\[)\\s*
-          ([\\w:&&[^0-9]][\\w:.-]*)\\s*
+          (?:(\\g<ident>|\\*)?(\\|))?     # qualified name prefix
+          ([\\w:&&[^0-9]][\\w:.-]*+)\\s*  # attribute name
           (?:
             ([~|^$*]?=)\\s*
-            (?:
-              (-?+[a-zA-Z_\\\\\\P{ASCII}-][a-zA-Z0-9_\\\\\\P{ASCII}-]*+)
-            | ((?>([\'"])(?:[^\\\\]|\\\\.)*?(\\6)))
+            (?:                           # attribute value
+              (\\g<ident>)
+            | ((?>([\'"])(?:[^\\\\]|\\\\.)*?(\\k<-2>)))
             )\\s*
           )?
           (\\])
+          (?<ident>-?+[a-zA-Z_\\P{ASCII}-][a-zA-Z0-9_\\P{ASCII}-]*+){0}
         '''
         'name': 'meta.attribute-selector.css'
       }
