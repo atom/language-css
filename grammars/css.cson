@@ -566,13 +566,13 @@
           '3':
             'name': 'punctuation.separator.css'
           '4':
-            'name': 'entity.other.attribute-name.attribute.css'
+            'name': 'entity.other.attribute-name.css'
           '5':
-            'name': 'punctuation.separator.operator.css'
+            'name': 'keyword.operator.pattern.css'
           '6':
             'name': 'string.unquoted.attribute-value.css'
           '7':
-            'name': 'string.quoted.double.attribute-value.css'
+            'name': 'string.quoted.attribute-value.css'
           '8':
             'name': 'punctuation.definition.string.begin.css'
           '9':
