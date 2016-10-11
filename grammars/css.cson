@@ -572,6 +572,44 @@
         'captures':
           '1':
             'name': 'punctuation.definition.entity.css'
+          '2':
+            'name': 'entity.other.namespace-prefix.css'
+          '3':
+            'name': 'punctuation.separator.css'
+          '4':
+            'name': 'entity.other.attribute-name.css'
+          '5':
+            'name': 'keyword.operator.pattern.css'
+          '6':
+            'name': 'string.unquoted.attribute-value.css'
+          '7':
+            'name': 'string.quoted.attribute-value.css'
+          '8':
+            'name': 'punctuation.definition.string.begin.css'
+          '9':
+            'name': 'punctuation.definition.string.end.css'
+          '10':
+            'name': 'punctuation.definition.entity.css'
+        'match': '''(?x)
+          (\\[)\\s*
+          (?:(\\g<ident>|\\*)?(\\|))?     # qualified name prefix
+          ([\\w:&&[^0-9]][\\w:.-]*+)\\s*  # attribute name
+          (?:
+            ([~|^$*]?=)\\s*
+            (?:                           # attribute value
+              (\\g<ident>)
+            | ((?>([\'"])(?:[^\\\\]|\\\\.)*?(\\k<-2>)))
+            )\\s*
+          )?
+          (\\])
+          (?<ident>-?+[a-zA-Z_\\P{ASCII}-][a-zA-Z0-9_\\P{ASCII}-]*+){0}
+        '''
+        'name': 'meta.attribute-selector.css'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.entity.css'
         'match': '''(?x)
           (:)
           (
@@ -692,27 +730,6 @@
           '5':
             'name': 'punctuation.section.function.css'
         'match': '((:)nth-(?:(?:last-)?child|(?:last-)?of-type))(\\()(\\-?(?:\\d+n?|n)(?:\\+\\d+)?|even|odd)(\\))'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.css'
-          '2':
-            'name': 'entity.other.attribute-name.attribute.css'
-          '3':
-            'name': 'punctuation.separator.operator.css'
-          '4':
-            'name': 'string.unquoted.attribute-value.css'
-          '5':
-            'name': 'string.quoted.double.attribute-value.css'
-          '6':
-            'name': 'punctuation.definition.string.begin.css'
-          '7':
-            'name': 'punctuation.definition.string.end.css'
-          '8':
-            'name': 'punctuation.definition.entity.css'
-        'match': '(?i)(\\[)\\s*(-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)(?:\\s*([~|^$*]?=)\\s*(?:(-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)|((?>([\'"])(?:[^\\\\]|\\\\.)*?(\\6)))))?\\s*(\\])'
-        'name': 'meta.attribute-selector.css'
       }
       {
         'match': '(?<![\\w-])[a-z][\\w&&[^A-Z]]*+-[\\w-&&[^A-Z]]+'
