@@ -211,6 +211,70 @@ describe 'CSS grammar', ->
           expect(tokens[8]).toEqual value: '*-ab-', scopes: ['source.css', 'meta.selector.css', 'string.quoted.single.css', 'support.constant.language-range.css']
           expect(tokens[9]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
 
+      describe ':nth-*()', ->
+        it 'tokenizes :nth-child()', ->
+          tokens = grammar.tokenizeLines '''
+            :nth-child(2n+1)
+            :nth-child(2n -1)
+            :nth-child(-2n+ 1)
+            :nth-child(-2n - 1)
+            :nth-child(odd)
+          '''
+          expect(tokens[0][0]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[0][1]).toEqual value: 'nth-child', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[0][2]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(tokens[0][3]).toEqual value: '2n+1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[0][4]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(tokens[1][3]).toEqual value: '2n -1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[2][3]).toEqual value: '-2n+ 1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[3][3]).toEqual value: '-2n - 1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[4][3]).toEqual value: 'odd', scopes: ['source.css', 'meta.selector.css', 'support.constant.parity.css']
+
+        it 'tokenizes :nth-last-child()', ->
+          tokens = grammar.tokenizeLines '''
+            :nth-last-child(2n)
+            :nth-last-child( -2n)
+            :nth-last-child( 2n )
+            :nth-last-child(even)
+          '''
+          expect(tokens[0][0]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[0][1]).toEqual value: 'nth-last-child', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[0][2]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(tokens[0][3]).toEqual value: '2n', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[0][4]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(tokens[1][4]).toEqual value: '-2n', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[2][4]).toEqual value: '2n', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[2][6]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(tokens[3][3]).toEqual value: 'even', scopes: ['source.css', 'meta.selector.css', 'support.constant.parity.css']
+
+        it 'tokenizes :nth-of-type()', ->
+          tokens = grammar.tokenizeLines '''
+            img:nth-of-type(+n+1)
+            img:nth-of-type(-n+1)
+            img:nth-of-type(n+1)
+          '''
+          expect(tokens[0][1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[0][2]).toEqual value: 'nth-of-type', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[0][3]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(tokens[0][4]).toEqual value: '+n+1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[0][5]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(tokens[1][4]).toEqual value: '-n+1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[2][4]).toEqual value: 'n+1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+
+        it 'tokenizes ::nth-last-of-type()', ->
+          tokens = grammar.tokenizeLines '''
+            h1:nth-last-of-type(-1)
+            h1:nth-last-of-type(+2)
+            h1:nth-last-of-type(3)
+          '''
+          expect(tokens[0][1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[0][2]).toEqual value: 'nth-last-of-type', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[0][3]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(tokens[0][4]).toEqual value: '-1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[0][5]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(tokens[1][4]).toEqual value: '+2', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+          expect(tokens[2][4]).toEqual value: '3', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+
     describe 'pseudo-elements', ->
       # :first-line, :first-letter, :before and :after
       it 'tokenizes both : and :: notations for pseudo-elements introduced in CSS 1 and 2', ->
