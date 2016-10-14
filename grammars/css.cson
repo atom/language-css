@@ -716,7 +716,7 @@
         ]
       }
       {
-        'begin': '((:)nth-(?:(?:last-)?child|(?:last-)?of-type))(\\()'
+        'begin': '((:)nth-(?:last-)?(?:child|of-type))(\\()'
         'beginCaptures':
           '1':
             'name': 'entity.other.attribute-name.pseudo-class.css'
@@ -730,12 +730,12 @@
             'name': 'punctuation.section.function.css'
         'patterns': [
           {
-            'match': '''(?x)
-              -?(?:\\d+n?|n)(?:\\+\\d+)?
-            | even
-            | odd
-            '''
+            'match': '[+-]?(\\d+n?|n)(\\s*[+-]\\s*\\d+)?'
             'name': 'constant.numeric.css'
+          }
+          {
+            'match': 'even|odd'
+            'name': 'support.constant.parity.css'
           }
         ]
       }
