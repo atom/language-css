@@ -548,10 +548,10 @@
             'name': 'punctuation.definition.entity.css'
         'match': '''(?x)
           (\\.)
-          -?+                   # possessive to avoid matching '-' followed by [0-9]
-          [\\w-&&[^0-9]]        # Do NOT change 0-9 to \d, they are not the same.
-          [\\w-]*+
-          (?=$|[\\s,.:{>+~|])   # to avoid matching '.B' in '.B&W'
+          -?+                       # possessive to avoid matching '-' followed by [0-9]
+          [-a-zA-Z_\\P{ASCII}]
+          [-a-zA-Z0-9_\\P{ASCII}]*+
+          (?=$|[\\s,.:{>+~|])       # to avoid matching '.B' in '.B&W'
         '''
         'name': 'entity.other.attribute-name.class.css'
       }
@@ -561,10 +561,8 @@
             'name': 'punctuation.definition.entity.css'
         'match': '''(?x)
           (\\#)
-          -?+                   # possessive to avoid matching '-' followed by [0-9]
-          [\\w-&&[^0-9]]        # Do NOT change 0-9 to \d, they are not the same.
-          [\\w-]*+
-          (?=$|[\\s,.:{>+~|])   # to avoid matching '#sort' in '#sort!'
+          -?+[-a-zA-Z_\\P{ASCII}][-a-zA-Z0-9_\\P{ASCII}]*+
+          (?=$|[\\s,.:{>+~|])
         '''
         'name': 'entity.other.attribute-name.id.css'
       }
@@ -602,7 +600,7 @@
             )\\s*
           )?
           (\\])
-          (?<ident>-?+[a-zA-Z_\\P{ASCII}-][a-zA-Z0-9_\\P{ASCII}-]*+){0}
+          (?<ident>-?+[-a-zA-Z_\\P{ASCII}][-a-zA-Z0-9_\\P{ASCII}]*+){0}
         '''
         'name': 'meta.attribute-selector.css'
       }
@@ -718,18 +716,28 @@
         ]
       }
       {
-        'captures':
+        'begin': '((:)nth-(?:last-)?(?:child|of-type))(\\()'
+        'beginCaptures':
           '1':
             'name': 'entity.other.attribute-name.pseudo-class.css'
           '2':
             'name': 'punctuation.definition.entity.css'
           '3':
             'name': 'punctuation.section.function.css'
-          '4':
-            'name': 'constant.numeric.css'
-          '5':
+        'end': '\\)'
+        'endCaptures':
+          '0':
             'name': 'punctuation.section.function.css'
-        'match': '((:)nth-(?:(?:last-)?child|(?:last-)?of-type))(\\()(\\-?(?:\\d+n?|n)(?:\\+\\d+)?|even|odd)(\\))'
+        'patterns': [
+          {
+            'match': '[+-]?(\\d+n?|n)(\\s*[+-]\\s*\\d+)?'
+            'name': 'constant.numeric.css'
+          }
+          {
+            'match': 'even|odd'
+            'name': 'support.constant.parity.css'
+          }
+        ]
       }
       {
         'match': '(?<![\\w-])[a-z][\\w&&[^A-Z]]*+-[\\w-&&[^A-Z]]+'
