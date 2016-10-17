@@ -253,7 +253,12 @@
             'name': 'punctuation.section.function.css'
         'patterns': [
           {
-            'match': '(?x)\\b\n\t\t\t\t\t\t\t    (0*((1?[0-9]{1,2})|(2([0-4][0-9]|5[0-5])))\\s*,\\s*){2}\n\t\t\t\t\t\t\t    (0*((1?[0-9]{1,2})|(2([0-4][0-9]|5[0-5])))\\b)\n\t\t\t\t\t\t\t    (\\s*,\\s*((0?\\.[0-9]+)|[0-1]))?\n\t\t\t\t\t\t\t'
+            'match': '''(?x)
+              \\b
+              (0*((1?[0-9]{1,2})|(2([0-4][0-9]|5[0-5])))\\s*,\\s*){2}
+              (0*((1?[0-9]{1,2})|(2([0-4][0-9]|5[0-5])))\\b)
+              (\\s*,\\s*((0?\\.[0-9]+)|[0-1]))?
+            '''
             'name': 'constant.other.color.rgb-value.css'
           }
           {
@@ -296,7 +301,29 @@
         'end': '\\)'
         'patterns': [
           {
-            'begin': '(?x)\n\t                            (\n\t                                ((min|max)-)?\n\t                                (\n\t                                    ((device-)?(height|width|aspect-ratio))|\n\t                                    (color(-index)?)|monochrome|resolution\n\t                                )\n\t                            )|grid|scan|orientation\n\t                            \\s*(?=[:)])'
+            'begin': '''(?x)
+              (
+                (?:min-|max-)?
+                (?:
+                  (?:device-)?
+                  (?:height|width|aspect-ratio)
+                  |
+                  color(?:-index)?
+                  |
+                  monochrome
+                  |
+                  resolution
+                )
+                |
+                grid
+                |
+                scan
+                |
+                orientation
+              )
+              \\s*
+              (?=[:)])
+            '''
             'beginCaptures':
               '0':
                 'name': 'support.type.property-name.media.css'
