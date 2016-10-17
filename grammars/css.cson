@@ -23,15 +23,22 @@
     'include': '#selector'
   }
   {
-    'begin': '(@)charset\\b'
+    'begin': '\\A(@)charset\\s+'
     'captures':
       '0':
         'name': 'keyword.control.at-rule.charset.css'
       '1':
         'name': 'punctuation.definition.keyword.css'
-    'end': '\\s*(?=;|$)'
+    'end': ';|(?=$)'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.terminator.at-rule.css'
     'name': 'meta.at-rule.charset.css'
     'patterns': [
+      {
+        'match': '\\G\\s*[^"\';]+'
+        'name': 'invalid.illegal.charset.css'
+      }
       {
         'include': '#string-double'
       }

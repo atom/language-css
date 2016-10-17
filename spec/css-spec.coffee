@@ -179,6 +179,39 @@ describe 'CSS grammar', ->
         {tokens} = grammar.tokenizeLine '#-'
         expect(tokens[0]).toEqual value: '#-', scopes: ['source.css', 'meta.selector.css']
 
+    describe 'at-rules', ->
+      describe '@charset', ->
+        it 'tokenises @charset rules at the start of a file', ->
+          lines = grammar.tokenizeLines "@charset 'US-ASCII';"
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'charset ', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css']
+          expect(lines[0][2]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+          expect(lines[0][3]).toEqual value: 'US-ASCII', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.single.css']
+          expect(lines[0][4]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+          expect(lines[0][5]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.charset.css', 'punctuation.terminator.at-rule.css']
+
+          lines = grammar.tokenizeLines " @charset 'US-ASCII';"
+          expect(lines[0][0]).toEqual value: ' @', scopes: ['source.css']
+          expect(lines[0][1]).toEqual value: "charset 'US-ASCII';", scopes: ['source.css', 'meta.selector.css']
+
+          lines = grammar.tokenizeLines '@charset"UTF-8";'
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css']
+          expect(lines[0][1]).toEqual value: 'charset"UTF-8";', scopes: ['source.css', 'meta.selector.css']
+
+          lines = grammar.tokenizeLines('/* Comment */\n@charset "UTF-8";')
+          expect(lines[0][0]).toEqual value: '/*', scopes: ['source.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[0][1]).toEqual value: ' Comment ', scopes: ['source.css', 'comment.block.css']
+          expect(lines[0][2]).toEqual value: '*/', scopes: ['source.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[1][0]).toEqual value: '@', scopes: ['source.css']
+          expect(lines[1][1]).toEqual value: 'charset "UTF-8";', scopes: ['source.css', 'meta.selector.css']
+
+        it 'highlights unquoted charset names as invalid', ->
+          lines = grammar.tokenizeLines('@charset UTF-8;')
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'charset ', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css']
+          expect(lines[0][2]).toEqual value: 'UTF-8', scopes: ['source.css', 'meta.at-rule.charset.css', 'invalid.illegal.charset.css']
+          expect(lines[0][3]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.charset.css', 'punctuation.terminator.at-rule.css']
+
     describe 'pseudo-classes', ->
       it 'tokenizes regular pseudo-classes', ->
         {tokens} = grammar.tokenizeLine 'p:first-child'
