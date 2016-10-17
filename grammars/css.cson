@@ -29,7 +29,7 @@
         'name': 'keyword.control.at-rule.charset.css'
       '1':
         'name': 'punctuation.definition.keyword.css'
-    'end': '\\s*((?=;|$))'
+    'end': '\\s*(?=;|$)'
     'name': 'meta.at-rule.charset.css'
     'patterns': [
       {
@@ -50,7 +50,7 @@
         'name': 'keyword.control.at-rule.import.css'
       '1':
         'name': 'punctuation.definition.keyword.css'
-    'end': '\\s*((?=;|\\}))'
+    'end': '\\s*(?=;|})'
     'name': 'meta.at-rule.import.css'
     'patterns': [
       {
@@ -75,7 +75,7 @@
             'name': 'punctuation.section.function.css'
         'patterns': [
           {
-            'match': '[^\'") \\t]+'
+            'match': '[^\'")\\s]+'
             'name': 'variable.parameter.url.css'
           }
           {
@@ -95,7 +95,7 @@
     ]
   }
   {
-    'begin': '((@)font-face)\\s*(?=\\{)'
+    'begin': '((@)font-face)\\s*(?={)'
     'beginCaptures':
       '1':
         'name': 'keyword.control.at-rule.font-face.css'
@@ -111,7 +111,7 @@
   }
   {
     'begin': '(?=@media\\b)'
-    'end': '\\s*(\\})'
+    'end': '\\s*(})'
     'endCaptures':
       '1':
         'name': 'punctuation.section.property-list.end.css'
@@ -123,7 +123,7 @@
             'name': 'keyword.control.at-rule.media.css'
           '2':
             'name': 'punctuation.definition.keyword.css'
-        'end': '\\s*(?=\\{)'
+        'end': '\\s*(?={)'
         'name': 'meta.at-rule.media.css'
         'patterns': [
           {
@@ -132,11 +132,11 @@
         ]
       }
       {
-        'begin': '\\s*(\\{)'
+        'begin': '\\s*({)'
         'beginCaptures':
           '1':
             'name': 'punctuation.section.property-list.begin.css'
-        'end': '(?=\\})'
+        'end': '(?=})'
         'patterns': [
           {
             'include': '$self'
@@ -152,7 +152,7 @@
         'name': 'keyword.control.at-rule.page.css'
       '1':
         'name': 'punctuation.definition.keyword.css'
-    'end': '\\s*((?=[{:]|$))'
+    'end': '\\s*(?=$|[{:])'
     'name': 'meta.at-rule.page.css'
     'patterns': [
       {
@@ -170,7 +170,7 @@
         'name': 'punctuation.definition.keyword.css'
       '3':
         'name': 'support.function.misc.css'
-    'end': '\\s*((?=;|$))'
+    'end': '\\s*(?=;|$)'
     'name': 'meta.at-rule.namespace.css'
     'patterns': [
       {
@@ -194,7 +194,7 @@
         'name': 'punctuation.definition.keyword.css'
       '3':
         'name': 'entity.name.function.css'
-    'end': '\\s*((?=;|$))'
+    'end': '\\s*(?=;|$)'
     'name': 'meta.at-rule.namespace.css'
     'patterns': [
       {
@@ -213,7 +213,7 @@
     ]
   }
   {
-    'begin': '(?=\\{)'
+    'begin': '(?={)'
     'end': '(?!\\G)'
     'patterns': [
       {
@@ -247,9 +247,9 @@
             'name': 'support.function.misc.css'
           '2':
             'name': 'punctuation.section.function.css'
-        'end': '(\\))'
+        'end': '\\)'
         'endCaptures':
-          '1':
+          '0':
             'name': 'punctuation.section.function.css'
         'patterns': [
           {
@@ -376,10 +376,14 @@
         'captures':
           '1':
             'name': 'keyword.other.unit.css'
-        'match': '(?x)
-          (?<!\\w|-)(?:(?:-|\\+)?(?:[0-9]+(?:\\.[0-9]+)?)|(?:\\.[0-9]+))
-          ((?:px|pt|ch|cm|mm|in|r?em|ex|pc|deg|g?rad|dpi|dpcm|dppx|fr|ms|s|turn|vh|vmax|vmin|vw)\\b|%)?
-          '
+        'match': '''(?x)
+          (?<!\\w|-)
+          (?:
+            [-+]? [0-9]+ (?:\\.[0-9]+)? |
+            \\.   [0-9]+
+          )
+          (%|(?:ch|cm|deg|dpcm|dpi|dppx|em|ex|fr|grad|in|mm|ms|pc|pt|px|rad|rem|s|turn|vh|vmax|vmin|vw)\\b)?
+        '''
         'name': 'constant.numeric.css'
       }
     ]
@@ -437,9 +441,9 @@
             'name': 'support.function.misc.css'
           '2':
             'name': 'punctuation.section.function.css'
-        'end': '(\\))'
+        'end': '\\)'
         'endCaptures':
-          '1':
+          '0':
             'name': 'punctuation.section.function.css'
         'patterns': [
           {
@@ -454,9 +458,9 @@
             'name': 'support.function.misc.css'
           '2':
             'name': 'punctuation.section.function.css'
-        'end': '(\\))'
+        'end': '\\)'
         'endCaptures':
-          '1':
+          '0':
             'name': 'punctuation.section.function.css'
         'patterns': [
           {
@@ -466,7 +470,7 @@
             'include': '#string-double'
           }
           {
-            'match': '[^\'") \\t]+'
+            'match': '[^\'")\\s]+'
             'name': 'variable.parameter.misc.css'
           }
         ]
@@ -507,11 +511,11 @@
       }
     ]
   'rule-list':
-    'begin': '\\{'
+    'begin': '{'
     'beginCaptures':
       '0':
         'name': 'punctuation.section.property-list.begin.css'
-    'end': '(\\})|(?<=\\})'
+    'end': '(})|(?<=})'
     'endCaptures':
       '0':
         'name': 'punctuation.section.property-list.end.css'
