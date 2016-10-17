@@ -161,6 +161,7 @@
     ]
   }
   {
+    # Namespace without prefix
     'begin': '((@)namespace\\b)\\s*(?=url)'
     'captures':
       '1':
@@ -169,7 +170,6 @@
         'name': 'punctuation.definition.keyword.css'
       '3':
         'name': 'support.function.misc.css'
-    'comment': 'Namespace without prefix'
     'end': '\\s*((?=;|$))'
     'name': 'meta.at-rule.namespace.css'
     'patterns': [
@@ -185,6 +185,7 @@
     ]
   }
   {
+    # Namespace
     'begin': '((@)namespace) ([\\w-]*)'
     'captures':
       '1':
@@ -193,7 +194,6 @@
         'name': 'punctuation.definition.keyword.css'
       '3':
         'name': 'entity.name.function.css'
-    'comment': 'Namespace'
     'end': '\\s*((?=;|$))'
     'name': 'meta.at-rule.namespace.css'
     'patterns': [
@@ -226,17 +226,17 @@
   'color-values':
     'patterns': [
       {
-        'comment': 'http://www.w3.org/TR/CSS21/syndata.html#value-def-color'
+        # CSS 2.1 colours: http://www.w3.org/TR/CSS21/syndata.html#value-def-color
         'match': '(?<![\\w-])(aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow)(?![\\w-])'
         'name': 'support.constant.color.w3c-standard-color-name.css'
       }
       {
-        'comment': 'http://www.w3.org/TR/css3-color/#svg-color'
+        # SVG/CSS3 colour names: http://www.w3.org/TR/css3-color/#svg-color
         'match': '(?<![\\w-])(aliceblue|antiquewhite|aquamarine|azure|beige|bisque|blanchedalmond|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|gainsboro|ghostwhite|gold|goldenrod|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|limegreen|linen|magenta|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|oldlace|olivedrab|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|thistle|tomato|turquoise|violet|wheat|whitesmoke|yellowgreen)(?![\\w-])'
         'name': 'support.constant.color.w3c-extended-color-name.css'
       }
       {
-        'comment': 'These colours are deprecated from CSS color module level 3 http://www.w3.org/TR/css3-color/#css2-system'
+        # These colours are deprecated in CSS3: http://www.w3.org/TR/css3-color/#css2-system
         'match': '\\b(ActiveBorder|ActiveCaption|AppWorkspace|Background|ButtonFace|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText)\\b'
         'name': 'invalid.deprecated.color.system.css'
       }
@@ -494,8 +494,8 @@
         'include': '#comment-block'
       }
       {
+        # Custom properties
         'match': '--[\\w-]+'
-        'comment': 'Custom Properties'
         'name': 'variable.css'
       }
       {
