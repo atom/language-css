@@ -186,7 +186,7 @@
   }
   {
     # Namespace
-    'begin': '((@)namespace) ([\\w-]*)'
+    'begin': '((@)namespace)\\s+([\\w-]*)'
     'captures':
       '1':
         'name': 'keyword.control.at-rule.namespace.css'
