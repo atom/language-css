@@ -117,18 +117,18 @@
     ]
   }
   {
-    'begin': '(?=@media\\b)'
+    'begin': '(?=@media(?:\\s|\\(|$|/\\*))'
     'end': '\\s*(})'
     'endCaptures':
       '1':
         'name': 'punctuation.section.property-list.end.css'
     'patterns': [
       {
-        'begin': '((@)media)\\b'
+        'begin': '(@)media(?=\\s|\\(|$|/\\*)'
         'beginCaptures':
-          '1':
+          '0':
             'name': 'keyword.control.at-rule.media.css'
-          '2':
+          '1':
             'name': 'punctuation.definition.keyword.css'
         'end': '\\s*(?={)'
         'name': 'meta.at-rule.media.css'
@@ -153,7 +153,7 @@
     ]
   }
   {
-    'begin': '(@)page\\b'
+    'begin': '(@)page(?=[\\s:{]|$|/\\*)'
     'captures':
       '0':
         'name': 'keyword.control.at-rule.page.css'

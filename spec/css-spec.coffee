@@ -259,6 +259,59 @@ describe 'CSS grammar', ->
           expect(lines[1][5]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
           expect(lines[1][6]).toEqual value: ';', scopes: ['source.css']
 
+      describe '@media', ->
+        it 'tokenises @media keywords correctly', ->
+          {tokens} = grammar.tokenizeLine('@media(max-width: 37.5em){ }')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
+          expect(tokens[2]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css']
+          expect(tokens[3]).toEqual value: 'max-width', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.property-name.media.css']
+          expect(tokens[4]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
+          expect(tokens[6]).toEqual value: '37.5', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css']
+          expect(tokens[7]).toEqual value: 'em', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
+          expect(tokens[9]).toEqual value: '{', scopes: ['source.css', 'punctuation.section.property-list.begin.css']
+          expect(tokens[11]).toEqual value: '}', scopes: ['source.css', 'punctuation.section.property-list.end.css']
+
+          {tokens} = grammar.tokenizeLine('@media not print and (max-width: 37.5em){ }')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
+          expect(tokens[3]).toEqual value: 'not', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.logic.media.css']
+          expect(tokens[5]).toEqual value: 'print', scopes: ['source.css', 'meta.at-rule.media.css', 'support.constant.media.css']
+          expect(tokens[7]).toEqual value: 'and', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.logic.media.css']
+          expect(tokens[8]).toEqual value: ' (', scopes: ['source.css', 'meta.at-rule.media.css']
+          expect(tokens[9]).toEqual value: 'max-width', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.property-name.media.css']
+          expect(tokens[10]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
+          expect(tokens[12]).toEqual value: '37.5', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css']
+          expect(tokens[13]).toEqual value: 'em', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(tokens[14]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
+          expect(tokens[15]).toEqual value: '{', scopes: ['source.css', 'punctuation.section.property-list.begin.css']
+          expect(tokens[17]).toEqual value: '}', scopes: ['source.css', 'punctuation.section.property-list.end.css']
+
+      describe '@page', ->
+        it 'tokenises @page blocks correctly', ->
+          {tokens} = grammar.tokenizeLine('@page :first { }')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.page.css', 'keyword.control.at-rule.page.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'page', scopes: ['source.css', 'meta.at-rule.page.css', 'keyword.control.at-rule.page.css']
+          expect(tokens[3]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[4]).toEqual value: 'first', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[6]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(tokens[8]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+          {tokens} = grammar.tokenizeLine('@page:right{}')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.page.css', 'keyword.control.at-rule.page.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'page', scopes: ['source.css', 'meta.at-rule.page.css', 'keyword.control.at-rule.page.css']
+          expect(tokens[2]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[3]).toEqual value: 'right', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[4]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(tokens[5]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+          {tokens} = grammar.tokenizeLine('@page{}')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.page.css', 'keyword.control.at-rule.page.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'page', scopes: ['source.css', 'meta.at-rule.page.css', 'keyword.control.at-rule.page.css']
+          expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(tokens[3]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
     describe 'pseudo-classes', ->
       it 'tokenizes regular pseudo-classes', ->
         {tokens} = grammar.tokenizeLine 'p:first-child'
