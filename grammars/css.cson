@@ -295,63 +295,137 @@
         'name': 'punctuation.definition.comment.css'
     'end': '\\*/'
     'name': 'comment.block.css'
-  'media-query':
-    'begin': '(?i)\\s*(only|not)?\\s*(all|aural|braille|embossed|handheld|print|projection|screen|tty|tv)?'
-    'beginCaptures':
+  'media-features':
+    'captures':
       '1':
-        'name': 'keyword.operator.logic.media.css'
+        'name': 'support.type.property-name.media.css'
       '2':
-        'name': 'support.constant.media.css'
-    'end': '\\s*(?:(,)|(?=[{;]))'
-    'endCaptures':
-      '1':
-        'name': 'punctuation.definition.arbitrary-repetition.css'
+        'name': 'invalid.deprecated.media.css'
+      '3':
+        'name': 'support.type.vendored.property-name.media.css'
+    'match': '''(?xi)
+      (?<=^|\\s|\\()              # Preceded by whitespace or a bracket
+
+      (?:
+        # Standardised features
+        (
+          (?:min-|max-)?          # Features with scalar (numeric) values
+          (?: height              # Name of feature
+            | width
+            | aspect-ratio
+            | color
+            | color-index
+            | monochrome
+            | resolution
+          )
+          | grid
+          | scan
+          | orientation
+          | display-mode
+        )
+
+        |
+
+        # Deprecated features
+        (
+          (?:min-|max-)?          # Deprecated in Media Queries 4
+          device-
+          (?: height
+            | width
+            | aspect-ratio
+          )
+        )
+
+        |
+
+        # Vendor extensions
+        (
+          -
+          (?: webkit              # Webkit/Blink
+            | apple
+            | khtml
+            | moz                 # Gecko
+            | ms                  # Microsoft
+            | o                   # Presto (pre-Opera 15)
+          )
+          -
+          [\\w-]+                 # Feature name
+          (?=                     # Terminates correctly
+            \\s*                  # Possible whitespace
+            (?:                   # Possible injected comment
+              /\\*
+              (?:[^*]|\\*[^/])*
+              \\*/
+            )?
+            \\s*
+            [:)]                  # Ends with a colon or closed bracket
+          )
+        )
+      )
+      (?=\\s|$|:|\\)|/\\*)        # Terminates cleanly
+    '''
+  'media-feature-keywords':
+    'match': '''(?xi)
+      (?<=^|\\s|:|\\*/)
+
+      (?: portrait                # Orientation
+        | landscape
+        | progressive             # Scan types
+        | interlace
+        | fullscreen              # Display modes
+        | standalone
+        | minimal-ui
+        | browser
+      )
+
+      (?=\\s|\\)|$)
+    '''
+    'name': 'support.constant.property-value.css'
+  'media-query':
+    'begin': '\\G'
+    'end': '\\s*(?=[{;])'
     'patterns': [
       {
         'include': '#comment-block'
       }
       {
-        'begin': '\\s*(and)?\\s*(\\()\\s*'
+        'include': '#media-types'
+      }
+      {
+        'match': '(?<=\\s|^|,|\\*/)(only|not)(?=\\s|$|{|/\\*)'
+        'name': 'keyword.operator.logical.$1.media.css'
+      }
+      {
+        'match': '(?<=\\s|^|\\*/|\\))and(?=\\s|$|/\\*)'
+        'name': 'keyword.operator.logical.and.media.css'
+      }
+      {
+        'match': ',(?:(?:\\s*,)+|(?=\\s*[;){]))'
+        'name': 'invalid.illegal.comma.css'
+      }
+      {
+        'match': ','
+        'name': 'punctuation.delimiter.arbitrary-repetition.comma.css'
+      }
+      {
+        'begin': '(\\()\\s*'
         'beginCaptures':
           '1':
-            'name': 'keyword.operator.logic.media.css'
+            'name': 'punctuation.definition.parameters.begin.bracket.round.css'
         'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.parameters.end.bracket.round.css'
         'patterns': [
           {
-            'begin': '''(?x)
-              (
-                (?:min-|max-)?
-                (?:
-                  (?:device-)?
-                  (?:height|width|aspect-ratio)
-                  |
-                  color(?:-index)?
-                  |
-                  monochrome
-                  |
-                  resolution
-                )
-                |
-                grid
-                |
-                scan
-                |
-                orientation
-              )
-              \\s*
-              (?=[:)])
-            '''
-            'beginCaptures':
-              '0':
-                'name': 'support.type.property-name.media.css'
-            'end': '(:)|(?=\\))'
-            'endCaptures':
-              '1':
-                'name': 'punctuation.separator.key-value.css'
+            'include': '#media-features'
           }
           {
-            'match': '(?<![\\w-])(portrait|landscape|progressive|interlace)(?![\\w-])'
-            'name': 'support.constant.property-value.css'
+            'include': '#media-feature-keywords'
+          }
+          {
+            'match': ':'
+            'name': 'punctuation.separator.key-value.css'
           }
           {
             'captures':
@@ -380,6 +454,23 @@
         'include': '#media-query'
       }
     ]
+  'media-types':
+    'captures':
+      '1':
+        'name': 'support.constant.media.css'
+      '2':
+        'name': 'invalid.deprecated.constant.media.css'
+    'match': '''(?xi)
+      (?<=^|\\s|,|\\*/)
+      (?:
+        # Valid media types
+        (all|print|screen|speech)
+        |
+        # Deprecated in Media Queries 4: http://dev.w3.org/csswg/mediaqueries/#media-types
+        (aural|braille|embossed|handheld|projection|tty|tv)
+      )
+      (?=$|[{,\\s;]|/\\*)
+    '''
   'numeric-values':
     'patterns': [
       {

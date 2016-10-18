@@ -286,29 +286,29 @@ describe 'CSS grammar', ->
           {tokens} = grammar.tokenizeLine('@media(max-width: 37.5em){ }')
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
-          expect(tokens[2]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css']
+          expect(tokens[2]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.begin.bracket.round.css']
           expect(tokens[3]).toEqual value: 'max-width', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.property-name.media.css']
           expect(tokens[4]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
           expect(tokens[6]).toEqual value: '37.5', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css']
           expect(tokens[7]).toEqual value: 'em', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css', 'keyword.other.unit.css']
-          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
+          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.end.bracket.round.css']
           expect(tokens[9]).toEqual value: '{', scopes: ['source.css', 'punctuation.section.property-list.begin.css']
           expect(tokens[11]).toEqual value: '}', scopes: ['source.css', 'punctuation.section.property-list.end.css']
 
           {tokens} = grammar.tokenizeLine('@media not print and (max-width: 37.5em){ }')
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
-          expect(tokens[3]).toEqual value: 'not', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.logic.media.css']
+          expect(tokens[3]).toEqual value: 'not', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.logical.not.media.css']
           expect(tokens[5]).toEqual value: 'print', scopes: ['source.css', 'meta.at-rule.media.css', 'support.constant.media.css']
-          expect(tokens[7]).toEqual value: 'and', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.logic.media.css']
-          expect(tokens[8]).toEqual value: ' (', scopes: ['source.css', 'meta.at-rule.media.css']
-          expect(tokens[9]).toEqual value: 'max-width', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.property-name.media.css']
-          expect(tokens[10]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
-          expect(tokens[12]).toEqual value: '37.5', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css']
-          expect(tokens[13]).toEqual value: 'em', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css', 'keyword.other.unit.css']
-          expect(tokens[14]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
-          expect(tokens[15]).toEqual value: '{', scopes: ['source.css', 'punctuation.section.property-list.begin.css']
-          expect(tokens[17]).toEqual value: '}', scopes: ['source.css', 'punctuation.section.property-list.end.css']
+          expect(tokens[7]).toEqual value: 'and', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.logical.and.media.css']
+          expect(tokens[9]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.begin.bracket.round.css']
+          expect(tokens[10]).toEqual value: 'max-width', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.property-name.media.css']
+          expect(tokens[11]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
+          expect(tokens[13]).toEqual value: '37.5', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css']
+          expect(tokens[14]).toEqual value: 'em', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(tokens[15]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.end.bracket.round.css']
+          expect(tokens[16]).toEqual value: '{', scopes: ['source.css', 'punctuation.section.property-list.begin.css']
+          expect(tokens[18]).toEqual value: '}', scopes: ['source.css', 'punctuation.section.property-list.end.css']
 
       describe '@page', ->
         it 'tokenises @page blocks correctly', ->
@@ -668,7 +668,7 @@ describe 'CSS grammar', ->
 
       expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
       expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
-      expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css']
+      expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.begin.bracket.round.css']
       expect(tokens[4]).toEqual value: 'max-height', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.property-name.media.css']
       expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
       expect(tokens[7]).toEqual value: '40', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css']
@@ -676,7 +676,7 @@ describe 'CSS grammar', ->
       expect(tokens[9]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[10]).toEqual value: ' comment ', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css']
       expect(tokens[11]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css', 'punctuation.definition.comment.css']
-      expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
+      expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.end.bracket.round.css']
 
     it 'tokenizes inline comments', ->
       {tokens} = grammar.tokenizeLine 'section {border:4px/*padding:1px*/}'
