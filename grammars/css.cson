@@ -51,11 +51,11 @@
     ]
   }
   {
-    'begin': '(@)import\\b'
-    'captures':
-      '0':
-        'name': 'keyword.control.at-rule.import.css'
+    'begin': '((@)import)(?:\\s+|$|(?=[\'"]))'
+    'beginCaptures':
       '1':
+        'name': 'keyword.control.at-rule.import.css'
+      '2':
         'name': 'punctuation.definition.keyword.css'
     'end': '\\s*(?=;|})'
     'name': 'meta.at-rule.import.css'
