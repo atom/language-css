@@ -36,8 +36,10 @@
     'name': 'meta.at-rule.charset.css'
     'patterns': [
       {
-        'match': '\\G\\s*[^"\';]+'
-        'name': 'invalid.illegal.charset.css'
+        'captures':
+          '1':
+            'name': 'invalid.illegal.charset.css'
+        'match': '\\G\\s*([^"\';]+)(?<!\\s)\\s*(?=["\';]|$)'
       }
       {
         'include': '#string-double'
@@ -51,7 +53,7 @@
     ]
   }
   {
-    'begin': '((@)import)(?:\\s+|$|(?=[\'"]))'
+    'begin': '((@)import)(?:\\s+|$|(?=[\'"]|/\\*))'
     'beginCaptures':
       '1':
         'name': 'keyword.control.at-rule.import.css'
@@ -60,6 +62,15 @@
     'end': '\\s*(?=;|})'
     'name': 'meta.at-rule.import.css'
     'patterns': [
+      {
+        'begin': '\\G\\s*(?=/\\*)'
+        'end': '(?<=\\*/)\\s*'
+        'patterns': [
+          {
+            'include': '#comment-block'
+          }
+        ]
+      }
       {
         'include': '#string-double'
       }
@@ -102,7 +113,7 @@
     ]
   }
   {
-    'begin': '((@)font-face)\\s*(?={)'
+    'begin': '((@)font-face)\\s*(?={|$|/\\*)'
     'beginCaptures':
       '1':
         'name': 'keyword.control.at-rule.font-face.css'
@@ -111,6 +122,9 @@
     'end': '(?!\\G)'
     'name': 'meta.at-rule.font-face.css'
     'patterns': [
+      {
+        'include': '#comment-block'
+      }
       {
         'include': '#rule-list'
       }

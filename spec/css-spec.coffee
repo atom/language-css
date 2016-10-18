@@ -212,6 +212,16 @@ describe 'CSS grammar', ->
           expect(lines[0][2]).toEqual value: 'UTF-8', scopes: ['source.css', 'meta.at-rule.charset.css', 'invalid.illegal.charset.css']
           expect(lines[0][3]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.charset.css', 'punctuation.terminator.at-rule.css']
 
+        it 'highlights injected comments as invalid', ->
+          lines = grammar.tokenizeLines('@charset /* */ "US-ASCII";')
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'charset ', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css']
+          expect(lines[0][2]).toEqual value: '/* */', scopes: ['source.css', 'meta.at-rule.charset.css', 'invalid.illegal.charset.css']
+          expect(lines[0][4]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(lines[0][5]).toEqual value: 'US-ASCII', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.double.css']
+          expect(lines[0][6]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(lines[0][7]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.charset.css', 'punctuation.terminator.at-rule.css']
+
       describe '@import', ->
         it 'tokenises @import statements', ->
           {tokens} = grammar.tokenizeLine('@import url("file.css");')
@@ -232,6 +242,18 @@ describe 'CSS grammar', ->
           expect(tokens[4]).toEqual value: 'file.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
           expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
           expect(tokens[6]).toEqual value: ';', scopes: ['source.css']
+
+        it "doesn't let injected comments impact parameter matching", ->
+          {tokens} = grammar.tokenizeLine('@import /* url("name"); */ "1.css";')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
+          expect(tokens[3]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[4]).toEqual value: ' url("name"); ', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css']
+          expect(tokens[5]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[8]).toEqual value: '1.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
+          expect(tokens[9]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[10]).toEqual value: ';', scopes: ['source.css']
 
         it 'correctly handles word boundaries', ->
           {tokens} = grammar.tokenizeLine('@import"file.css";')
@@ -572,6 +594,57 @@ describe 'CSS grammar', ->
       expect(tokens[8]).toEqual value: '\\c0ffee', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'constant.character.escape.css']
 
   describe 'comments', ->
+    it 'tokenises comments inside @import statements', ->
+      {tokens} = grammar.tokenizeLine('@import /* url("name"); */ "1.css";')
+      expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
+      expect(tokens[1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
+      expect(tokens[3]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
+      expect(tokens[4]).toEqual value: ' url("name"); ', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css']
+      expect(tokens[5]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
+      expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[8]).toEqual value: '1.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
+      expect(tokens[9]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+      expect(tokens[10]).toEqual value: ';', scopes: ['source.css']
+
+      {tokens} = grammar.tokenizeLine('@import/*";"*/ url("2.css");')
+      expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
+      expect(tokens[1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
+      expect(tokens[2]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
+      expect(tokens[3]).toEqual value: '";"', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css']
+      expect(tokens[4]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
+      expect(tokens[6]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'support.function.url.css']
+      expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+      expect(tokens[8]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[9]).toEqual value: '2.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
+      expect(tokens[10]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+      expect(tokens[11]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+      expect(tokens[12]).toEqual value: ';', scopes: ['source.css']
+
+      {tokens} = grammar.tokenizeLine('@import url("3.css") print /* url(";"); */;')
+      expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
+      expect(tokens[1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
+      expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'support.function.url.css']
+      expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+      expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[6]).toEqual value: '3.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
+      expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+      expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+      expect(tokens[10]).toEqual value: 'print', scopes: ['source.css', 'meta.at-rule.import.css', 'support.constant.media.css']
+      expect(tokens[12]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
+      expect(tokens[13]).toEqual value: ' url(";"); ', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css']
+      expect(tokens[14]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
+      expect(tokens[15]).toEqual value: ';', scopes: ['source.css']
+
+    it 'tokenises comments inside @font-face statements', ->
+      {tokens} = grammar.tokenizeLine('@font-face/*"{;}"*/{}')
+      expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.font-face.css', 'keyword.control.at-rule.font-face.css', 'punctuation.definition.keyword.css']
+      expect(tokens[1]).toEqual value: 'font-face', scopes: ['source.css', 'meta.at-rule.font-face.css', 'keyword.control.at-rule.font-face.css']
+      expect(tokens[2]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.font-face.css', 'comment.block.css', 'punctuation.definition.comment.css']
+      expect(tokens[3]).toEqual value: '"{;}"', scopes: ['source.css', 'meta.at-rule.font-face.css', 'comment.block.css']
+      expect(tokens[4]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.font-face.css', 'comment.block.css', 'punctuation.definition.comment.css']
+      expect(tokens[5]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+      expect(tokens[6]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
     it 'tokenizes comments before media queries', ->
       {tokens} = grammar.tokenizeLine '/* comment */ @media'
 
