@@ -342,7 +342,7 @@
       '3':
         'name': 'support.type.vendored.property-name.media.css'
     'match': '''(?xi)
-      (?<=^|\\s|\\(|\\*/)         # Preceded by whitespace, bracket or comment
+      (?<=^|\\s|\\(|\\*/)           # Preceded by whitespace, bracket or comment
 
       (?:
         # Standardised features
@@ -366,7 +366,7 @@
 
         # Deprecated features
         (
-          (?:min-|max-)?          # Deprecated in Media Queries 4
+          (?:min-|max-)?            # Deprecated in Media Queries 4
           device-
           (?: height
             | width
@@ -397,30 +397,30 @@
             )
           )
           -
-          [\\w-]+                 # Feature name
-          (?=                     # Terminates correctly
-            \\s*                  # Possible whitespace
-            (?:                   # Possible injected comment
+          [\\w-]+                   # Feature name
+          (?=                       # Terminates correctly
+            \\s*                    # Possible whitespace
+            (?:                     # Possible injected comment
               /\\*
               (?:[^*]|\\*[^/])*
               \\*/
             )?
             \\s*
-            [:)]                  # Ends with a colon or closed bracket
+            [:)]                    # Ends with a colon or closed bracket
           )
         )
       )
-      (?=\\s|$|:|\\)|/\\*)        # Terminates cleanly
+      (?=\\s|$|:|\\)|/\\*)          # Terminates cleanly
     '''
   'media-feature-keywords':
     'match': '''(?xi)
       (?<=^|\\s|:|\\*/)
 
-      (?: portrait                # Orientation
+      (?: portrait                  # Orientation
         | landscape
-        | progressive             # Scan types
+        | progressive               # Scan types
         | interlace
-        | fullscreen              # Display modes
+        | fullscreen                # Display modes
         | standalone
         | minimal-ui
         | browser
