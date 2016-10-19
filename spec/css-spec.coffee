@@ -501,6 +501,33 @@ describe 'CSS grammar', ->
           expect(tokens[12]).toEqual value: '{', scopes: ['source.css', 'punctuation.section.property-list.begin.css']
           expect(tokens[14]).toEqual value: '}', scopes: ['source.css', 'punctuation.section.property-list.end.css']
 
+          {tokens} = grammar.tokenizeLine('@media (_moz-a:b){}')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
+          expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.begin.bracket.round.css']
+          expect(tokens[4]).toEqual value: '_moz-a', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.vendored.property-name.media.css']
+          expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
+          expect(tokens[6]).toEqual value: 'b', scopes: ['source.css', 'meta.at-rule.media.css']
+          expect(tokens[7]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.end.bracket.round.css']
+
+          {tokens} = grammar.tokenizeLine('@media (-hp-foo:bar){}')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
+          expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.begin.bracket.round.css']
+          expect(tokens[4]).toEqual value: '-hp-foo', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.vendored.property-name.media.css']
+          expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
+          expect(tokens[6]).toEqual value: 'bar', scopes: ['source.css', 'meta.at-rule.media.css']
+          expect(tokens[7]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.end.bracket.round.css']
+
+          {tokens} = grammar.tokenizeLine('@media (mso-page-size:wide){}')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
+          expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.begin.bracket.round.css']
+          expect(tokens[4]).toEqual value: 'mso-page-size', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.vendored.property-name.media.css']
+          expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
+          expect(tokens[6]).toEqual value: 'wide', scopes: ['source.css', 'meta.at-rule.media.css']
+          expect(tokens[7]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.end.bracket.round.css']
+
         it 'tokenises comments between media types', ->
           {tokens} = grammar.tokenizeLine('@media/* */only/* */screen/* */and (min-width:1100px){}')
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']

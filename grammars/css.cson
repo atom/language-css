@@ -378,13 +378,23 @@
 
         # Vendor extensions
         (
-          -
-          (?: webkit              # Webkit/Blink
-            | apple
-            | khtml
-            | moz                 # Gecko
-            | ms                  # Microsoft
-            | o                   # Presto (pre-Opera 15)
+          (?:
+            # Spec-compliant syntax
+            [-_]
+            (?: webkit              # Webkit/Blink
+              | apple
+              | khtml
+              | moz                 # Gecko
+              | ms                  # Microsoft
+              | o                   # Presto (pre-Opera 15)
+              | xv|ah|rim|atsc|     # Less common vendors
+                hp|tc|wap|ro
+            )
+            |
+            # Non-standard prefixes
+            (?: mso                 # Microsoft Office
+              | prince              # YesLogic
+            )
           )
           -
           [\\w-]+                 # Feature name
