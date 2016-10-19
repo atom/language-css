@@ -23,12 +23,7 @@
     'include': '#selector'
   }
   {
-    'begin': '\\A(@)charset\\s+'
-    'captures':
-      '0':
-        'name': 'keyword.control.at-rule.charset.css'
-      '1':
-        'name': 'punctuation.definition.keyword.css'
+    'begin': '\\A(?:\\xEF\\xBB\\xBF)?(?i:(?=\\s*@charset\\b))'
     'end': ';|(?=$)'
     'endCaptures':
       '0':
@@ -38,8 +33,46 @@
       {
         'captures':
           '1':
-            'name': 'invalid.illegal.charset.css'
-        'match': '\\G\\s*([^"\';]+)(?<!\\s)\\s*(?=["\';]|$)'
+            'name': 'invalid.illegal.not-lowercase.charset.css'
+          '2':
+            'name': 'invalid.illegal.leading-whitespace.charset.css'
+          '3':
+            'name': 'invalid.illegal.no-whitespace.charset.css'
+          '4':
+            'name': 'invalid.illegal.whitespace.charset.css'
+          '5':
+            'name': 'invalid.illegal.unquoted-identifier.charset.css'
+          '6':
+            'name': 'invalid.illegal.unclosed-string.charset.css'
+          '7':
+            'name': 'invalid.illegal.unexpected-characters.charset.css'
+        'match': '''(?x)        # Possible errors:
+          \\G
+          ((?!@charset)@\\w+)   # Not lowercase (@charset is case-sensitive)
+          |
+          \\G(\\s+)             # Preceding whitespace
+          |
+          (@charset\\S[^;]*)    # No whitespace after @charset
+          |
+          (?<=@charset)         # Before quoted charset name
+          (\\x20{2,}|\\t+)      # More than one space used, or a tab
+          |
+          (?<=@charset\\x20)    # Beginning of charset name
+          ([^"';]+)             # Not quoted
+          |
+          (["'][^"']+$)         # Unclosed quote
+          |
+          (?<=["'])             # After charset name
+          ([^;]+)               # Unexpected junk instead of semicolon
+        '''
+      }
+      {
+        'captures':
+          '1':
+            'name': 'keyword.control.at-rule.charset.css'
+          '2':
+            'name': 'punctuation.definition.keyword.css'
+        'match': '((@)charset)(?=\\s)'
       }
       {
         'include': '#string-double'
