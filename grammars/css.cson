@@ -707,10 +707,44 @@
       }
     ]
   'selector':
-    'begin': '\\s*(?=[\\[:.*#a-zA-Z])'
+    'begin': '''(?x) \\s*
+      (?=
+        (?:\\|)?                    # Possible anonymous namespace prefix
+        (?:
+          [-\\[:.*\\#a-zA-Z_]       # Valid selector character
+          |
+          [^\\x00-\\x7F]            # Which can include non-ASCII symbols
+        )
+      )
+    '''
     'end': '(?=[/@{)])'
     'name': 'meta.selector.css'
     'patterns': [
+      {
+        'captures':
+          '1':
+            'name': 'entity.other.namespace-prefix.css'
+          '2':
+            'name': 'punctuation.separator.css'
+        'match': '''(?x)
+          (?:^|(?<=[\\s,};]))          # Follows whitespace, comma, semicolon, or curly bracket
+          (?!
+            [-\\w*]+
+            \\|
+            (?!
+                [-\\[:.*\\#a-zA-Z_]    # Make sure there's a selector to match
+              | [^\\x00-\\x7F]
+            )
+          )
+          (
+            (?: [-a-zA-Z_]    | [^\\x00-\\x7F] )   # First letter
+            (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F] )*  # Remainder of identifier
+            |
+            \\*     # Universal namespace
+          )?
+          (\\|)     # Namespace separator
+        '''
+      }
       {
         'match': '(?<![\\w-])(a|abbr|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|h[1-6]|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|math|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|p|param|picture|pre|progress|q|rp|rt|rtc|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)(?![\\w-])'
         'name': 'entity.name.tag.css'

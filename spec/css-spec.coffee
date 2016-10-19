@@ -179,6 +179,67 @@ describe 'CSS grammar', ->
         {tokens} = grammar.tokenizeLine '#-'
         expect(tokens[0]).toEqual value: '#-', scopes: ['source.css', 'meta.selector.css']
 
+    describe 'namespace prefixes', ->
+      it 'tokenises arbitrary namespace prefixes', ->
+        {tokens} = grammar.tokenizeLine('foo|h1 { }')
+        expect(tokens[0]).toEqual value: 'foo', scopes: ['source.css', 'meta.selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[1]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'punctuation.separator.css']
+        expect(tokens[2]).toEqual value: 'h1', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(tokens[3]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+        expect(tokens[4]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+        expect(tokens[6]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+      it 'tokenises anonymous namespace prefixes', ->
+        {tokens} = grammar.tokenizeLine('*|abbr {}')
+        expect(tokens[0]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[1]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'punctuation.separator.css']
+        expect(tokens[2]).toEqual value: 'abbr', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(tokens[3]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+        expect(tokens[4]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+        expect(tokens[5]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+        {tokens} = grammar.tokenizeLine('*|* {}')
+        expect(tokens[0]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[1]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'punctuation.separator.css']
+        expect(tokens[2]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.wildcard.css']
+        expect(tokens[3]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+        expect(tokens[4]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+        expect(tokens[5]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+        {tokens} = grammar.tokenizeLine('foo|*  { }')
+        expect(tokens[0]).toEqual value: 'foo', scopes: ['source.css', 'meta.selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[1]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'punctuation.separator.css']
+        expect(tokens[2]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.wildcard.css']
+        expect(tokens[4]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+        expect(tokens[6]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+        {tokens} = grammar.tokenizeLine('|[svg|attr=name]{}')
+        expect(tokens[0]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'punctuation.separator.css']
+        expect(tokens[1]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+        expect(tokens[2]).toEqual value: 'svg', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[3]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.css']
+        expect(tokens[4]).toEqual value: 'attr', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+
+      it 'tokenises the "no-namespace" prefix', ->
+        {tokens} = grammar.tokenizeLine('|h1   { }')
+        expect(tokens[0]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'punctuation.separator.css']
+        expect(tokens[1]).toEqual value: 'h1', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(tokens[3]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+        expect(tokens[5]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+      it "doesn't tokenise prefixes without a selector", ->
+        {tokens} = grammar.tokenizeLine('*| { }')
+        expect(tokens[0]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.wildcard.css']
+        expect(tokens[1]).toEqual value: '| ', scopes: ['source.css', 'meta.selector.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+        expect(tokens[4]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+        {tokens} = grammar.tokenizeLine('*|{ }')
+        expect(tokens[0]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.wildcard.css']
+        expect(tokens[1]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+        expect(tokens[4]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
     describe 'at-rules', ->
       describe '@charset', ->
         it 'tokenises @charset rules at the start of a file', ->
