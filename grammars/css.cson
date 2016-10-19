@@ -559,8 +559,8 @@
         'captures':
           '1':
             'name': 'punctuation.definition.constant.css'
-        'match': '(#)([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\\b'
-        'name': 'constant.other.color.rgb-value.css'
+        'match': '(#)(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\\b'
+        'name': 'constant.other.color.rgb-value.hex.css'
       }
       {
         'captures':

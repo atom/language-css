@@ -1005,6 +1005,26 @@ describe 'CSS grammar', ->
         {tokens} = grammar.tokenizeLine '#jon { color: snow; }'
         expect(tokens[8]).toEqual value: 'snow', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.color.w3c-extended-color-name.css']
 
+      it 'tokenises RGBA values in hex notation', ->
+        {tokens} = grammar.tokenizeLine('p{ color: #f030; }')
+        expect(tokens[6]).toEqual value: '#', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.color.rgb-value.hex.css', 'punctuation.definition.constant.css']
+        expect(tokens[7]).toEqual value: 'f030', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.color.rgb-value.hex.css']
+        expect(tokens[8]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+        expect(tokens[10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+        {tokens} = grammar.tokenizeLine('a{ color: #CAFEBABE; }')
+        expect(tokens[0]).toEqual value: 'a', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(tokens[1]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+        expect(tokens[3]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(tokens[4]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+        expect(tokens[6]).toEqual value: '#', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.color.rgb-value.hex.css', 'punctuation.definition.constant.css']
+        expect(tokens[7]).toEqual value: 'CAFEBABE', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.color.rgb-value.hex.css']
+        expect(tokens[8]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+        expect(tokens[10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+        {tokens} = grammar.tokenizeLine('a{ color: #CAFEBABEF; }')
+        expect(tokens[6]).toEqual value: '#CAFEBABEF', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+
       it 'tokenizes common font names', ->
         {tokens} = grammar.tokenizeLine 'p { font-family: Verdana, Helvetica, sans-serif; }'
         expect(tokens[7]).toEqual value: 'Verdana', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
