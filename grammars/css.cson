@@ -304,13 +304,13 @@
       '3':
         'name': 'support.type.vendored.property-name.media.css'
     'match': '''(?xi)
-      (?<=^|\\s|\\()              # Preceded by whitespace or a bracket
+      (?<=^|\\s|\\(|\\*/)         # Preceded by whitespace, bracket or comment
 
       (?:
         # Standardised features
         (
-          (?:min-|max-)?          # Features with scalar (numeric) values
-          (?: height              # Name of feature
+          (?:min-|max-)?
+          (?: height
             | width
             | aspect-ratio
             | color
