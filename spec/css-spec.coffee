@@ -586,6 +586,117 @@ describe 'CSS grammar', ->
         expect(tokens[6]).toEqual value: '{', scopes: ['source.css', 'punctuation.section.property-list.begin.css']
         expect(tokens[7]).toEqual value: '}', scopes: ['source.css', 'punctuation.section.property-list.end.css']
 
+      describe '@namespace', ->
+        it 'tokenises @namespace statements correctly', ->
+          {tokens} = grammar.tokenizeLine('@namespace "XML";')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
+          expect(tokens[2]).toEqual value: ' ', scopes: ['source.css', 'meta.at-rule.namespace.css']
+          expect(tokens[3]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[4]).toEqual value: 'XML', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
+          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[6]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
+
+          {tokens} = grammar.tokenizeLine('@namespace  prefix  "XML"  ;')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
+          expect(tokens[2]).toEqual value: '  ', scopes: ['source.css', 'meta.at-rule.namespace.css']
+          expect(tokens[3]).toEqual value: 'prefix', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
+          expect(tokens[4]).toEqual value: '  ', scopes: ['source.css', 'meta.at-rule.namespace.css']
+          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[6]).toEqual value: 'XML', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
+          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[8]).toEqual value: '  ', scopes: ['source.css', 'meta.at-rule.namespace.css']
+          expect(tokens[9]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
+
+          {tokens} = grammar.tokenizeLine('@namespace url("http://a.bc/");')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
+          expect(tokens[2]).toEqual value: ' ', scopes: ['source.css', 'meta.at-rule.namespace.css']
+          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.misc.css']
+          expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
+          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[6]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
+          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
+          expect(tokens[9]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
+
+        it "doesn't confuse a prefix of 'url' as a function", ->
+          {tokens} = grammar.tokenizeLine('@namespace url url("http://a.bc/");')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
+          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
+          expect(tokens[5]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.misc.css']
+          expect(tokens[6]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
+          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[8]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
+          expect(tokens[9]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[10]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
+          expect(tokens[11]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
+
+        it 'permits injected comments between tokens', ->
+          {tokens} = grammar.tokenizeLine('@namespace/*=*/pre/*=*/"url"/*=*/;')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
+          expect(tokens[2]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.namespace.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[3]).toEqual value: '=', scopes: ['source.css', 'meta.at-rule.namespace.css', 'comment.block.css']
+          expect(tokens[4]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[5]).toEqual value: 'pre', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
+          expect(tokens[6]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.namespace.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[7]).toEqual value: '=', scopes: ['source.css', 'meta.at-rule.namespace.css', 'comment.block.css']
+          expect(tokens[8]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[9]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[10]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
+          expect(tokens[11]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[12]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.namespace.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[13]).toEqual value: '=', scopes: ['source.css', 'meta.at-rule.namespace.css', 'comment.block.css']
+          expect(tokens[14]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[15]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
+
+        it 'allows no spaces between "@namespace" and quoted URLs', ->
+          {tokens} = grammar.tokenizeLine('@namespace"XML";')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
+          expect(tokens[2]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[3]).toEqual value: 'XML', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
+          expect(tokens[4]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[5]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
+
+        it 'allows arguments to span multiple lines', ->
+          lines = grammar.tokenizeLines """
+              @namespace
+              prefix"XML";
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
+          expect(lines[0][2]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.namespace.css']
+          expect(lines[1][0]).toEqual value: 'prefix', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
+          expect(lines[1][1]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(lines[1][2]).toEqual value: 'XML', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
+          expect(lines[1][3]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(lines[1][4]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
+
+          lines = grammar.tokenizeLines """
+              @namespace
+
+                prefix
+
+              url("http://a.bc/");
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
+          expect(lines[0][2]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.namespace.css']
+          expect(lines[1][0]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.namespace.css']
+          expect(lines[2][1]).toEqual value: 'prefix', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
+          expect(lines[3][0]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.namespace.css']
+          expect(lines[4][0]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.misc.css']
+          expect(lines[4][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
+          expect(lines[4][2]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(lines[4][3]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
+          expect(lines[4][4]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(lines[4][5]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
+          expect(lines[4][6]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
+
       describe '@page', ->
         it 'tokenises @page blocks correctly', ->
           {tokens} = grammar.tokenizeLine('@page :first { }')

@@ -215,44 +215,49 @@
     ]
   }
   {
-    # Namespace without prefix
-    'begin': '((@)namespace\\b)\\s*(?=url)'
-    'captures':
+    'begin': '((@)namespace)(?=[\\s\'";]|/\\*|$)\\s*'
+    'beginCaptures':
       '1':
         'name': 'keyword.control.at-rule.namespace.css'
       '2':
         'name': 'punctuation.definition.keyword.css'
-      '3':
-        'name': 'support.function.misc.css'
-    'end': '\\s*(?=;|$)'
+    'end': ';|(<=["\')])|(?=[@{])'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.terminator.at-rule.css'
     'name': 'meta.at-rule.namespace.css'
     'patterns': [
       {
         'include': '#property-values'
       }
       {
-        'include': '#string-double'
+        'captures':
+          '1':
+            'patterns': [
+              {
+                'include': '#comment-block'
+              }
+            ]
+          '2':
+            'name': 'entity.name.function.namespace-prefix.css'
+        'match': '''(?xi)
+          (?:\\G|^|(?<=\\s))
+          (?=
+            (?<=\\s|^)                             # Starts with whitespace
+            (?:[-a-zA-Z_]|[^\\x00-\\x7F])          # Then a valid identifier character
+            |
+            \\s*                                   # Possible adjoining whitespace
+            /\\*(?:[^*]|\\*[^/])*\\*/              # Injected comment
+          )
+          (.*?)                                    # Grouped to embed #comment-block
+          (
+            (?: [-a-zA-Z_]    | [^\\x00-\\x7F] )   # First letter
+            (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F] )*  # Remainder of identifier
+          )
+        '''
       }
       {
-        'include': '#string-single'
-      }
-    ]
-  }
-  {
-    # Namespace
-    'begin': '((@)namespace)\\s+([\\w-]*)'
-    'captures':
-      '1':
-        'name': 'keyword.control.at-rule.namespace.css'
-      '2':
-        'name': 'punctuation.definition.keyword.css'
-      '3':
-        'name': 'entity.name.function.css'
-    'end': '\\s*(?=;|$)'
-    'name': 'meta.at-rule.namespace.css'
-    'patterns': [
-      {
-        'include': '#property-values'
+        'include': '#comment-block'
       }
       {
         'include': '#string-double'
