@@ -701,7 +701,7 @@ describe 'CSS grammar', ->
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
           expect(tokens[2]).toEqual value: ' ', scopes: ['source.css', 'meta.at-rule.namespace.css']
-          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.misc.css']
+          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.url.css']
           expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
           expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
           expect(tokens[6]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
@@ -714,7 +714,7 @@ describe 'CSS grammar', ->
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
           expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
-          expect(tokens[5]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.misc.css']
+          expect(tokens[5]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.url.css']
           expect(tokens[6]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
           expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
           expect(tokens[8]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
@@ -777,7 +777,7 @@ describe 'CSS grammar', ->
           expect(lines[1][0]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.namespace.css']
           expect(lines[2][1]).toEqual value: 'prefix', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
           expect(lines[3][0]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.namespace.css']
-          expect(lines[4][0]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.misc.css']
+          expect(lines[4][0]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.url.css']
           expect(lines[4][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
           expect(lines[4][2]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
           expect(lines[4][3]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
@@ -1060,6 +1060,29 @@ describe 'CSS grammar', ->
       it 'tokenizes custom variables', ->
         {tokens} = grammar.tokenizeLine 'div { color: var(--primary-color) }'
         expect(tokens[9]).toEqual value: '--primary-color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'variable.argument.css']
+
+      describe 'functional notation', ->
+        it 'does not tokenise functions with whitespace between name and parameters', ->
+          {tokens} = grammar.tokenizeLine('a{ p: attr (title); }')
+          expect(tokens[6]).not.toEqual value: 'attr', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.misc.css']
+          expect(tokens[8]).not.toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.function.css']
+
+          {tokens} = grammar.tokenizeLine('a{url:url (s)}')
+          expect(tokens[4]).not.toEqual value: 'url', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.url.css']
+          expect(tokens[7]).not.toEqual value: 's', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'variable.parameter.url.css']
+
+          {tokens} = grammar.tokenizeLine('a{content:url ("http://github.com/");}')
+          expect(tokens[4]).not.toEqual value: 'url', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.url.css']
+          expect(tokens[6]).not.toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.function.css']
+
+          {tokens} = grammar.tokenizeLine('a{content: url (http://a.pl/)}')
+          expect(tokens[5]).not.toEqual value: 'url', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.url.css']
+          expect(tokens[7]).not.toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.function.css']
+          expect(tokens[8]).not.toEqual value: 'http://a.pl/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'variable.parameter.url.css']
+
+          {tokens} = grammar.tokenizeLine('a{ color: rgb (187,255,221); }')
+          expect(tokens[6]).not.toEqual value: 'rgb', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.misc.css']
+          expect(tokens[8]).not.toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.function.css']
 
   describe 'escape sequences', ->
     it 'tokenizes escape sequences in single-quoted strings', ->

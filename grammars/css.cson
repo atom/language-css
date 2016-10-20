@@ -114,31 +114,7 @@
         'include': '#comment-block'
       }
       {
-        'begin': '\\s*(url)\\s*(\\()\\s*'
-        'beginCaptures':
-          '1':
-            'name': 'support.function.url.css'
-          '2':
-            'name': 'punctuation.section.function.css'
-        'end': '\\s*(\\))\\s*'
-        'endCaptures':
-          '1':
-            'name': 'punctuation.section.function.css'
-        'patterns': [
-          {
-            'match': '[^\'")\\s]+'
-            'name': 'variable.parameter.url.css'
-          }
-          {
-            'include': '#string-single'
-          }
-          {
-            'include': '#string-double'
-          }
-          {
-            'include': '#comment-block'
-          }
-        ]
+        'include': '#url'
       }
       {
         'include': '#media-query-list'
@@ -330,7 +306,7 @@
         'include': '#color-keywords'
       }
       {
-        'begin': '(hsla?|rgba?)\\s*(\\()'
+        'begin': '(hsla?|rgba?)(\\()'
         'beginCaptures':
           '1':
             'name': 'support.function.misc.css'
@@ -580,22 +556,37 @@
   'property-values':
     'patterns': [
       {
-        'begin': '(var)\\('
-        'end': '\\)'
-        'captures':
+        'begin': '(var)(\\()'
+        'beginCaptures':
           '1':
             'name': 'support.function.misc.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
         'patterns': [
-          'name': 'variable.argument.css'
-          'match': '--[\\w-]+'
+          {
+            'include': '#comment-block'
+          }
+          {
+            'name': 'variable.argument.css'
+            'match': '--[\\w-]+'
+          }
         ]
       }
       {
-        'begin': '(calc|cubic-bezier|steps)\\('
-        'end': '\\)'
-        'captures':
+        'begin': '(calc|cubic-bezier|steps)(\\()'
+        'beginCaptures':
           '1':
             'name': 'support.function.misc.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
         'patterns': [
           'include': '#property-values'
         ]
@@ -625,7 +616,7 @@
         'include': '#string-single'
       }
       {
-        'begin': '(rect)\\s*(\\()'
+        'begin': '(rect)(\\()'
         'beginCaptures':
           '1':
             'name': 'support.function.misc.css'
@@ -642,7 +633,10 @@
         ]
       }
       {
-        'begin': '(format|local|url|attr|counter|counters)\\s*(\\()'
+        'include': '#url'
+      }
+      {
+        'begin': '(format|local|attr|counter|counters)(\\()'
         'beginCaptures':
           '1':
             'name': 'support.function.misc.css'
@@ -674,7 +668,7 @@
           | skew[XY]?
           | perspective
           )
-          \\s*(\\()
+          (\\()
         '''
         'beginCaptures':
           '1':
@@ -1029,5 +1023,31 @@
       {
         'match': '\\\\(\\h{1,6}|.)'
         'name': 'constant.character.escape.css'
+      }
+    ]
+  'url':
+    'begin': '\\s*(url)(\\()\\s*'
+    'beginCaptures':
+      '1':
+        'name': 'support.function.url.css'
+      '2':
+        'name': 'punctuation.section.function.css'
+    'end': '\\s*(\\))\\s*'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.section.function.css'
+    'patterns': [
+      {
+        'match': '[^\'")\\s]+'
+        'name': 'variable.parameter.url.css'
+      }
+      {
+        'include': '#string-single'
+      }
+      {
+        'include': '#string-double'
+      }
+      {
+        'include': '#comment-block'
       }
     ]
