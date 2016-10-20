@@ -1009,7 +1009,7 @@
           '2':
             'name': 'punctuation.separator.css'
         'match': '''(?x)
-          (?:^|(?<=[\\s,};]))          # Follows whitespace, comma, semicolon, or curly bracket
+          (?:^|(?<=[\\s,(};]))         # Follows whitespace, comma, semicolon, or bracket
           (?!
             [-\\w*]+
             \\|
@@ -1040,10 +1040,10 @@
             'name': 'punctuation.definition.entity.css'
         'match': '''(?x)
           (\\.)
-          -?+                       # possessive to avoid matching '-' followed by [0-9]
+          -?+                               # possessive to avoid matching '-' followed by [0-9]
           [-a-zA-Z_\\P{ASCII}]
           [-a-zA-Z0-9_\\P{ASCII}]*+
-          (?=$|[\\s,.:{>+~|])       # to avoid matching '.B' in '.B&W'
+          (?=$|[\\s,.)\\[:{>+~|]|/\\*)      # to avoid matching '.B' in '.B&W'
         '''
         'name': 'entity.other.attribute-name.class.css'
       }
@@ -1177,6 +1177,9 @@
           {
             'include': '#selector'
           }
+          {
+            'include': '#comment-block'
+          }
         ]
       }
       {
@@ -1273,7 +1276,7 @@
         | mrow|ms|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstack|mstyle|msub|msubsup
         | msup|mtable|mtd|mtext|mtr|munder|munderover|semantics
       )
-      (?=[+~>\\s.\\#|{:\\[]|$|/\\*)
+      (?=[+~>\\s,.\\#|){:\\[]|$|/\\*)
     '''
     'name': 'entity.name.tag.css'
   'url':
