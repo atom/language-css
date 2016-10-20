@@ -204,7 +204,7 @@
     'name': 'meta.at-rule.namespace.css'
     'patterns': [
       {
-        'include': '#property-values'
+        'include': '#url'
       }
       {
         'captures':
@@ -300,13 +300,41 @@
         'name': 'invalid.deprecated.color.system.css'
       }
     ]
-  'color-values':
+  'comment-block':
+    'begin': '/\\*'
+    'captures':
+      '0':
+        'name': 'punctuation.definition.comment.css'
+    'end': '\\*/'
+    'name': 'comment.block.css'
+  'functions':
     'patterns': [
+      # Calculation
       {
-        'include': '#color-keywords'
+        'begin': '(?i)(?<![\\w-])(calc)(\\()'
+        'beginCaptures':
+          '1':
+            'name': 'support.function.calc.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'name': 'meta.function.calc.css'
+        'patterns': [
+          {
+            'match': '[*/]|(?<=\\s|^)[-+](?=\\s|$)'
+            'name': 'keyword.operator.arithmetic.css'
+          }
+          {
+            'include': '#property-values'
+          }
+        ]
       }
+      # Colours
       {
-        'begin': '(hsla?|rgba?)(\\()'
+        'begin': '(?i)(?<![\\w-])(rgba?|hsla?)(\\()'
         'beginCaptures':
           '1':
             'name': 'support.function.misc.css'
@@ -316,33 +344,164 @@
         'endCaptures':
           '0':
             'name': 'punctuation.section.function.css'
+        'name': 'meta.function.color.${1:/downcase}-value.css'
         'patterns': [
           {
-            'match': '''(?x)
-              \\b
-              (0*((1?[0-9]{1,2})|(2([0-4][0-9]|5[0-5])))\\s*,\\s*){2}
-              (0*((1?[0-9]{1,2})|(2([0-4][0-9]|5[0-5])))\\b)
-              (\\s*,\\s*((0?\\.[0-9]+)|[0-1]))?
-            '''
-            'name': 'constant.other.color.rgb-value.css'
+            'include': '#property-values'
+          }
+        ]
+      }
+      # Misc functions
+      {
+        'begin': '''(?xi) (?<![\\w-])
+          ( annotation
+          | attr
+          | blur
+          | brightness
+          | character-variant
+          | contrast
+          | counters?
+          | cross-fade
+          | drop-shadow
+          | element
+          | fit-content
+          | format
+          | grayscale
+          | hue-rotate
+          | image-set
+          | invert
+          | local
+          | minmax
+          | opacity
+          | ornaments
+          | repeat
+          | saturate
+          | sepia
+          | styleset
+          | stylistic
+          | swash
+          | symbols
+          )
+          (\\()
+        '''
+        'beginCaptures':
+          '1':
+            'name': 'support.function.misc.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'name': 'meta.function.misc.css'
+        'patterns': [
+          {
+            'include': '#property-values'
           }
           {
-            'match': '\\b([0-9]{1,2}|100)\\s*%,\\s*([0-9]{1,2}|100)\\s*%,\\s*([0-9]{1,2}|100)\\s*%'
-            'name': 'constant.other.color.rgb-percentage.css'
+            'match': '[^\'"),\\s]+'
+            'name': 'variable.parameter.misc.css'
+          }
+        ]
+      }
+      # Shapes
+      {
+        'begin': '(?i)(?<![\\w-])(circle|ellipse|inset|polygon|rect)(\\()'
+        'beginCaptures':
+          '1':
+            'name': 'support.function.shape.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'name': 'meta.function.shape.css'
+        'patterns': [
+          {
+            'match': '(?<=\\s|^|\\*/)(?:at|round)(?=\\s|$|/\\*)'
+            'name': 'keyword.operator.shape.css'
           }
           {
-            'include': '#numeric-values'
+            'include': '#property-values'
+          }
+        ]
+      }
+      # Timing-functions
+      {
+        'begin': '(?i)(?<![\\w-])(cubic-bezier|steps)(\\()'
+        'beginCaptures':
+          '1':
+            'name': 'support.function.timing-function.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'name': 'meta.function.timing-function.css'
+        'patterns': [
+          {
+            'match': '(?<![\\w-])(?:start|end)(?=\\s*\\)|$)'
+            'name': 'support.constant.step-direction.css'
+          }
+          {
+            'include': '#property-values'
+          }
+        ]
+      }
+      # Transform functions
+      {
+        'begin': '''(?xi) (?<![\\w-])
+          ( (?:translate|scale|rotate)(?:[XYZ]|3D)?
+          | matrix(?:3D)?
+          | skew[XY]?
+          | perspective
+          )
+          (\\()
+        '''
+        'beginCaptures':
+          '1':
+            'name': 'support.function.transform.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'patterns': [
+          {
+            'include': '#property-values'
+          }
+        ]
+      }
+      {
+        'include': '#url'
+      }
+      # Variable expansion
+      {
+        'begin': '(?i)(?<![\\w-])(var)(\\()'
+        'beginCaptures':
+          '1':
+            'name': 'support.function.misc.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'name': 'meta.function.variable.css'
+        'patterns': [
+          {
+            'name': 'variable.argument.css'
+            'match': '--[\\w-]+'
+          }
+          {
+            'include': '#property-values'
           }
         ]
       }
     ]
-  'comment-block':
-    'begin': '/\\*'
-    'captures':
-      '0':
-        'name': 'punctuation.definition.comment.css'
-    'end': '\\*/'
-    'name': 'comment.block.css'
   'media-features':
     'captures':
       '1':
@@ -556,40 +715,14 @@
   'property-values':
     'patterns': [
       {
-        'begin': '(var)(\\()'
-        'beginCaptures':
-          '1':
-            'name': 'support.function.misc.css'
-          '2':
-            'name': 'punctuation.section.function.css'
-        'end': '\\)'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.function.css'
-        'patterns': [
-          {
-            'include': '#comment-block'
-          }
-          {
-            'name': 'variable.argument.css'
-            'match': '--[\\w-]+'
-          }
-        ]
+        'match': ','
+        'name': 'punctuation.delimiter.comma.css'
       }
       {
-        'begin': '(calc|cubic-bezier|steps)(\\()'
-        'beginCaptures':
-          '1':
-            'name': 'support.function.misc.css'
-          '2':
-            'name': 'punctuation.section.function.css'
-        'end': '\\)'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.function.css'
-        'patterns': [
-          'include': '#property-values'
-        ]
+        'include': '#comment-block'
+      }
+      {
+        'include': '#functions'
       }
       {
         'match': '(?<![\\w-])(zero|xx-small|xx-large|x-small|x-large|wrap-reverse|wrap|whitespace|wait|w-resize|visibleStroke|visiblePainted|visibleFill|visible|vertical-text|vertical-ideographic|vertical|uppercase|underline|transparent|top|thin|thick|text-top|text-bottom|text|tb-rl|table-row-group|table-row|table-header-group|table-footer-group|table-column-group|table-column|table-cell|table-caption|table|sw-resize|super|sub|stroke|strict|stretch|step-start|step-end|static|start|space-between|space-around|solid|smaller|small-caps|small|separate|se-resize|scroll|s-resize|running|rtl|row-severse|row-resize|right|ridge|reverse|repeat-y|repeat-x|repeat|relative|progress|preserve-3d|pre-wrap|pre-line|pre|pointer|paused|pan-y|pan-x|pan-up|pan-right|pan-left|pan-down|painted|padding-box|overline|outside|outset|optimizeSpeed|optimizeQuality|optimizeLegibility|oblique|nw-resize|nowrap|not-allowed|normal|none|no-repeat|no-drop|newspaper|ne-resize|n-resize|move|middle|medium|manipulation|main-size|ltr|lr-tb|lowercase|loose|list-item|line-through|line-edge|line|lighter|left|larger|large|keep-all|justify|italic|inter-word|inter-ideograph|inside|inset|inline-table|inline-flex|inline-block|inline|inherit|infinite|inactive|ideograph-space|ideograph-parenthesis|ideograph-numeric|ideograph-alpha|horizontal|hidden|help|hand|groove|geometricPrecision|forwards|flex-start|flex-end|flex|fixed|fill|end|ellipsis|ease-out|ease-in-out|ease-in|ease|e-resize|double|dotted|distribute-space|distribute-letter|distribute-all-lines|distribute|disabled|default|dashed|crosshair|content-box|column-reverse|column|collapse|col-resize|char|center|capitalize|break-word|break-all|bottom|both|border-box|bolder|bold|block|bidi-override|below|baseline|backwards|avoid|auto|always|alternate-reverse|alternate|all-scroll|all|absolute|-(webkit|moz|ms)-[a-zA-Z-]++)(?![\\w-])'
@@ -607,7 +740,7 @@
         'include': '#numeric-values'
       }
       {
-        'include': '#color-values'
+        'include': '#color-keywords'
       }
       {
         'include': '#string-double'
@@ -616,81 +749,7 @@
         'include': '#string-single'
       }
       {
-        'begin': '(rect)(\\()'
-        'beginCaptures':
-          '1':
-            'name': 'support.function.misc.css'
-          '2':
-            'name': 'punctuation.section.function.css'
-        'end': '\\)'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.function.css'
-        'patterns': [
-          {
-            'include': '#numeric-values'
-          }
-        ]
-      }
-      {
-        'include': '#url'
-      }
-      {
-        'begin': '(format|local|attr|counter|counters)(\\()'
-        'beginCaptures':
-          '1':
-            'name': 'support.function.misc.css'
-          '2':
-            'name': 'punctuation.section.function.css'
-        'end': '\\)'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.function.css'
-        'patterns': [
-          {
-            'include': '#string-single'
-          }
-          {
-            'include': '#string-double'
-          }
-          {
-            'match': '[^\'")\\s]+'
-            'name': 'variable.parameter.misc.css'
-          }
-        ]
-      }
-      {
-        'begin': '''(?x)
-          (?<![\\w-])
-          (
-            matrix(?:3d)?
-          | (?:translate|scale|rotate)(?:[XYZ]|3d)?
-          | skew[XY]?
-          | perspective
-          )
-          (\\()
-        '''
-        'beginCaptures':
-          '1':
-            'name': 'support.function.transform.css'
-          '2':
-            'name': 'punctuation.section.function.css'
-        'end': '\\)'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.function.css'
-        'patterns': [
-          {
-            'include': '#numeric-values'
-          }
-          {
-            'match': ','
-            'name': 'punctuation.separator.css'
-          }
-        ]
-      }
-      {
-        'match': '\\!\\s*important'
+        'match': '!\\s*important'
         'name': 'keyword.other.important.css'
       }
     ]
@@ -1026,7 +1085,7 @@
       }
     ]
   'url':
-    'begin': '\\s*(url)(\\()\\s*'
+    'begin': '(?i)\\s*(url)(\\()\\s*'
     'beginCaptures':
       '1':
         'name': 'support.function.url.css'
@@ -1036,6 +1095,7 @@
     'endCaptures':
       '1':
         'name': 'punctuation.section.function.css'
+    'name': 'meta.function.url.css'
     'patterns': [
       {
         'match': '[^\'")\\s]+'

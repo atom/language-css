@@ -321,12 +321,12 @@ describe 'CSS grammar', ->
           {tokens} = grammar.tokenizeLine('@import url("file.css");')
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
-          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'support.function.url.css']
-          expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
-          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-          expect(tokens[6]).toEqual value: 'file.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
-          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
-          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'support.function.url.css']
+          expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
+          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[6]).toEqual value: 'file.css', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css']
+          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
           expect(tokens[9]).toEqual value: ';', scopes: ['source.css']
 
           {tokens} = grammar.tokenizeLine('@import "file.css";')
@@ -383,24 +383,24 @@ describe 'CSS grammar', ->
           expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
           expect(lines[0][1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
           expect(lines[0][2]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.import.css']
-          expect(lines[1][0]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'support.function.url.css']
-          expect(lines[1][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
-          expect(lines[1][2]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-          expect(lines[1][3]).toEqual value: 'file.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
-          expect(lines[1][4]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
-          expect(lines[1][5]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+          expect(lines[1][0]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'support.function.url.css']
+          expect(lines[1][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
+          expect(lines[1][2]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(lines[1][3]).toEqual value: 'file.css', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css']
+          expect(lines[1][4]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(lines[1][5]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
           expect(lines[1][6]).toEqual value: ';', scopes: ['source.css']
 
         it 'matches comments inside query lists', ->
           {tokens} = grammar.tokenizeLine('@import url("1.css") print /* url(";"); */ all;')
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
-          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'support.function.url.css']
-          expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
-          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-          expect(tokens[6]).toEqual value: '1.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
-          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
-          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'support.function.url.css']
+          expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
+          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[6]).toEqual value: '1.css', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css']
+          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
           expect(tokens[10]).toEqual value: 'print', scopes: ['source.css', 'meta.at-rule.import.css', 'support.constant.media.css']
           expect(tokens[12]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
           expect(tokens[13]).toEqual value: ' url(";"); ', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css']
@@ -422,12 +422,12 @@ describe 'CSS grammar', ->
           {tokens} = grammar.tokenizeLine('@import url(\'landscape.css\') screen and (orientation:landscape);')
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
-          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'support.function.url.css']
-          expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
-          expect(tokens[5]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
-          expect(tokens[6]).toEqual value: 'landscape.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.single.css']
-          expect(tokens[7]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
-          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'support.function.url.css']
+          expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
+          expect(tokens[5]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[6]).toEqual value: 'landscape.css', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.single.css']
+          expect(tokens[7]).toEqual value: '\'', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
           expect(tokens[10]).toEqual value: 'screen', scopes: ['source.css', 'meta.at-rule.import.css', 'support.constant.media.css']
           expect(tokens[12]).toEqual value: 'and', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.operator.logical.and.media.css']
           expect(tokens[14]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.definition.parameters.begin.bracket.round.css']
@@ -701,12 +701,12 @@ describe 'CSS grammar', ->
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
           expect(tokens[2]).toEqual value: ' ', scopes: ['source.css', 'meta.at-rule.namespace.css']
-          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.url.css']
-          expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
-          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-          expect(tokens[6]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
-          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
-          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
+          expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'support.function.url.css']
+          expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'punctuation.section.function.css']
+          expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[6]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'string.quoted.double.css']
+          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'punctuation.section.function.css']
           expect(tokens[9]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
 
         it "doesn't confuse a prefix of 'url' as a function", ->
@@ -714,12 +714,12 @@ describe 'CSS grammar', ->
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'namespace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
           expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
-          expect(tokens[5]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.url.css']
-          expect(tokens[6]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
-          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-          expect(tokens[8]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
-          expect(tokens[9]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
-          expect(tokens[10]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
+          expect(tokens[5]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'support.function.url.css']
+          expect(tokens[6]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'punctuation.section.function.css']
+          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(tokens[8]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'string.quoted.double.css']
+          expect(tokens[9]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(tokens[10]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'punctuation.section.function.css']
           expect(tokens[11]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
 
         it 'permits injected comments between tokens', ->
@@ -777,12 +777,12 @@ describe 'CSS grammar', ->
           expect(lines[1][0]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.namespace.css']
           expect(lines[2][1]).toEqual value: 'prefix', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
           expect(lines[3][0]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.namespace.css']
-          expect(lines[4][0]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'support.function.url.css']
-          expect(lines[4][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
-          expect(lines[4][2]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-          expect(lines[4][3]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
-          expect(lines[4][4]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
-          expect(lines[4][5]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.section.function.css']
+          expect(lines[4][0]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'support.function.url.css']
+          expect(lines[4][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'punctuation.section.function.css']
+          expect(lines[4][2]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(lines[4][3]).toEqual value: 'http://a.bc/', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'string.quoted.double.css']
+          expect(lines[4][4]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(lines[4][5]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'punctuation.section.function.css']
           expect(lines[4][6]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
 
       describe '@page', ->
@@ -1028,8 +1028,8 @@ describe 'CSS grammar', ->
       it 'tokenizes common font names', ->
         {tokens} = grammar.tokenizeLine 'p { font-family: Verdana, Helvetica, sans-serif; }'
         expect(tokens[7]).toEqual value: 'Verdana', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
-        expect(tokens[9]).toEqual value: 'Helvetica', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
-        expect(tokens[11]).toEqual value: 'sans-serif', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
+        expect(tokens[10]).toEqual value: 'Helvetica', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
+        expect(tokens[13]).toEqual value: 'sans-serif', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
 
       it 'tokenizes predefined list style types', ->
         {tokens} = grammar.tokenizeLine 'ol.myth { list-style-type: cjk-earthly-branch }'
@@ -1059,9 +1059,395 @@ describe 'CSS grammar', ->
 
       it 'tokenizes custom variables', ->
         {tokens} = grammar.tokenizeLine 'div { color: var(--primary-color) }'
-        expect(tokens[9]).toEqual value: '--primary-color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'variable.argument.css']
+        expect(tokens[9]).toEqual value: '--primary-color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'variable.argument.css']
 
       describe 'functional notation', ->
+        describe 'attr()', ->
+          it 'tokenises parameters correctly and case-insensitively', ->
+            {tokens} = grammar.tokenizeLine('a{content:aTTr(data-width px, inherit)}')
+            expect(tokens[4]).toEqual value: 'aTTr', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(tokens[5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(tokens[6]).toEqual value: 'data-width', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(tokens[8]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(tokens[9]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[11]).toEqual value: 'inherit', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.constant.property-value.css']
+            expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(tokens[13]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+          it 'matches variables', ->
+            {tokens} = grammar.tokenizeLine('a{content:ATTR(VAR(--name) px, "N/A")}')
+            expect(tokens[4]).toEqual value: 'ATTR', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(tokens[5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(tokens[6]).toEqual value: 'VAR', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[8]).toEqual value: '--name', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(tokens[9]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[11]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(tokens[12]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[14]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+            expect(tokens[15]).toEqual value: 'N/A', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css']
+            expect(tokens[16]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+            expect(tokens[17]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+
+        describe 'calc()', ->
+          it 'tokenises calculations', ->
+            lines = grammar.tokenizeLines """
+              a{
+                width: calc(3px + -1em);
+                width: calc(3px - -1em);
+                width: calc(3px * 2);
+                width: calc(3px / 2);
+              }
+            """
+            expect(lines[1][4]).toEqual value: 'calc', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'support.function.calc.css']
+            expect(lines[1][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'punctuation.section.function.css']
+            expect(lines[1][6]).toEqual value: '3', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css']
+            expect(lines[1][7]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[1][9]).toEqual value: '+', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'keyword.operator.arithmetic.css']
+            expect(lines[1][11]).toEqual value: '-1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css']
+            expect(lines[1][12]).toEqual value: 'em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[1][13]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'punctuation.section.function.css']
+            expect(lines[2][9]).toEqual value: '-', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'keyword.operator.arithmetic.css']
+            expect(lines[2][11]).toEqual value: '-1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css']
+            expect(lines[2][12]).toEqual value: 'em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[3][7]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[3][9]).toEqual value: '*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'keyword.operator.arithmetic.css']
+            expect(lines[4][7]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[4][9]).toEqual value: '/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'keyword.operator.arithmetic.css']
+            expect(lines[4][11]).toEqual value: '2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css']
+
+          it 'requires whitespace around + and - operators', ->
+            {tokens} = grammar.tokenizeLine('a{ width: calc(3px+1em); }')
+            expect(tokens[9]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[10]).toEqual value: '+', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css']
+            expect(tokens[11]).toEqual value: '1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css']
+            expect(tokens[12]).toEqual value: 'em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+
+            {tokens} = grammar.tokenizeLine('a{ width: calc(3px--1em); height: calc(10-1em);}')
+            expect(tokens[9]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[10]).toEqual value: '--1em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css']
+            expect(tokens[19]).toEqual value: '10', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css']
+            expect(tokens[20]).toEqual value: '-1em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css']
+
+          it 'allows whitespace around * and / operators', ->
+            {tokens} = grammar.tokenizeLine('a{ width: calc(3px*2); }')
+            expect(tokens[9]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[10]).toEqual value: '*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'keyword.operator.arithmetic.css']
+            expect(tokens[11]).toEqual value: '2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css']
+
+            {tokens} = grammar.tokenizeLine('a{ width: calc(3px/2); }')
+            expect(tokens[9]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[10]).toEqual value: '/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'keyword.operator.arithmetic.css']
+            expect(tokens[11]).toEqual value: '2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css']
+
+          it 'matches variable expansions inside calculations', ->
+            {tokens} = grammar.tokenizeLine('.foo { margin-top: calc(var(--gap) + 1px); }')
+            expect(tokens[8]).toEqual value: 'calc', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'support.function.calc.css']
+            expect(tokens[9]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'punctuation.section.function.css']
+            expect(tokens[10]).toEqual value: 'var', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(tokens[11]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[12]).toEqual value: '--gap', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(tokens[13]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[15]).toEqual value: '+', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'keyword.operator.arithmetic.css']
+            expect(tokens[17]).toEqual value: '1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css']
+            expect(tokens[18]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[19]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'punctuation.section.function.css']
+            expect(tokens[20]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+            expect(tokens[22]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+        describe 'colours', ->
+          it 'tokenises colour functions correctly', ->
+            {tokens} = grammar.tokenizeLine('a{ color: rgb(187,255,221); }')
+            expect(tokens[6]).toEqual value: 'rgb', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgb-value.css', 'support.function.misc.css']
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgb-value.css', 'punctuation.section.function.css']
+            expect(tokens[8]).toEqual value: '187', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgb-value.css', 'constant.numeric.css']
+            expect(tokens[9]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgb-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[10]).toEqual value: '255', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgb-value.css', 'constant.numeric.css']
+            expect(tokens[11]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgb-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[12]).toEqual value: '221', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgb-value.css', 'constant.numeric.css']
+            expect(tokens[13]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgb-value.css', 'punctuation.section.function.css']
+
+            {tokens} = grammar.tokenizeLine('a{ color: RGBa( 100%, 0% ,20.17% ,.5 ); }')
+            expect(tokens[6]).toEqual value: 'RGBa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'support.function.misc.css']
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+            expect(tokens[9]).toEqual value: '100', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+            expect(tokens[10]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[11]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[13]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+            expect(tokens[14]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[16]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[17]).toEqual value: '20.17', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+            expect(tokens[18]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[20]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[21]).toEqual value: '.5', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+            expect(tokens[23]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+
+            {tokens} = grammar.tokenizeLine('a{color:HSL(0,  00100%,50%)}')
+            expect(tokens[4]).toEqual value: 'HSL', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'support.function.misc.css']
+            expect(tokens[5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'punctuation.section.function.css']
+            expect(tokens[6]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'constant.numeric.css']
+            expect(tokens[7]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[9]).toEqual value: '00100', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'constant.numeric.css']
+            expect(tokens[10]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[11]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[12]).toEqual value: '50', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'constant.numeric.css']
+            expect(tokens[13]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[14]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsl-value.css', 'punctuation.section.function.css']
+
+            {tokens} = grammar.tokenizeLine('a{color:HSLa(2,.0%,1%,.7)}')
+            expect(tokens[4]).toEqual value: 'HSLa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'support.function.misc.css']
+            expect(tokens[5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'punctuation.section.function.css']
+            expect(tokens[6]).toEqual value: '2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'constant.numeric.css']
+            expect(tokens[7]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[8]).toEqual value: '.0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'constant.numeric.css']
+            expect(tokens[9]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[10]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[11]).toEqual value: '1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'constant.numeric.css']
+            expect(tokens[12]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[13]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[14]).toEqual value: '.7', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'constant.numeric.css']
+            expect(tokens[15]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'punctuation.section.function.css']
+
+          it 'matches variables as colour components', ->
+            {tokens} = grammar.tokenizeLine('a{ color: RGBA(var(--red), 0% , 20%, .2)}')
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+            expect(tokens[8]).toEqual value: 'var', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(tokens[9]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[10]).toEqual value: '--red', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(tokens[11]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[12]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.delimiter.comma.css']
+
+          it 'matches comments between colour components', ->
+            {tokens} = grammar.tokenizeLine('a{ color: rgba(/**/255/*=*/,0,/*2.2%*/51/*,*/0.2)}')
+            expect(tokens[8]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[9]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[11]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[12]).toEqual value: '=', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css']
+            expect(tokens[13]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[14]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[16]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[17]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[19]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[21]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[22]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css']
+            expect(tokens[23]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+
+          it 'allows colour components to be split across lines', ->
+            lines = grammar.tokenizeLines """
+              .frost{
+                background-color: rgba(
+                  var(--red),    /* Red */
+                  var(--green),  /* Green */
+                  var(--blue),   /* Blue */
+                  /* var(--test),
+                  /**/var(--opacity) /* Transparency */
+                );
+              }
+            """
+            expect(lines[1][4]).toEqual value: 'rgba', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'support.function.misc.css']
+            expect(lines[1][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+            expect(lines[2][1]).toEqual value: 'var', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(lines[2][2]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(lines[2][3]).toEqual value: '--red', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(lines[2][4]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(lines[2][8]).toEqual value: ' Red ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css']
+            expect(lines[3][1]).toEqual value: 'var', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(lines[3][3]).toEqual value: '--green', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(lines[3][5]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.delimiter.comma.css']
+            expect(lines[3][8]).toEqual value: ' Green ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css']
+            expect(lines[4][1]).toEqual value: 'var', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(lines[4][2]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(lines[4][3]).toEqual value: '--blue', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(lines[4][4]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(lines[4][5]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.delimiter.comma.css']
+            expect(lines[4][8]).toEqual value: ' Blue ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css']
+            expect(lines[4][9]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[5][1]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[5][2]).toEqual value: ' var(--test),', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css']
+            expect(lines[6][0]).toEqual value: '    /*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css']
+            expect(lines[6][1]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[6][2]).toEqual value: 'var', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(lines[6][3]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(lines[6][4]).toEqual value: '--opacity', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(lines[6][5]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(lines[6][7]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[6][8]).toEqual value: ' Transparency ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css']
+            expect(lines[6][9]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[7][1]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+
+        describe 'other functions', ->
+          it 'tokenises basic-shape functions', ->
+            lines = grammar.tokenizeLines """
+              a{
+                shape-outside: circle(20em/*=*/at 50% 50%);
+                shape-outside: inset(1em, 1em, 1em, 1em);
+              }
+            """
+            expect(lines[1][4]).toEqual value: 'circle', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'support.function.shape.css']
+            expect(lines[1][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'punctuation.section.function.css']
+            expect(lines[1][6]).toEqual value: '20', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css']
+            expect(lines[1][7]).toEqual value: 'em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[1][8]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[1][9]).toEqual value: '=', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'comment.block.css']
+            expect(lines[1][10]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[1][11]).toEqual value: 'at', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'keyword.operator.shape.css']
+            expect(lines[1][13]).toEqual value: '50', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css']
+            expect(lines[1][14]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[1][16]).toEqual value: '50', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css']
+            expect(lines[1][17]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[1][18]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'punctuation.section.function.css']
+            expect(lines[2][4]).toEqual value: 'inset', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'support.function.shape.css']
+            expect(lines[2][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'punctuation.section.function.css']
+            expect(lines[2][6]).toEqual value: '1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css']
+            expect(lines[2][7]).toEqual value: 'em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[2][8]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'punctuation.delimiter.comma.css']
+            expect(lines[2][10]).toEqual value: '1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css']
+            expect(lines[2][11]).toEqual value: 'em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[2][12]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'punctuation.delimiter.comma.css']
+            expect(lines[2][14]).toEqual value: '1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css']
+            expect(lines[2][15]).toEqual value: 'em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[2][16]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'punctuation.delimiter.comma.css']
+            expect(lines[2][18]).toEqual value: '1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css']
+            expect(lines[2][19]).toEqual value: 'em', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[2][20]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.shape.css', 'punctuation.section.function.css']
+
+          it 'tokenises OpenType feature functions', ->
+            lines = grammar.tokenizeLines """
+              .font{
+                font-variant-alternates: stylistic(user-defined-ident);
+                font-variant-alternates: styleset(user-defined-ident);
+                font-variant-alternates: character-variant(user-defined-ident);
+                font-variant-alternates: swash(user-defined-ident);
+                font-variant-alternates: ornaments(user-defined-ident);
+                font-variant-alternates: annotation(user-defined-ident);
+                font-variant-alternates: swash(ident1) annotation(ident2);
+              }
+            """
+            expect(lines[1][4]).toEqual value: 'stylistic', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(lines[1][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[1][6]).toEqual value: 'user-defined-ident', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[1][7]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[2][4]).toEqual value: 'styleset', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(lines[2][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[2][6]).toEqual value: 'user-defined-ident', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[2][7]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[3][4]).toEqual value: 'character-variant', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(lines[3][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[3][6]).toEqual value: 'user-defined-ident', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[3][7]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[4][4]).toEqual value: 'swash', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(lines[4][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[4][6]).toEqual value: 'user-defined-ident', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[4][7]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[5][4]).toEqual value: 'ornaments', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(lines[5][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[5][6]).toEqual value: 'user-defined-ident', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[5][7]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[6][4]).toEqual value: 'annotation', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(lines[6][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[6][6]).toEqual value: 'user-defined-ident', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[6][7]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[7][4]).toEqual value: 'swash', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(lines[7][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[7][6]).toEqual value: 'ident1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[7][7]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[7][9]).toEqual value: 'annotation', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(lines[7][10]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[7][11]).toEqual value: 'ident2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[7][12]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+
+          it 'tokenises image-set()', ->
+            lines = grammar.tokenizeLines """
+              a{
+                  background-image: image-set( "foo.png" 1x,
+                                               "foo-2x.png" 2x,
+                                               "foo-print.png" 600dpi );
+              }
+            """
+            expect(lines[1][4]).toEqual value: 'image-set', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+            expect(lines[1][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[1][7]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+            expect(lines[1][8]).toEqual value: 'foo.png', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css']
+            expect(lines[1][9]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+            expect(lines[1][11]).toEqual value: '1', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'constant.numeric.css']
+            expect(lines[1][12]).toEqual value: 'x', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[1][13]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.delimiter.comma.css']
+            expect(lines[2][1]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+            expect(lines[2][2]).toEqual value: 'foo-2x.png', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css']
+            expect(lines[2][3]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+            expect(lines[2][5]).toEqual value: '2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'constant.numeric.css']
+            expect(lines[2][6]).toEqual value: 'x', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'variable.parameter.misc.css']
+            expect(lines[2][7]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.delimiter.comma.css']
+            expect(lines[3][1]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+            expect(lines[3][2]).toEqual value: 'foo-print.png', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css']
+            expect(lines[3][3]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+            expect(lines[3][5]).toEqual value: '600', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'constant.numeric.css']
+            expect(lines[3][6]).toEqual value: 'dpi', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[3][8]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'punctuation.section.function.css']
+            expect(lines[3][9]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+
+        describe 'timing-functions', ->
+          it 'tokenises them correctly', ->
+            {tokens} = grammar.tokenizeLine('a{ zoom: cubic-bezier(/**/1.2,/*=*/0,0,0/**/)}')
+            expect(tokens[6]).toEqual value: 'cubic-bezier', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'support.function.timing-function.css']
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'punctuation.section.function.css']
+            expect(tokens[8]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[9]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[10]).toEqual value: '1.2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'constant.numeric.css']
+            expect(tokens[11]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[12]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[13]).toEqual value: '=', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'comment.block.css']
+            expect(tokens[14]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[15]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'constant.numeric.css']
+            expect(tokens[16]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[17]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'constant.numeric.css']
+            expect(tokens[18]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[19]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'constant.numeric.css']
+            expect(tokens[20]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[21]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[22]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'punctuation.section.function.css']
+
+          it 'highlights the "start" and "end" keywords', ->
+            {tokens} = grammar.tokenizeLine('a{ before: steps(0, start); after: steps(1, end); }')
+            expect(tokens[6]).toEqual value: 'steps', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'support.function.timing-function.css']
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'punctuation.section.function.css']
+            expect(tokens[8]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'constant.numeric.css']
+            expect(tokens[9]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[11]).toEqual value: 'start', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'support.constant.step-direction.css']
+            expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'punctuation.section.function.css']
+            expect(tokens[23]).toEqual value: 'end', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'support.constant.step-direction.css']
+
+        describe 'variables', ->
+          it 'scopes var() statements as variables', ->
+            {tokens} = grammar.tokenizeLine('a{color: var(  --name  )}')
+            expect(tokens[5]).toEqual value: 'var', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(tokens[6]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[8]).toEqual value: '--name', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(tokens[10]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+
+          it 'allows injected comments', ->
+            {tokens} = grammar.tokenizeLine('a{ color: var( /*=*/ --something ) }')
+            expect(tokens[6]).toEqual value: 'var', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[9]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[10]).toEqual value: '=', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'comment.block.css']
+            expect(tokens[11]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[13]).toEqual value: '--something', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(tokens[15]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+
+          it 'tokenises fallback values', ->
+            {tokens} = grammar.tokenizeLine('.bar{ width: var(--page-width, /*;;;);*/ 2); }')
+            expect(tokens[7]).toEqual value: 'var', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'support.function.misc.css']
+            expect(tokens[8]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[9]).toEqual value: '--page-width', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'variable.argument.css']
+            expect(tokens[10]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'punctuation.delimiter.comma.css']
+            expect(tokens[12]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[13]).toEqual value: ';;;);', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'comment.block.css']
+            expect(tokens[14]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(tokens[16]).toEqual value: '2', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'constant.numeric.css']
+            expect(tokens[17]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.variable.css', 'punctuation.section.function.css']
+            expect(tokens[18]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+
         it 'does not tokenise functions with whitespace between name and parameters', ->
           {tokens} = grammar.tokenizeLine('a{ p: attr (title); }')
           expect(tokens[6]).not.toEqual value: 'attr', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.misc.css']
@@ -1130,23 +1516,23 @@ describe 'CSS grammar', ->
       expect(tokens[2]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[3]).toEqual value: '";"', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css']
       expect(tokens[4]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
-      expect(tokens[6]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'support.function.url.css']
-      expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
-      expect(tokens[8]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-      expect(tokens[9]).toEqual value: '2.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
-      expect(tokens[10]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
-      expect(tokens[11]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+      expect(tokens[6]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'support.function.url.css']
+      expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
+      expect(tokens[8]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[9]).toEqual value: '2.css', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css']
+      expect(tokens[10]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+      expect(tokens[11]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
       expect(tokens[12]).toEqual value: ';', scopes: ['source.css']
 
       {tokens} = grammar.tokenizeLine('@import url("3.css") print /* url(";"); */;')
       expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
       expect(tokens[1]).toEqual value: 'import', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
-      expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'support.function.url.css']
-      expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
-      expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-      expect(tokens[6]).toEqual value: '3.css', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css']
-      expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
-      expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.section.function.css']
+      expect(tokens[3]).toEqual value: 'url', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'support.function.url.css']
+      expect(tokens[4]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
+      expect(tokens[5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[6]).toEqual value: '3.css', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css']
+      expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+      expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.import.css', 'meta.function.url.css', 'punctuation.section.function.css']
       expect(tokens[10]).toEqual value: 'print', scopes: ['source.css', 'meta.at-rule.import.css', 'support.constant.media.css']
       expect(tokens[12]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[13]).toEqual value: ' url(";"); ', scopes: ['source.css', 'meta.at-rule.import.css', 'comment.block.css']
@@ -1252,7 +1638,7 @@ describe 'CSS grammar', ->
       expect(tokens[1][4]).toEqual value: 'matrix', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
       expect(tokens[1][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.function.css']
       expect(tokens[1][6]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
-      expect(tokens[1][7]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.css']
+      expect(tokens[1][7]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.delimiter.comma.css']
       expect(tokens[1][12]).toEqual value: '-1.5', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
       expect(tokens[1][22]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
       expect(tokens[1][23]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.function.css']
