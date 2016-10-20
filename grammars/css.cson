@@ -141,7 +141,7 @@
   }
   {
     'begin': '(?i)(?=@media(?:\\s|\\(|$|/\\*))'
-    'end': '\\s*(})'
+    'end': '\\s*(})|(?=;)'
     'endCaptures':
       '1':
         'name': 'punctuation.section.property-list.end.css'
@@ -153,7 +153,7 @@
             'name': 'keyword.control.at-rule.media.css'
           '1':
             'name': 'punctuation.definition.keyword.css'
-        'end': '\\s*(?={)'
+        'end': '\\s*(?=[;{])'
         'name': 'meta.at-rule.media.css'
         'patterns': [
           {
@@ -242,6 +242,10 @@
         'include': '#string-single'
       }
     ]
+  }
+  {
+    'match': ';'
+    'name': 'punctuation.terminator.at-rule.css'
   }
   {
     'begin': '(?={)'
