@@ -707,9 +707,164 @@
             [-+]? [0-9]+ (?:\\.[0-9]+)? |
             \\.   [0-9]+
           )
-          (%|(?:ch|cm|deg|dpcm|dpi|dppx|em|ex|fr|grad|in|mm|ms|pc|pt|px|rad|rem|s|turn|vh|vmax|vmin|vw)\\b)?
+          (%|(?:ch|cm|deg|dpcm|dpi|dppx|em|ex|fr|grad|hz|in|khz|mm|mozmm|ms|pc|pt|px|q|rad|rem|s|turn|vh|vmax|vmin|vw)\\b)?
         '''
         'name': 'constant.numeric.css'
+      }
+    ]
+  'property-keywords':
+    'patterns': [
+      {
+        'match': '''(?xi) (?<![\\w-])
+          (absolute|active|add|additive|alias|all|all-petite-caps|all-scroll|all-small-caps|alpha|alphabetic|alternate|alternate-reverse
+          |always|auto|auto-pos|available|avoid|avoid-column|avoid-page|avoid-region|backwards|balance|baseline|below|bidi-override|block
+          |bold|bolder|border|border-box|both|bottom|bottom-outside|break-all|break-word|bullets|capitalize|caption|cell|center|char|circle
+          |clip|clone|close-quote|closest-side|col-resize|collapse|color|color-burn|color-dodge|column|column-reverse|common-ligatures
+          |condensed|contain|content|content-box|contents|context-menu|contextual|copy|cover|crisp-edges|crosshair|cyclic|darken|dashed
+          |decimal|default|dense|diagonal-fractions|difference|digits|disabled|disc|discretionary-ligatures|distribute|distribute-all-lines
+          |distribute-letter|distribute-space|dot|dotted|double|double-circle|e-resize|each-line|ease|ease-in|ease-in-out|ease-out|ellipsis
+          |embed|end|evenodd|ew-resize|exclude|exclusion|expanded|extends|extra-condensed|extra-expanded|farthest-side|fill|fill-available
+          |fill-box|filled|fit-content|fixed|flat|flex|flex-end|flex-start|flip|forwards|from-image|full-width|geometricPrecision|georgian
+          |grab|grabbing|grid|groove|hand|hanging|hard-light|help|hidden|hide|historical-forms|historical-ligatures|horizontal|horizontal-tb
+          |hue|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|inactive|infinite|inherit|initial|inline
+          |inline-block|inline-end|inline-flex|inline-grid|inline-list-item|inline-start|inline-table|inset|inside|inter-character
+          |inter-ideograph|inter-word|intersect|invert|isolate|isolate-override|italic|jis04|jis78|jis83|jis90|justify|justify-all|kannada
+          |keep-all|landscape|large|larger|left|lighten|lighter|line|line-edge|line-through|linear|lining-nums|list-item|local|loose
+          |lowercase|lr|lr-tb|ltr|luminance|luminosity|main-size|mandatory|manipulation|manual|margin-box|match-parent|match-source
+          |max-content|medium|menu|message-box|middle|min-content|mixed|move|multiply|n-resize|ne-resize|nearest-neighbor|nesw-resize
+          |newspaper|no-clip|no-close-quote|no-common-ligatures|no-contextual|no-discretionary-ligatures|no-drop|no-historical-ligatures
+          |no-open-quote|no-repeat|none|nonzero|normal|not-allowed|nowrap|ns-resize|numbers|numeric|nw-resize|nwse-resize|oblique
+          |oldstyle-nums|open|open-quote|optimizeLegibility|optimizeQuality|optimizeSpeed|ordinal|outset|outside|over|overlay|overline
+          |padding|padding-box|page|painted|pan-down|pan-left|pan-right|pan-up|pan-x|pan-y|paused|petite-caps|pixelated|plaintext|pointer
+          |portrait|pre|pre-line|pre-wrap|preserve-3d|progress|proportional-nums|proportional-width|proximity|recto|region|relative|repeat
+          |repeat-x|repeat-y|reverse|revert|ridge|right|rl|round|row|row-resize|row-reverse|row-severse|rtl|ruby|ruby-base|ruby-base-container
+          |ruby-text|ruby-text-container|run-in|running|s-resize|saturation|scale-down|screen|scroll|scroll-position|se-resize|semi-condensed
+          |semi-expanded|separate|sesame|show|sideways|sideways-left|sideways-lr|sideways-right|sideways-rl|simplified|slashed-zero|slice
+          |small|small-caps|small-caption|smaller|smooth|soft-light|solid|space|space-around|space-between|spell-out|square|stacked-fractions
+          |start|static|status-bar|step-end|step-start|sticky|stretch|strict|stroke|stroke-box|style|sub|subgrid|subtract|super|sw-resize
+          |symbolic|table|table-caption|table-cell|table-column|table-column-group|table-footer-group|table-header-group|table-row
+          |table-row-group|tabular-nums|tb|tb-rl|text|text-bottom|text-top|thick|thin|titling-caps|top|top-outside|traditional|transparent
+          |triangle|ultra-condensed|ultra-expanded|under|underline|unicase|unset|uppercase|upright|use-glyph-orientation|verso|vertical
+          |vertical-ideographic|vertical-lr|vertical-rl|vertical-text|view-box|visible|visibleFill|visiblePainted|visibleStroke|w-resize
+          |wait|wavy|weight|whitespace|words|wrap|wrap-reverse|x-large|x-small|xx-large|xx-small|zero|zoom-in|zoom-out)
+          (?![\\w-])
+        '''
+        'name': 'support.constant.property-value.css'
+      }
+      {
+        'match': '''(?xi) (?<![\\w-])
+          (arabic-indic|armenian|bengali|cambodian|circle|cjk-decimal|cjk-earthly-branch|cjk-heavenly-stem|cjk-ideographic
+          |decimal|decimal-leading-zero|devanagari|disc|disclosure-closed|disclosure-open|ethiopic-halehame-am
+          |ethiopic-halehame-ti-e[rt]|ethiopic-numeric|georgian|gujarati|gurmukhi|hangul|hangul-consonant|hebrew
+          |hiragana|hiragana-iroha|japanese-formal|japanese-informal|kannada|katakana|katakana-iroha|khmer
+          |korean-hangul-formal|korean-hanja-formal|korean-hanja-informal|lao|lower-alpha|lower-armenian|lower-greek
+          |lower-latin|lower-roman|malayalam|mongolian|myanmar|oriya|persian|simp-chinese-formal|simp-chinese-informal
+          |square|tamil|telugu|thai|tibetan|trad-chinese-formal|trad-chinese-informal|upper-alpha|upper-armenian
+          |upper-latin|upper-roman|urdu)
+          (?![\\w-])
+        '''
+        'name': 'support.constant.property-value.list-style-type.css'
+      }
+      {
+        'match': '(?<![\\w-])(?i:-(?:ah|apple|atsc|hp|khtml|moz|ms|o|rim|ro|tc|wap|webkit|xv)|(?:mso|prince))-[a-zA-Z-]+'
+        'name': 'support.constant.vendored.property-value.css'
+      }
+      {
+        'match': '(?<![\\w-])(?i:arial|century|comic|courier|garamond|georgia|helvetica|impact|lucida|symbol|system|tahoma|times|trebuchet|utopia|verdana|webdings|sans-serif|serif|monospace)(?![\\w-])'
+        'name': 'support.constant.font-name.css'
+      }
+    ]
+  'property-names':
+    'begin': '(?<![-a-zA-Z])(?=[-a-zA-Z])'
+    'end': '$|(?![-a-zA-Z])'
+    'name': 'meta.property-name.css'
+    'patterns': [
+      {
+        'match': '''(?xi) (?<![\\w-])
+          (?:
+              # Standard CSS
+              additive-symbols|align-content|align-items|align-self|all|animation|animation-delay|animation-direction
+            | animation-duration|animation-fill-mode|animation-iteration-count|animation-name|animation-play-state
+            | animation-timing-function|backface-visibility|background|background-attachment|background-blend-mode
+            | background-clip|background-color|background-image|background-origin|background-position|background-repeat
+            | background-size|block-size|border|border-block-end|border-block-end-color|border-block-end-style
+            | border-block-end-width|border-block-start|border-block-start-color|border-block-start-style
+            | border-block-start-width|border-bottom|border-bottom-color|border-bottom-left-radius|border-bottom-right-radius
+            | border-bottom-style|border-bottom-width|border-collapse|border-color|border-image|border-image-outset
+            | border-image-repeat|border-image-slice|border-image-source|border-image-width|border-inline-end
+            | border-inline-end-color|border-inline-end-style|border-inline-end-width|border-inline-start
+            | border-inline-start-color|border-inline-start-style|border-inline-start-width|border-left|border-left-color
+            | border-left-style|border-left-width|border-radius|border-right|border-right-color|border-right-style
+            | border-right-width|border-spacing|border-style|border-top|border-top-color|border-top-left-radius
+            | border-top-right-radius|border-top-style|border-top-width|border-width|bottom|box-decoration-break
+            | box-shadow|box-sizing|break-after|break-before|break-inside|caption-side|clear|clip|clip-path|color
+            | column-count|column-fill|column-gap|column-rule|column-rule-color|column-rule-style|column-rule-width
+            | column-span|column-width|columns|content|counter-increment|counter-reset|cursor|direction|display
+            | empty-cells|filter|flex|flex-basis|flex-direction|flex-flow|flex-grow|flex-shrink|flex-wrap|float
+            | font|font-family|font-feature-settings|font-kerning|font-language-override|font-size|font-size-adjust
+            | font-stretch|font-style|font-synthesis|font-variant|font-variant-alternates|font-variant-caps
+            | font-variant-east-asian|font-variant-ligatures|font-variant-numeric|font-variant-position|font-weight
+            | grid|grid-area|grid-auto-columns|grid-auto-flow|grid-auto-rows|grid-column|grid-column-end|grid-column-gap
+            | grid-column-start|grid-gap|grid-row|grid-row-end|grid-row-gap|grid-row-start|grid-template|grid-template-areas
+            | grid-template-columns|grid-template-rows|height|hyphens|image-orientation|image-rendering|image-resolution
+            | ime-mode|inline-size|isolation|justify-content|left|letter-spacing|line-break|line-height|list-style
+            | list-style-image|list-style-position|list-style-type|margin|margin-block-end|margin-block-start|margin-bottom
+            | margin-inline-end|margin-inline-start|margin-left|margin-right|margin-top|mask|mask-clip|mask-composite
+            | mask-image|mask-mode|mask-origin|mask-position|mask-repeat|mask-size|mask-type|max-block-size|max-height
+            | max-inline-size|max-width|max-zoom|min-block-size|min-height|min-inline-size|min-width|min-zoom|mix-blend-mode
+            | negative|object-fit|object-position|offset-block-end|offset-block-start|offset-inline-end|offset-inline-start
+            | opacity|order|orientation|orphans|outline|outline-color|outline-offset|outline-style|outline-width|overflow
+            | overflow-wrap|overflow-[xy]|pad|padding|padding-block-end|padding-block-start|padding-bottom|padding-inline-end
+            | padding-inline-start|padding-left|padding-right|padding-top|page-break-after|page-break-before|page-break-inside
+            | perspective|perspective-origin|pointer-events|position|prefix|quotes|range|resize|right|ruby-align|ruby-merge
+            | ruby-position|scroll-behavior|scroll-snap-coordinate|scroll-snap-destination|scroll-snap-type|shape-image-threshold
+            | shape-margin|shape-outside|speak-as|src|suffix|symbols|system|tab-size|table-layout|text-align|text-align-last
+            | text-combine-upright|text-decoration|text-decoration-color|text-decoration-line|text-decoration-style|text-emphasis
+            | text-emphasis-color|text-emphasis-position|text-emphasis-style|text-indent|text-orientation|text-overflow
+            | text-rendering|text-shadow|text-transform|text-underline-position|top|touch-action|transform|transform-box
+            | transform-origin|transform-style|transition|transition-delay|transition-duration|transition-property
+            | transition-timing-function|unicode-bidi|unicode-range|user-zoom|vertical-align|visibility|white-space|widows
+            | width|will-change|word-break|word-spacing|word-wrap|writing-mode|z-index|zoom
+
+            # SVG attributes
+            | alignment-baseline|baseline-shift|clip-rule|color-interpolation|color-interpolation-filters|color-profile
+            | color-rendering|dominant-baseline|enable-background|fill|fill-opacity|fill-rule|flood-color|flood-opacity
+            | glyph-orientation-horizontal|glyph-orientation-vertical|kerning|lighting-color|marker-end|marker-mid
+            | marker-start|shape-rendering|stop-color|stop-opacity|stroke|stroke-dasharray|stroke-dashoffset|stroke-linecap
+            | stroke-linejoin|stroke-miterlimit|stroke-opacity|stroke-width|text-anchor|x|y
+
+            # Not listed on MDN; presumably deprecated
+            | adjust|after|align|align-last|alignment|alignment-adjust|appearance|attachment|azimuth|background-break
+            | balance|baseline|before|bidi|binding|bookmark|bookmark-label|bookmark-level|bookmark-target|border-length
+            | bottom-color|bottom-left-radius|bottom-right-radius|bottom-style|bottom-width|box|box-align|box-direction
+            | box-flex|box-flex-group|box-lines|box-ordinal-group|box-orient|box-pack|break|character|collapse|column
+            | column-break-after|column-break-before|count|counter|crop|cue|cue-after|cue-before|decoration|decoration-break
+            | delay|display-model|display-role|down|drop|drop-initial-after-adjust|drop-initial-after-align|drop-initial-before-adjust
+            | drop-initial-before-align|drop-initial-size|drop-initial-value|duration|elevation|emphasis|family|fit|fit-position
+            | flex-group|float-offset|gap|grid-columns|grid-rows|hanging-punctuation|header|hyphenate|hyphenate-after|hyphenate-before
+            | hyphenate-character|hyphenate-lines|hyphenate-resource|icon|image|increment|indent|index|initial-after-adjust
+            | initial-after-align|initial-before-adjust|initial-before-align|initial-size|initial-value|inline-box-align|iteration-count
+            | justify|label|left-color|left-style|left-width|length|level|line|line-stacking|line-stacking-ruby|line-stacking-shift
+            | line-stacking-strategy|lines|list|mark|mark-after|mark-before|marks|marquee|marquee-direction|marquee-play-count|marquee-speed
+            | marquee-style|max|min|model|move-to|name|nav|nav-down|nav-index|nav-left|nav-right|nav-up|new|numeral|offset|ordinal-group
+            | orient|origin|overflow-style|overhang|pack|page|page-policy|pause|pause-after|pause-before|phonemes|pitch|pitch-range
+            | play-count|play-during|play-state|point|presentation|presentation-level|profile|property|punctuation|punctuation-trim
+            | radius|rate|rendering-intent|repeat|replace|reset|resolution|resource|respond-to|rest|rest-after|rest-before|richness
+            | right-color|right-style|right-width|role|rotation|rotation-point|rows|ruby|ruby-overhang|ruby-span|rule|rule-color
+            | rule-style|rule-width|shadow|size|size-adjust|sizing|space|space-collapse|spacing|span|speak|speak-header|speak-numeral
+            | speak-punctuation|speech|speech-rate|speed|stacking|stacking-ruby|stacking-shift|stacking-strategy|stress|stretch
+            | string-set|style|style-image|style-position|style-type|target|target-name|target-new|target-position|text|text-height
+            | text-justify|text-outline|text-replace|text-wrap|timing-function|top-color|top-left-radius|top-right-radius|top-style
+            | top-width|trim|unicode|up|user-select|variant|voice|voice-balance|voice-duration|voice-family|voice-pitch|voice-pitch-range
+            | voice-rate|voice-stress|voice-volume|volume|weight|white|white-space-collapse|word|wrap
+          )
+          (?![\\w-])
+        '''
+        'name': 'support.type.property-name.css'
+      }
+      {
+        'match': '(?<![\\w-])(?i:-(?:ah|apple|atsc|hp|khtml|moz|ms|o|rim|ro|tc|wap|webkit|xv)|(?:mso|prince))-[a-zA-Z-]+'
+        'name': 'support.type.vendored.property-name.css'
       }
     ]
   'property-values':
@@ -725,16 +880,7 @@
         'include': '#functions'
       }
       {
-        'match': '(?<![\\w-])(zero|xx-small|xx-large|x-small|x-large|wrap-reverse|wrap|whitespace|wait|w-resize|visibleStroke|visiblePainted|visibleFill|visible|vertical-text|vertical-ideographic|vertical|uppercase|underline|transparent|top|thin|thick|text-top|text-bottom|text|tb-rl|table-row-group|table-row|table-header-group|table-footer-group|table-column-group|table-column|table-cell|table-caption|table|sw-resize|super|sub|stroke|strict|stretch|step-start|step-end|static|start|space-between|space-around|solid|smaller|small-caps|small|separate|se-resize|scroll|s-resize|running|rtl|row-severse|row-resize|right|ridge|reverse|repeat-y|repeat-x|repeat|relative|progress|preserve-3d|pre-wrap|pre-line|pre|pointer|paused|pan-y|pan-x|pan-up|pan-right|pan-left|pan-down|painted|padding-box|overline|outside|outset|optimizeSpeed|optimizeQuality|optimizeLegibility|oblique|nw-resize|nowrap|not-allowed|normal|none|no-repeat|no-drop|newspaper|ne-resize|n-resize|move|middle|medium|manipulation|main-size|ltr|lr-tb|lowercase|loose|list-item|line-through|line-edge|line|lighter|left|larger|large|keep-all|justify|italic|inter-word|inter-ideograph|inside|inset|inline-table|inline-flex|inline-block|inline|inherit|infinite|inactive|ideograph-space|ideograph-parenthesis|ideograph-numeric|ideograph-alpha|horizontal|hidden|help|hand|groove|geometricPrecision|forwards|flex-start|flex-end|flex|fixed|fill|end|ellipsis|ease-out|ease-in-out|ease-in|ease|e-resize|double|dotted|distribute-space|distribute-letter|distribute-all-lines|distribute|disabled|default|dashed|crosshair|content-box|column-reverse|column|collapse|col-resize|char|center|capitalize|break-word|break-all|bottom|both|border-box|bolder|bold|block|bidi-override|below|baseline|backwards|avoid|auto|always|alternate-reverse|alternate|all-scroll|all|absolute|-(webkit|moz|ms)-[a-zA-Z-]++)(?![\\w-])'
-        'name': 'support.constant.property-value.css'
-      }
-      {
-        'match': '(?<![\\w-])(upper-roman|upper-latin|upper-armenian|upper-alpha|trad-chinese-informal|trad-chinese-formal|tibetan|thai|telugu|square|simp-chinese-informal|simp-chinese-formal|persian|oriya|myanmar|mongolian|malayalam|lower-roman|lower-latin|lower-greek|lower-armenian|lower-alpha|lao|korean-hanja-informal|korean-hanja-formal|korean-hangul-formal|khmer|katakana-iroha|katakana|kannada|hiragana-iroha|hiragana|hebrew|gurmukhi|gujarati|georgian|disc|devanagari|decimal-leading-zero|decimal|cjk-ideographic|cjk-heavenly-stem|cjk-earthly-branch|circle|cambodian|bengali|armenian|arabic-indic)(?![\\w-])'
-        'name': 'support.constant.property-value.list-style-type.css'
-      }
-      {
-        'match': '(?<![\\w-])(?i:arial|century|comic|courier|garamond|georgia|helvetica|impact|lucida|symbol|system|tahoma|times|trebuchet|utopia|verdana|webdings|sans-serif|serif|monospace)(?![\\w-])'
-        'name': 'support.constant.font-name.css'
+        'include': '#property-keywords'
       }
       {
         'include': '#numeric-values'
@@ -753,6 +899,49 @@
         'name': 'keyword.other.important.css'
       }
     ]
+  'pseudo-classes':
+    'captures':
+      '1':
+        'name': 'punctuation.definition.entity.css'
+    'match': '''(?xi)
+      (:)
+      (?: active|checked|default|disabled|empty|enabled|first|(?:first|last|only)-(?:child|of-type)
+        | focus|fullscreen|host|hover|in-range|indeterminate|invalid|left|link|optional
+        | out-of-range|read-only|read-write|required|right|root|scope|target|unresolved
+        | valid|visited
+      )(?![\\w-])
+    '''
+    'name': 'entity.other.attribute-name.pseudo-class.css'
+  'pseudo-elements':
+    'captures':
+      '1':
+        'name': 'punctuation.definition.entity.css'
+      '2':
+        'name': 'punctuation.definition.entity.css'
+    'match': '''(?xi)
+      (?:
+        (::?)                       # Elements using both : and :: notation
+        (?: after
+          | before
+          | first-letter
+          | first-line
+          | -(?:webkit|moz|ms)-[a-z-]+
+        )
+        |
+        (::)                        # Double-colon only
+        (?: backdrop
+          | content
+          | grammar-error
+          | marker
+          | placeholder
+          | selection
+          | shadow
+          | spelling-error
+        )
+      )
+      (?![\\w-])
+    '''
+    'name': 'entity.other.attribute-name.pseudo-element.css'
   'rule-list':
     'begin': '{'
     'beginCaptures':
@@ -773,15 +962,7 @@
         'name': 'variable.css'
       }
       {
-        'begin': '(?<![-a-z])(?=[-a-z])'
-        'end': '$|(?![-a-z])'
-        'name': 'meta.property-name.css'
-        'patterns': [
-          {
-            'match': '(?<![\\w-])(-webkit-[-A-Za-z]+|-moz-[-A-Za-z]+|-o-[-A-Za-z]+|-ms-[-A-Za-z]+|-khtml-[-A-Za-z]+|zoom|z-index|y|x|wrap|word-wrap|word-spacing|word-break|word|width|widows|white-space-collapse|white-space|white|weight|volume|voice-volume|voice-stress|voice-rate|voice-pitch-range|voice-pitch|voice-family|voice-duration|voice-balance|voice|visibility|vertical-align|variant|user-select|up|unicode-bidi|unicode|trim|transition-timing-function|transition-property|transition-duration|transition-delay|transition|transform(-(style|origin))?|touch-action|top-width|top-style|top-right-radius|top-left-radius|top-color|top|timing-function|text-wrap|text-transform|text-shadow|text-replace|text-rendering|text-overflow|text-outline|text-justify|text-indent|text-height|text-emphasis|text-decoration|text-align-last|text-align|text|target-position|target-new|target-name|target|table-layout|tab-size|style-type|style-position|style-image|style|stroke|stroke-(width|opacity|miterlimit|linejoin|linecap|dashoffset|dasharray)|string-set|stretch|stress|stacking-strategy|stacking-shift|stacking-ruby|stacking|src|speed|speech-rate|speech|speak-punctuation|speak-numeral|speak-header|speak|span|spacing|space-collapse|space|sizing|size-adjust|size|shadow|respond-to|rule-width|rule-style|rule-color|rule|ruby-span|ruby-position|ruby-overhang|ruby-align|ruby|rows|rotation-point|rotation|role|right-width|right-style|right-color|right|richness|rest-before|rest-after|rest|resource|resolution|resize|reset|replace|repeat|rendering-intent|rate|radius|quotes|punctuation-trim|punctuation|property|profile|presentation-level|presentation|position|pointer-events|point|play-state|play-during|play-count|pitch-range|pitch|phonemes|pause-before|pause-after|pause|page-policy|page-break-inside|page-break-before|page-break-after|page|padding-top|padding-right|padding-left|padding-bottom|padding|pack|overhang|overflow-y|overflow-x|overflow-style|overflow|outline-width|outline-style|outline-offset|outline-color|outline|orphans|origin|orientation|orient|ordinal-group|order|opacity|offset|object-fit|numeral|new|nav-up|nav-right|nav-left|nav-index|nav-down|nav|name|move-to|model|mix-blend-mode|min-width|min-height|min|max-width|max-height|max|marquee-style|marquee-speed|marquee-play-count|marquee-direction|marquee|marks|mark-before|mark-after|mark|margin-top|margin-right|margin-left|margin-bottom|margin|mask-image|list-style-type|list-style-position|list-style-image|list-style|list|lines|line-stacking-strategy|line-stacking-shift|line-stacking-ruby|line-stacking|line-height|line|level|letter-spacing|length|left-width|left-style|left-color|left|label|justify-content|justify|iteration-count|inline-box-align|initial-value|initial-size|initial-before-align|initial-before-adjust|initial-after-align|initial-after-adjust|index|indent|increment|image-resolution|image-orientation|image|icon|hyphens|hyphenate-resource|hyphenate-lines|hyphenate-character|hyphenate-before|hyphenate-after|hyphenate|height|header|hanging-punctuation|grid-template-rows|grid-template-columns|grid-template-areas|grid-rows|grid-row-start|grid-row-gap|grid-row-end|grid-row|grid-gap|grid-columns|grid-column-start|grid-column-gap|grid-column-end|grid-column|grid-auto-rows|grid-auto-flow|grid-auto-columns|grid-area|grid|gap|font-weight|font-variant|font-style|font-stretch|font-size-adjust|font-size|font-family|font|float-offset|float|flex-wrap|flex-shrink|flex-grow|flex-group|flex-flow|flex-direction|flex-basis|flex|fit-position|fit|fill|filter|family|empty-cells|emphasis|elevation|duration|drop-initial-value|drop-initial-size|drop-initial-before-align|drop-initial-before-adjust|drop-initial-after-align|drop-initial-after-adjust|drop|down|dominant-baseline|display-role|display-model|display|direction|delay|decoration-break|decoration|cursor|cue-before|cue-after|cue|crop|counter-reset|counter-increment|counter|count|content|columns|column-width|column-span|column-rule-width|column-rule-style|column-rule-color|column-rule|column-gap|column-fill|column-count|column-break-before|column-break-after|column|color-profile|color|collapse|clip|clear|character|caption-side|break-inside|break-before|break-after|break|box-sizing|box-shadow|box-pack|box-orient|box-ordinal-group|box-lines|box-flex-group|box-flex|box-direction|box-decoration-break|box-align|box|bottom-width|bottom-style|bottom-right-radius|bottom-left-radius|bottom-color|bottom|border-width|border-top-width|border-top-style|border-top-right-radius|border-top-left-radius|border-top-color|border-top|border-style|border-spacing|border-right-width|border-right-style|border-right-color|border-right|border-radius|border-length|border-left-width|border-left-style|border-left-color|border-left|border-image|border-color|border-collapse|border-bottom-width|border-bottom-style|border-bottom-right-radius|border-bottom-left-radius|border-bottom-color|border-bottom|border|bookmark-target|bookmark-level|bookmark-label|bookmark|binding|bidi|before|baseline-shift|baseline|balance|background-size|background-repeat|background-position|background-origin|background-image|background-color|background-clip|background-break|background-attachment|background|azimuth|attachment|appearance|animation-timing-function|animation-play-state|animation-name|animation-iteration-count|animation-duration|animation-direction|animation-delay|animation-fill-mode|animation|alignment-baseline|alignment-adjust|alignment|align-self|align-last|align-items|align-content|align|after|adjust|will-change)(?![\\w-])'
-            'name': 'support.type.property-name.css'
-          }
-        ]
+        'include': '#property-names'
       }
       {
         'begin': '(:)\\s*'
@@ -843,8 +1024,7 @@
         '''
       }
       {
-        'match': '(?<![\\w-])(a|abbr|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|h[1-6]|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|math|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|p|param|picture|pre|progress|q|rp|rt|rtc|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)(?![\\w-])'
-        'name': 'entity.name.tag.css'
+        'include': '#tag-names'
       }
       {
         'match': '\\*'
@@ -913,38 +1093,10 @@
         'name': 'meta.attribute-selector.css'
       }
       {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.css'
-        'match': '''(?x)
-          (:)
-          (
-            link|target|visited                                     # location
-          | active|focus|hover                                      # user action
-          | default|disabled|enabled|read-only|read-write           # input control state
-          | checked|indeterminate                                   # input value state
-          | in-range|invalid|optional|out-of-range|required|valid   # input value-checking
-          | empty|(first|last|only)-(child|of-type)|root            # tree-structural
-          | first|left|right                                        # @page
-          | host                                                    # shadow DOM
-          )(?![\\w-])
-        '''
-        'name': 'entity.other.attribute-name.pseudo-class.css'
+        'include': '#pseudo-classes'
       }
       {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.css'
-          '2':
-            'name': 'punctuation.definition.entity.css'
-        'match': '''(?x)
-          (?:
-            (::?+)(?:after|before|first-letter|first-line|(?:-(?:webkit|moz|ms)-)[a-z-]++)
-          | (::)(?:backdrop|content|placeholder|selection|shadow)
-          )
-          (?![\\w-])
-        '''
-        'name': 'entity.other.attribute-name.pseudo-element.css'
+        'include': '#pseudo-elements'
       }
       {
         'begin': '((:)lang)(\\()'
@@ -1084,6 +1236,42 @@
         'name': 'constant.character.escape.css'
       }
     ]
+  'tag-names':
+    'match': '''(?xi) (?<![\\w:-])
+      (?:
+          # HTML
+          a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|bdo|bgsound
+        | big|blink|blockquote|body|br|button|canvas|caption|center|cite|code|col|colgroup|command
+        | content|data|datalist|dd|del|details|dfn|dialog|dir|div|dl|dt|element|em|embed|fieldset
+        | figcaption|figure|font|footer|form|frame|frameset|h[1-6]|head|header|hgroup|hr|html|i
+        | iframe|image|img|input|ins|isindex|kbd|keygen|label|legend|li|link|listing|main|map|mark
+        | marquee|math|menu|menuitem|meta|meter|multicol|nav|nextid|nobr|noembed|noframes|noscript
+        | object|ol|optgroup|option|output|p|param|picture|plaintext|pre|progress|q|rb|rp|rt|rtc
+        | ruby|s|samp|script|section|select|shadow|slot|small|source|spacer|span|strike|strong
+        | style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr
+        | track|tt|u|ul|var|video|wbr|xmp
+
+        # SVG
+        | altGlyph|altGlyphDef|altGlyphItem|animate|animateColor|animateMotion|animateTransform
+        | circle|clipPath|color-profile|cursor|defs|desc|discard|ellipse|feBlend|feColorMatrix
+        | feComponentTransfer|feComposite|feConvolveMatrix|feDiffuseLighting|feDisplacementMap
+        | feDistantLight|feDropShadow|feFlood|feFuncA|feFuncB|feFuncG|feFuncR|feGaussianBlur
+        | feImage|feMerge|feMergeNode|feMorphology|feOffset|fePointLight|feSpecularLighting
+        | feSpotLight|feTile|feTurbulence|filter|font-face|font-face-format|font-face-name
+        | font-face-src|font-face-uri|foreignObject|g|glyph|glyphRef|hatch|hatchpath|hkern
+        | line|linearGradient|marker|mask|mesh|meshgradient|meshpatch|meshrow|metadata
+        | missing-glyph|mpath|path|pattern|polygon|polyline|radialGradient|rect|set|solidcolor
+        | stop|svg|switch|symbol|text|textPath|tref|tspan|use|view|vkern
+
+        # MathML
+        | annotation|annotation-xml|maction|maligngroup|malignmark|math|menclose|merror|mfenced
+        | mfrac|mglyph|mi|mlabeledtr|mlongdiv|mmultiscripts|mn|mo|mover|mpadded|mphantom|mroot
+        | mrow|ms|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstack|mstyle|msub|msubsup
+        | msup|mtable|mtd|mtext|mtr|munder|munderover|semantics
+      )
+      (?=[+~>\\s.\\#|{:\\[]|$|/\\*)
+    '''
+    'name': 'entity.name.tag.css'
   'url':
     'begin': '(?i)\\s*(url)(\\()\\s*'
     'beginCaptures':

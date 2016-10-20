@@ -1049,13 +1049,13 @@ describe 'CSS grammar', ->
 
       it 'tokenizes vendor-prefixed values', ->
         {tokens} = grammar.tokenizeLine '.edge { cursor: -webkit-zoom-in; }'
-        expect(tokens[8]).toEqual value: '-webkit-zoom-in', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+        expect(tokens[8]).toEqual value: '-webkit-zoom-in', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.vendored.property-value.css']
 
         {tokens} = grammar.tokenizeLine '.edge { width: -moz-min-content; }'
-        expect(tokens[8]).toEqual value: '-moz-min-content', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+        expect(tokens[8]).toEqual value: '-moz-min-content', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.vendored.property-value.css']
 
         {tokens} = grammar.tokenizeLine '.edge { display: -ms-grid; }'
-        expect(tokens[8]).toEqual value: '-ms-grid', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+        expect(tokens[8]).toEqual value: '-ms-grid', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.vendored.property-value.css']
 
       it 'tokenizes custom variables', ->
         {tokens} = grammar.tokenizeLine 'div { color: var(--primary-color) }'
