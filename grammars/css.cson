@@ -875,7 +875,7 @@
     'patterns': [
       {
         'match': ','
-        'name': 'punctuation.delimiter.comma.css'
+        'name': 'punctuation.separator.comma.css'
       }
       {
         'include': '#comment-block'
@@ -1156,7 +1156,7 @@
           }
           {
             'match': ','
-            'name': 'punctuation.separator.css'
+            'name': 'punctuation.separator.comma.css'
           }
         ]
       }
