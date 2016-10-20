@@ -1106,6 +1106,29 @@
         'include': '#pseudo-elements'
       }
       {
+        'begin': '(?i)((:)dir)(\\()'
+        'beginCaptures':
+          '1':
+            'name': 'entity.other.attribute-name.pseudo-class.css'
+          '2':
+            'name': 'punctuation.definition.entity.css'
+          '3':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'patterns': [
+          {
+            'match': '(?i)(?<![\\w-])(ltr|rtl)(?![\\w-])'
+            'name': 'support.constant.text-direction.css'
+          }
+          {
+            'include': '#property-value'
+          }
+        ]
+      }
+      {
         'begin': '(?i)((:)lang)(\\()'
         'beginCaptures':
           '1':

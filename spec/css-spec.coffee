@@ -999,6 +999,43 @@ describe 'CSS grammar', ->
         expect(tokens[1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
         expect(tokens[2]).toEqual value: 'first-child', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
 
+      describe ':dir()', ->
+        it 'tokenises :dir() and its keywords', ->
+          lines = grammar.tokenizeLines """
+            a:dir(ltr ){ }
+            *:dir( rtl){ }
+          """
+          expect(lines[0][0]).toEqual value: 'a', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+          expect(lines[0][1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(lines[0][2]).toEqual value: 'dir', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(lines[0][3]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(lines[0][4]).toEqual value: 'ltr', scopes: ['source.css', 'meta.selector.css', 'support.constant.text-direction.css']
+          expect(lines[0][5]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+          expect(lines[0][6]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(lines[1][0]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.wildcard.css']
+          expect(lines[1][1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(lines[1][2]).toEqual value: 'dir', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(lines[1][3]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(lines[1][4]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css']
+          expect(lines[1][5]).toEqual value: 'rtl', scopes: ['source.css', 'meta.selector.css', 'support.constant.text-direction.css']
+          expect(lines[1][6]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+
+        it 'allows :dir() to include comments and newlines', ->
+          lines = grammar.tokenizeLines """
+            :DIR(/**
+            ==*/ltr/*
+            */)
+          """
+          expect(lines[0][0]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(lines[0][1]).toEqual value: 'DIR', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(lines[0][2]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(lines[0][3]).toEqual value: '/**', scopes: ['source.css', 'meta.selector.css']
+          expect(lines[1][0]).toEqual value: '==*/', scopes: ['source.css', 'meta.selector.css']
+          expect(lines[1][1]).toEqual value: 'ltr', scopes: ['source.css', 'meta.selector.css', 'support.constant.text-direction.css']
+          expect(lines[1][2]).toEqual value: '/*', scopes: ['source.css', 'meta.selector.css']
+          expect(lines[2][0]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css']
+          expect(lines[2][1]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.css']
+
       describe ':lang()', ->
         it 'tokenizes :lang()', ->
           {tokens} = grammar.tokenizeLine ':lang(zh-Hans-CN,es-419)'
