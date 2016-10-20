@@ -887,6 +887,9 @@
         'include': '#property-keywords'
       }
       {
+        'include': '#unicode-range'
+      }
+      {
         'include': '#numeric-values'
       }
       {
@@ -1279,6 +1282,13 @@
       (?=[+~>\\s,.\\#|){:\\[]|$|/\\*)
     '''
     'name': 'entity.name.tag.css'
+  'unicode-range':
+    'captures':
+      '0':
+        'name': 'constant.other.unicode-range.css'
+      '1':
+        'name': 'punctuation.separator.dash.unicode-range.css'
+    'match': '(?<![\\w-])[Uu]\\+[0-9A-Fa-f?]{1,6}(?:(-)[0-9A-Fa-f]{1,6})?(?![\\w-])'
   'url':
     'begin': '(?i)\\s*(url)(\\()\\s*'
     'beginCaptures':

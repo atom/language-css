@@ -1693,6 +1693,33 @@ describe 'CSS grammar', ->
           expect(tokens[6]).not.toEqual value: 'rgb', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.misc.css']
           expect(tokens[8]).not.toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.section.function.css']
 
+      describe 'Unicode ranges', ->
+        it 'tokenises single codepoints', ->
+          {tokens} = grammar.tokenizeLine('a{ a: U+A5 }')
+          expect(tokens[6]).toEqual value: 'U+A5', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css']
+
+        it 'tokenises codepoint ranges', ->
+          {tokens} = grammar.tokenizeLine('a{ a: U+0025-00FF }')
+          expect(tokens[6]).toEqual value: 'U+0025', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css']
+          expect(tokens[7]).toEqual value: '-', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css', 'punctuation.separator.dash.unicode-range.css']
+          expect(tokens[8]).toEqual value: '00FF', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css']
+
+          {tokens} = grammar.tokenizeLine('a{ unicode-range: u+0-7F }')
+          expect(tokens[6]).toEqual value: 'u+0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css']
+          expect(tokens[7]).toEqual value: '-', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css', 'punctuation.separator.dash.unicode-range.css']
+          expect(tokens[8]).toEqual value: '7F', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css']
+
+        it 'tokenises wildcard ranges', ->
+          {tokens} = grammar.tokenizeLine('a{ unicode-range: U+4?? }')
+          expect(tokens[6]).toEqual value: 'U+4??', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css']
+
+          {tokens} = grammar.tokenizeLine('a{ unicode-range: U+0025-00FF, U+4?? }')
+          expect(tokens[6]).toEqual value: 'U+0025', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css']
+          expect(tokens[7]).toEqual value: '-', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css', 'punctuation.separator.dash.unicode-range.css']
+          expect(tokens[8]).toEqual value: '00FF', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css']
+          expect(tokens[9]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.comma.css']
+          expect(tokens[11]).toEqual value: 'U+4??', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.other.unicode-range.css']
+
   describe 'escape sequences', ->
     it 'tokenizes escape sequences in single-quoted strings', ->
       {tokens} = grammar.tokenizeLine "very-custom { content: '\\c0ffee' }"
