@@ -809,6 +809,117 @@ describe 'CSS grammar', ->
           expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
           expect(tokens[3]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
 
+    describe 'capitalisation', ->
+      it 'ignores case in at-rules', ->
+        lines = grammar.tokenizeLines """
+          @IMPoRT url("file.css");
+          @MEdIA (MAX-WIDTH: 2px){ }
+          @pAgE :fIRST { }
+          @NAMEspace "A";
+          @foNT-FacE {}
+        """
+        expect(lines[0][1]).toEqual value: 'IMPoRT', scopes: ['source.css', 'meta.at-rule.import.css', 'keyword.control.at-rule.import.css']
+        expect(lines[1][1]).toEqual value: 'MEdIA', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
+        expect(lines[1][4]).toEqual value: 'MAX-WIDTH', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.property-name.media.css']
+        expect(lines[2][1]).toEqual value: 'pAgE', scopes: ['source.css', 'meta.at-rule.page.css', 'keyword.control.at-rule.page.css']
+        expect(lines[2][4]).toEqual value: 'fIRST', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+        expect(lines[3][1]).toEqual value: 'NAMEspace', scopes: ['source.css', 'meta.at-rule.namespace.css', 'keyword.control.at-rule.namespace.css']
+        expect(lines[4][1]).toEqual value: 'foNT-FacE', scopes: ['source.css', 'meta.at-rule.font-face.css', 'keyword.control.at-rule.font-face.css']
+
+      it 'ignores case in property names', ->
+        lines = grammar.tokenizeLines """
+          a{ COLOR: #fff; }
+          a{ gRId-tEMPLaTe: none; }
+          a{ bACkgrOUND-iMAGE: none; }
+          a{ -MOZ-IMAGE: none; }
+        """
+        expect(lines[0][3]).toEqual value: 'COLOR', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(lines[1][3]).toEqual value: 'gRId-tEMPLaTe', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(lines[2][3]).toEqual value: 'bACkgrOUND-iMAGE', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(lines[3][3]).toEqual value: '-MOZ-IMAGE', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.vendored.property-name.css']
+
+      it 'ignores case in property keywords', ->
+        lines = grammar.tokenizeLines """
+          a{ color: INItIaL; }
+          a{ color: trAnsPAREnT; }
+          a{ color: rED; }
+          a{ color: unSET; }
+          a{ color: NONe; }
+          a{ style: lOWER-lATIN; }
+          a{ color: -WebkIT-foo; }
+          a{ font: HelVETica; }
+        """
+        expect(lines[0][6]).toEqual value: 'INItIaL', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+        expect(lines[1][6]).toEqual value: 'trAnsPAREnT', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+        expect(lines[2][6]).toEqual value: 'rED', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.color.w3c-standard-color-name.css']
+        expect(lines[3][6]).toEqual value: 'unSET', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+        expect(lines[4][6]).toEqual value: 'NONe', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+        expect(lines[5][6]).toEqual value: 'lOWER-lATIN', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.list-style-type.css']
+        expect(lines[6][6]).toEqual value: '-WebkIT-foo', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.vendored.property-value.css']
+        expect(lines[7][6]).toEqual value: 'HelVETica', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.font-name.css']
+
+      it 'ignores case in selectors', ->
+        lines = grammar.tokenizeLines """
+          DIV:HOVER { }
+          #id::BefORE { }
+          #id::aFTEr { }
+          TABle:nTH-cHILD(2N+1) {}
+          htML:NOT(.htiml) {}
+          I::BACKDROP
+          I::-mOZ-thing {}
+        """
+        expect(lines[0][0]).toEqual value: 'DIV', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(lines[0][2]).toEqual value: 'HOVER', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+        expect(lines[1][3]).toEqual value: 'BefORE', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+        expect(lines[2][3]).toEqual value: 'aFTEr', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+        expect(lines[3][0]).toEqual value: 'TABle', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(lines[3][2]).toEqual value: 'nTH-cHILD', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+        expect(lines[3][4]).toEqual value: '2N+1', scopes: ['source.css', 'meta.selector.css', 'constant.numeric.css']
+        expect(lines[4][0]).toEqual value: 'htML', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(lines[4][2]).toEqual value: 'NOT', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+        expect(lines[5][0]).toEqual value: 'I', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(lines[5][2]).toEqual value: 'BACKDROP', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+        expect(lines[6][2]).toEqual value: '-mOZ-thing', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+
+      it 'ignores case in function names', ->
+        lines = grammar.tokenizeLines """
+          a{ color: RGBa(); }
+          a{ color: hslA(); }
+          a{ color: URL(); }
+          a{ content: ATTr(); }
+          a{ content: CoUNTer(); }
+          a{ content: cuBIC-beZIER()}
+          a{ content: sTePs()}
+          a{ content: cALc(2 + 2)}
+        """
+        expect(lines[0][6]).toEqual value: 'RGBa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'support.function.misc.css']
+        expect(lines[1][6]).toEqual value: 'hslA', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.hsla-value.css', 'support.function.misc.css']
+        expect(lines[2][6]).toEqual value: 'URL', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.url.css', 'support.function.url.css']
+        expect(lines[3][6]).toEqual value: 'ATTr', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+        expect(lines[4][6]).toEqual value: 'CoUNTer', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.misc.css', 'support.function.misc.css']
+        expect(lines[5][6]).toEqual value: 'cuBIC-beZIER', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'support.function.timing-function.css']
+        expect(lines[6][6]).toEqual value: 'sTePs', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.timing-function.css', 'support.function.timing-function.css']
+        expect(lines[7][6]).toEqual value: 'cALc', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.calc.css', 'support.function.calc.css']
+
+      it 'ignores case in unit names', ->
+        lines = grammar.tokenizeLines """
+          a{width: 20EM; }
+          a{width: 20ReM; }
+          a{width: 8tURN; }
+          a{width: 20S; }
+          a{width: 20CM}
+          a{width: 2gRAd}
+        """
+        expect(lines[0][5]).toEqual value: '20', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+        expect(lines[0][6]).toEqual value: 'EM', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+        expect(lines[1][6]).toEqual value: 'ReM', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+        expect(lines[2][2]).toEqual value: 'width', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(lines[2][6]).toEqual value: 'tURN', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+        expect(lines[3][6]).toEqual value: 'S', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+        expect(lines[4][5]).toEqual value: '20', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+        expect(lines[4][6]).toEqual value: 'CM', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+        expect(lines[5][6]).toEqual value: 'gRAd', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+
     describe 'pseudo-classes', ->
       it 'tokenizes regular pseudo-classes', ->
         {tokens} = grammar.tokenizeLine 'p:first-child'
