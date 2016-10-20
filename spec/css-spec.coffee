@@ -857,6 +857,147 @@ describe 'CSS grammar', ->
           expect(lines[4][5]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.namespace.css', 'meta.function.url.css', 'punctuation.section.function.css']
           expect(lines[4][6]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
 
+      describe 'font-feature declarations', ->
+        it 'tokenises font-feature blocks', ->
+          {tokens} = grammar.tokenizeLine('@font-feature-values Font name 2 { }')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.font-features.css', 'keyword.control.at-rule.font-feature-values.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'font-feature-values', scopes: ['source.css', 'meta.at-rule.font-features.css', 'keyword.control.at-rule.font-feature-values.css']
+          expect(tokens[3]).toEqual value: 'Font name 2 ', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css']
+          expect(tokens[4]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(tokens[6]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
+        it 'allows font-feature names to start on a different line', ->
+          lines = grammar.tokenizeLines """
+            @font-feature-values
+            Font name 2
+            {
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.font-features.css', 'keyword.control.at-rule.font-feature-values.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'font-feature-values', scopes: ['source.css', 'meta.at-rule.font-features.css', 'keyword.control.at-rule.font-feature-values.css']
+          expect(lines[1][0]).toEqual value: 'Font name 2', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css']
+          expect(lines[2][0]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+
+        it 'matches injected comments', ->
+          {tokens} = grammar.tokenizeLine('@font-feature-values/*{*/Font/*}*/name/*{*/2{')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.font-features.css', 'keyword.control.at-rule.font-feature-values.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'font-feature-values', scopes: ['source.css', 'meta.at-rule.font-features.css', 'keyword.control.at-rule.font-feature-values.css']
+          expect(tokens[2]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[3]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css', 'comment.block.css']
+          expect(tokens[4]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[5]).toEqual value: 'Font', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css']
+          expect(tokens[6]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[7]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css', 'comment.block.css']
+          expect(tokens[8]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[9]).toEqual value: 'name', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css']
+          expect(tokens[10]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[11]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css', 'comment.block.css']
+          expect(tokens[12]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(tokens[13]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css']
+          expect(tokens[14]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+
+        it 'tokenises at-rules for feature names', ->
+          lines = grammar.tokenizeLines """
+              @swash{ swashy: 2; }
+              @ornaments{ ident: 2; }
+              @annotation{ ident: 1; }
+              @stylistic{ stylish: 2; }
+              @styleset{ sets: 2 3 4; }
+              @character-variant{ charvar: 2 }
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.swash.css', 'keyword.control.at-rule.swash.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'swash', scopes: ['source.css', 'meta.at-rule.swash.css', 'keyword.control.at-rule.swash.css']
+          expect(lines[0][2]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[0][4]).toEqual value: 'swashy', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+          expect(lines[0][5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'punctuation.separator.key-value.css']
+          expect(lines[0][7]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[0][8]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'punctuation.terminator.rule.css']
+          expect(lines[0][10]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.end.css']
+          expect(lines[1][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.ornaments.css', 'keyword.control.at-rule.ornaments.css', 'punctuation.definition.keyword.css']
+          expect(lines[1][1]).toEqual value: 'ornaments', scopes: ['source.css', 'meta.at-rule.ornaments.css', 'keyword.control.at-rule.ornaments.css']
+          expect(lines[1][2]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.ornaments.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[1][4]).toEqual value: 'ident', scopes: ['source.css', 'meta.at-rule.ornaments.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+          expect(lines[1][5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.ornaments.css', 'meta.property-list.font-feature.css', 'punctuation.separator.key-value.css']
+          expect(lines[1][7]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.ornaments.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[1][8]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.ornaments.css', 'meta.property-list.font-feature.css', 'punctuation.terminator.rule.css']
+          expect(lines[1][10]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.ornaments.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.end.css']
+          expect(lines[2][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.annotation.css', 'keyword.control.at-rule.annotation.css', 'punctuation.definition.keyword.css']
+          expect(lines[2][1]).toEqual value: 'annotation', scopes: ['source.css', 'meta.at-rule.annotation.css', 'keyword.control.at-rule.annotation.css']
+          expect(lines[2][2]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.annotation.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[2][4]).toEqual value: 'ident', scopes: ['source.css', 'meta.at-rule.annotation.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+          expect(lines[2][5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.annotation.css', 'meta.property-list.font-feature.css', 'punctuation.separator.key-value.css']
+          expect(lines[2][7]).toEqual value: '1', scopes: ['source.css', 'meta.at-rule.annotation.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[2][8]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.annotation.css', 'meta.property-list.font-feature.css', 'punctuation.terminator.rule.css']
+          expect(lines[2][10]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.annotation.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.end.css']
+          expect(lines[3][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.stylistic.css', 'keyword.control.at-rule.stylistic.css', 'punctuation.definition.keyword.css']
+          expect(lines[3][1]).toEqual value: 'stylistic', scopes: ['source.css', 'meta.at-rule.stylistic.css', 'keyword.control.at-rule.stylistic.css']
+          expect(lines[3][2]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.stylistic.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[3][4]).toEqual value: 'stylish', scopes: ['source.css', 'meta.at-rule.stylistic.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+          expect(lines[3][5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.stylistic.css', 'meta.property-list.font-feature.css', 'punctuation.separator.key-value.css']
+          expect(lines[3][7]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.stylistic.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[3][8]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.stylistic.css', 'meta.property-list.font-feature.css', 'punctuation.terminator.rule.css']
+          expect(lines[3][10]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.stylistic.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.end.css']
+          expect(lines[4][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.styleset.css', 'keyword.control.at-rule.styleset.css', 'punctuation.definition.keyword.css']
+          expect(lines[4][1]).toEqual value: 'styleset', scopes: ['source.css', 'meta.at-rule.styleset.css', 'keyword.control.at-rule.styleset.css']
+          expect(lines[4][2]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.styleset.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[4][4]).toEqual value: 'sets', scopes: ['source.css', 'meta.at-rule.styleset.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+          expect(lines[4][5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.styleset.css', 'meta.property-list.font-feature.css', 'punctuation.separator.key-value.css']
+          expect(lines[4][7]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.styleset.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[4][9]).toEqual value: '3', scopes: ['source.css', 'meta.at-rule.styleset.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[4][11]).toEqual value: '4', scopes: ['source.css', 'meta.at-rule.styleset.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[4][12]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.styleset.css', 'meta.property-list.font-feature.css', 'punctuation.terminator.rule.css']
+          expect(lines[4][14]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.styleset.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.end.css']
+          expect(lines[5][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.character-variant.css', 'keyword.control.at-rule.character-variant.css', 'punctuation.definition.keyword.css']
+          expect(lines[5][1]).toEqual value: 'character-variant', scopes: ['source.css', 'meta.at-rule.character-variant.css', 'keyword.control.at-rule.character-variant.css']
+          expect(lines[5][2]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.character-variant.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[5][4]).toEqual value: 'charvar', scopes: ['source.css', 'meta.at-rule.character-variant.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+          expect(lines[5][5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.character-variant.css', 'meta.property-list.font-feature.css', 'punctuation.separator.key-value.css']
+          expect(lines[5][7]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.character-variant.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[5][9]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.character-variant.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.end.css']
+
+        it 'matches feature-name rules case-insensitively', ->
+          lines = grammar.tokenizeLines """
+              @sWASH{ swashy: 2; }
+              @ornaMENts{ ident: 2; }
+              @anNOTatION{ ident: 1; }
+              @styLISTic{ stylish: 2; }
+              @STYLEset{ sets: 2 3 4; }
+              @CHARacter-VARiant{ charvar: 2 }
+          """
+          expect(lines[0][1]).toEqual value: 'sWASH', scopes: ['source.css', 'meta.at-rule.swash.css', 'keyword.control.at-rule.swash.css']
+          expect(lines[1][1]).toEqual value: 'ornaMENts', scopes: ['source.css', 'meta.at-rule.ornaments.css', 'keyword.control.at-rule.ornaments.css']
+          expect(lines[2][1]).toEqual value: 'anNOTatION', scopes: ['source.css', 'meta.at-rule.annotation.css', 'keyword.control.at-rule.annotation.css']
+          expect(lines[3][1]).toEqual value: 'styLISTic', scopes: ['source.css', 'meta.at-rule.stylistic.css', 'keyword.control.at-rule.stylistic.css']
+          expect(lines[4][1]).toEqual value: 'STYLEset', scopes: ['source.css', 'meta.at-rule.styleset.css', 'keyword.control.at-rule.styleset.css']
+          expect(lines[5][1]).toEqual value: 'CHARacter-VARiant', scopes: ['source.css', 'meta.at-rule.character-variant.css', 'keyword.control.at-rule.character-variant.css']
+
+        it 'matches comments inside feature-name rules', ->
+          lines = grammar.tokenizeLines """
+            @font-feature-values Font name 2 {
+            @swash{/*
+            ========*/swashy:/**/2;/**/}
+            }
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.font-features.css', 'keyword.control.at-rule.font-feature-values.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'font-feature-values', scopes: ['source.css', 'meta.at-rule.font-features.css', 'keyword.control.at-rule.font-feature-values.css']
+          expect(lines[0][3]).toEqual value: 'Font name 2 ', scopes: ['source.css', 'meta.at-rule.font-features.css', 'variable.parameter.font-name.css']
+          expect(lines[0][4]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[1][0]).toEqual value: '@', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'keyword.control.at-rule.swash.css', 'punctuation.definition.keyword.css']
+          expect(lines[1][1]).toEqual value: 'swash', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'keyword.control.at-rule.swash.css']
+          expect(lines[1][2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[1][3]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[2][0]).toEqual value: '========', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'comment.block.css']
+          expect(lines[2][1]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[2][2]).toEqual value: 'swashy', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+          expect(lines[2][3]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'punctuation.separator.key-value.css']
+          expect(lines[2][4]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[2][5]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[2][6]).toEqual value: '2', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[2][7]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'punctuation.terminator.rule.css']
+          expect(lines[2][8]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[2][9]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[2][10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.end.css']
+          expect(lines[3][0]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
       describe '@page', ->
         it 'tokenises @page blocks correctly', ->
           {tokens} = grammar.tokenizeLine('@page :first { }')

@@ -191,6 +191,25 @@
     ]
   }
   {
+    'begin': '(?i)((@)font-feature-values)(?=[\\s{@\'";]|/\\*|$)\\s*'
+    'beginCaptures':
+      '1':
+        'name': 'keyword.control.at-rule.font-feature-values.css'
+      '2':
+        'name': 'punctuation.definition.keyword.css'
+    'contentName': 'variable.parameter.font-name.css'
+    'end': '(?={|;)'
+    'name': 'meta.at-rule.font-features.css'
+    'patterns': [
+      {
+        'include': '#comment-block'
+      }
+    ]
+  }
+  {
+    'include': '#font-features'
+  }
+  {
     'begin': '(?i)((@)namespace)(?=[\\s\'";]|/\\*|$)\\s*'
     'beginCaptures':
       '1':
@@ -311,6 +330,47 @@
         'name': 'punctuation.definition.comment.css'
     'end': '\\*/'
     'name': 'comment.block.css'
+  'font-features':
+    'begin': '''(?xi)
+      ((@)(annotation|character-variant|ornaments|styleset|stylistic|swash))
+      (?=[\\s{@'";]|/\\*|$)\\s*
+    '''
+    'beginCaptures':
+      '1':
+        'name': 'keyword.control.at-rule.${3:/downcase}.css'
+      '2':
+        'name': 'punctuation.definition.keyword.css'
+    'end': '(?<=})\\s*'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.terminator.at-rule.css'
+    'name': 'meta.at-rule.${3:/downcase}.css'
+    'patterns': [
+      {
+        'begin': '{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.property-list.begin.css'
+        'end': '(})|(?<=})'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.property-list.end.css'
+        'name': 'meta.property-list.font-feature.css'
+        'patterns': [
+          {
+            # Font-feature name
+            'match': '''(?x)
+              (?: [-a-zA-Z_]    | [^\\x00-\\x7F] )   # First letter
+              (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F] )*  # Remainder of identifier
+            '''
+            'name': 'variable.font-feature.css'
+          }
+          {
+            'include': '#rule-list-innards'
+          }
+        ]
+      }
+    ]
   'functions':
     'patterns': [
       # Calculation
@@ -954,14 +1014,21 @@
     'beginCaptures':
       '0':
         'name': 'punctuation.section.property-list.begin.css'
-    'end': '(})|(?<=})'
+    'end': '(})|(?<=})\\s*'
     'endCaptures':
       '0':
         'name': 'punctuation.section.property-list.end.css'
     'name': 'meta.property-list.css'
     'patterns': [
+      'include': '#rule-list-innards'
+    ]
+  'rule-list-innards':
+    'patterns': [
       {
         'include': '#comment-block'
+      }
+      {
+        'include': '#font-features'
       }
       {
         # Custom properties
