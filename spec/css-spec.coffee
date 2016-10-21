@@ -746,6 +746,92 @@ describe 'CSS grammar', ->
         expect(tokens[6]).toEqual value: '{', scopes: ['source.css', 'punctuation.section.property-list.begin.css']
         expect(tokens[7]).toEqual value: '}', scopes: ['source.css', 'punctuation.section.property-list.end.css']
 
+      describe '@keyframes', ->
+        it 'tokenises keyframe lists correctly', ->
+          lines = grammar.tokenizeLines """
+            @keyframes important1 {
+              from { margin-top: 50px;
+                     margin-bottom: 100px }
+              50%  { margin-top: 150px !important; } /* Ignored */
+              to   { margin-top: 100px; }
+            }
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'keyframes', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css']
+          expect(lines[0][3]).toEqual value: 'important1 ', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css']
+          expect(lines[0][4]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'punctuation.section.keyframes.begin.css']
+          expect(lines[1][1]).toEqual value: 'from', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.css']
+          expect(lines[1][3]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[1][5]).toEqual value: 'margin-top', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[1][6]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[1][8]).toEqual value: '50', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[1][9]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[1][10]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+          expect(lines[2][1]).toEqual value: 'margin-bottom', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[2][2]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[2][4]).toEqual value: '100', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[2][5]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[2][7]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[3][1]).toEqual value: '50%', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.percentile.css']
+          expect(lines[3][3]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[3][5]).toEqual value: 'margin-top', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[3][6]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[3][8]).toEqual value: '150', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[3][9]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[3][11]).toEqual value: '!important', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'keyword.other.important.css']
+          expect(lines[3][12]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+          expect(lines[3][14]).toEqual value: '} ', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[3][15]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[3][16]).toEqual value: ' Ignored ', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'comment.block.css']
+          expect(lines[3][17]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[4][1]).toEqual value: 'to', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.css']
+          expect(lines[4][3]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[4][5]).toEqual value: 'margin-top', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[4][6]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[4][8]).toEqual value: '100', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[4][9]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[4][10]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+          expect(lines[4][12]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[5][0]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'punctuation.section.keyframes.end.css']
+
+        it 'matches injected comments', ->
+          lines = grammar.tokenizeLines """
+            @keyframes/*{*/___IDENT__/*}
+              { Nah { margin-top: 2em; }
+            */{ from
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'keyframes', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css']
+          expect(lines[0][2]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[0][3]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css', 'comment.block.css']
+          expect(lines[0][4]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[0][5]).toEqual value: '___IDENT__', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css']
+          expect(lines[0][6]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[0][7]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css', 'comment.block.css']
+          expect(lines[1][0]).toEqual value: '  { Nah { margin-top: 2em; }', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css', 'comment.block.css']
+          expect(lines[2][0]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[2][1]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'punctuation.section.keyframes.begin.css']
+          expect(lines[2][3]).toEqual value: 'from', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.css']
+
+        it 'matches offset keywords case-insensitively', ->
+          {tokens} = grammar.tokenizeLine('@keyframes Give-them-both { fROm { } To {} }')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'keyframes', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css']
+          expect(tokens[3]).toEqual value: 'Give-them-both ', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css']
+          expect(tokens[4]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'punctuation.section.keyframes.begin.css']
+          expect(tokens[6]).toEqual value: 'fROm', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.css']
+          expect(tokens[8]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(tokens[10]).toEqual value: '} ', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(tokens[11]).toEqual value: 'To', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.css']
+          expect(tokens[13]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(tokens[14]).toEqual value: '} ', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(tokens[15]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'punctuation.section.keyframes.end.css']
+
+        it 'matches percentile offsets', ->
+          {tokens} = grammar.tokenizeLine('@keyframes identifier { -50.2% } @keyframes ident2 { .25%}')
+          expect(tokens[6]).toEqual value: '-50.2%', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.percentile.css']
+          expect(tokens[16]).toEqual value: '.25%', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.percentile.css']
+
       describe '@namespace', ->
         it 'tokenises @namespace statements correctly', ->
           {tokens} = grammar.tokenizeLine('@namespace "XML";')

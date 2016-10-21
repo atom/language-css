@@ -260,6 +260,72 @@
     ]
   }
   {
+    'begin': '(?i)((@)keyframes)(?=[\\s{\'";]|/\\*|$)\\s*'
+    'beginCaptures':
+      '1':
+        'name': 'keyword.control.at-rule.keyframes.css'
+      '2':
+        'name': 'punctuation.definition.keyword.css'
+    'end': '(?<=})\\s*'
+    'name': 'meta.at-rule.keyframes.header.css'
+    'patterns': [
+      {
+        'begin': '\\G'
+        'end': '(?={)'
+        'name': 'variable.parameter.keyframe-list.css'
+        'patterns': [
+          {
+            'include': '#comment-block'
+          }
+        ]
+      }
+      {
+        'begin': '{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.keyframes.begin.css'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.keyframes.end.css'
+        'name': 'meta.at-rule.keyframes.body.css'
+        'patterns': [
+          {
+            'include': '#comment-block'
+          }
+          {
+            'captures':
+              '1':
+                'name': 'entity.other.keyframe-offset.css'
+              '2':
+                'name': 'entity.other.keyframe-offset.percentile.css'
+            'match': '''(?xi)
+              (?<![\\w-]) (from|to) (?![\\w-])         # Keywords for 0% | 100%
+              |
+              ([-+]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)%)     # Percentile value
+            '''
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.property-list.begin.css'
+            'end': '}\\s*'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.property-list.end.css'
+            'name': 'meta.property-list.css'
+            'patterns': [
+              {
+                'include': '#rule-list-innards'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  {
     'begin': '(?i)((@)viewport)(?=[\\s{\'";]|/\\*|$)\\s*'
     'beginCaptures':
       '1':
