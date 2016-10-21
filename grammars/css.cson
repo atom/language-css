@@ -176,13 +176,13 @@
     ]
   }
   {
-    'begin': '(?i)(@)page(?=[\\s:{]|$|/\\*)'
+    'begin': '(?i)(@)page(?=[\\s:{;]|$|/\\*)'
     'captures':
       '0':
         'name': 'keyword.control.at-rule.page.css'
       '1':
         'name': 'punctuation.definition.keyword.css'
-    'end': '\\s*(?=$|[{:])'
+    'end': '\\s*(?=$|[{:;])'
     'name': 'meta.at-rule.page.css'
     'patterns': [
       {
@@ -191,14 +191,98 @@
     ]
   }
   {
-    'begin': '(?i)((@)font-feature-values)(?=[\\s{@\'";]|/\\*|$)\\s*'
+    'begin': '(?i)((@)counter-style)(?=[\\s{\'";]|/\\*|$)\\s*'
+    'beginCaptures':
+      '1':
+        'name': 'keyword.control.at-rule.counter-style.css'
+      '2':
+        'name': 'punctuation.definition.keyword.css'
+    'contentName': 'variable.parameter.style-name.css'
+    'end': '(?={|[@;])'
+    'name': 'meta.at-rule.counter-style.css'
+    'patterns': [
+      {
+        'include': '#comment-block'
+      }
+    ]
+  }
+  {
+    'begin': '(?i)((@)document)(?:\\s+|$|(?=[\'";{]|/\\*))'
+    'beginCaptures':
+      '1':
+        'name': 'keyword.control.at-rule.document.css'
+      '2':
+        'name': 'punctuation.definition.keyword.css'
+    'end': '{|(?=[@;])'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.document-styles.begin.css'
+    'name': 'meta.at-rule.document.css'
+    'patterns': [
+      {
+        'begin': '(?i)\\s*(?<![\\w-])(url-prefix|domain|regexp)(\\()\\s*'
+        'beginCaptures':
+          '1':
+            'name': 'support.function.${1:/downcase}-rule.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\s*(\\))\\s*'
+        'endCaptures':
+          '1':
+            'name': 'punctuation.section.function.css'
+        'name': 'meta.function.${1:/downcase}-rule.css'
+        'patterns': [
+          {
+            'include': '#string-single'
+          }
+          {
+            'include': '#string-double'
+          }
+          {
+            'include': '#comment-block'
+          }
+          {
+            'match': '[^\'")\\s]+'
+            'name': 'variable.parameter.document-rule.css'
+          }
+        ]
+      }
+      {
+        'include': '#url'
+      }
+      {
+        'match': ','
+        'name': 'punctuation.separator.comma.css'
+      }
+      {
+        'include': '#comment-block'
+      }
+    ]
+  }
+  {
+    'begin': '(?i)((@)viewport)(?=[\\s{\'";]|/\\*|$)\\s*'
+    'beginCaptures':
+      '1':
+        'name': 'keyword.control.at-rule.viewport.css'
+      '2':
+        'name': 'punctuation.definition.keyword.css'
+    'end': '(?=[{;@])'
+    'name': 'meta.at-rule.viewport.css'
+    'patterns': [
+      {
+        'include': '#comment-block'
+      }
+    ]
+  }
+  {
+    'begin': '(?i)((@)font-feature-values)(?=[\\s{\'";]|/\\*|$)\\s*'
     'beginCaptures':
       '1':
         'name': 'keyword.control.at-rule.font-feature-values.css'
       '2':
         'name': 'punctuation.definition.keyword.css'
     'contentName': 'variable.parameter.font-name.css'
-    'end': '(?={|;)'
+    'end': '(?={|[@;])'
     'name': 'meta.at-rule.font-features.css'
     'patterns': [
       {
@@ -274,6 +358,10 @@
         'include': '#rule-list'
       }
     ]
+  }
+  {
+    'match': '}'
+    'name': 'punctuation.section.end.css'
   }
 ]
 'repository':
