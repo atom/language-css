@@ -1407,8 +1407,8 @@
         'match': '''(?x)
           (\\.)
           -?+                               # possessive to avoid matching '-' followed by [0-9]
-          [-a-zA-Z_\\P{ASCII}]
-          [-a-zA-Z0-9_\\P{ASCII}]*+
+          (?![0-9])
+          (?:[-a-zA-Z_0-9]|[^\\x00-\\x7F])+
           (?=$|[\\s,.)\\[:{>+~|]|/\\*)      # to avoid matching '.B' in '.B&W'
         '''
         'name': 'entity.other.attribute-name.class.css'
@@ -1419,7 +1419,9 @@
             'name': 'punctuation.definition.entity.css'
         'match': '''(?x)
           (\\#)
-          -?+[-a-zA-Z_\\P{ASCII}][-a-zA-Z0-9_\\P{ASCII}]*+
+            -?+
+            (?![0-9])
+            (?:[-a-zA-Z0-9_]|[^\\x00-\\x7F])+
           (?=$|[\\s,.:{>+~|])
         '''
         'name': 'entity.other.attribute-name.id.css'
@@ -1595,8 +1597,19 @@
           }
         ]
       }
+      # Custom HTML elements
       {
-        'match': '(?<![\\w-])[a-z][\\w&&[^A-Z]]*+-[\\w-&&[^A-Z]]+'
+        'match': '''(?x) (?<![\\w-])
+          (?=            # Custom element names must:
+            [a-z]        # - start with a lowercase ASCII letter,
+            \\w* -       # - contain at least one dash
+          )
+          (?:
+            (?![A-Z])    # No uppercase ASCII letters are allowed
+            [\\w-]       # Allow any other word character or dash
+          )+
+          (?![\\w-])
+        '''
         'name': 'entity.name.tag.custom.css'
       }
     ]
@@ -1612,7 +1625,7 @@
     'name': 'string.quoted.double.css'
     'patterns': [
       {
-        'match': '\\\\(\\h{1,6}|.)'
+        'match': '\\\\([0-9a-fA-F]{1,6}|.)'
         'name': 'constant.character.escape.css'
       }
     ]
@@ -1628,7 +1641,7 @@
     'name': 'string.quoted.single.css'
     'patterns': [
       {
-        'match': '\\\\(\\h{1,6}|.)'
+        'match': '\\\\([0-9a-fA-F]{1,6}|.)'
         'name': 'constant.character.escape.css'
       }
     ]
