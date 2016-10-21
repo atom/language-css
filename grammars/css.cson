@@ -326,6 +326,51 @@
     ]
   }
   {
+    'begin': '(?i)(?=@supports(?:\\s|\\(|$|/\\*))'
+    'end': '(?<=})\\s*|(?=;)'
+    'patterns': [
+      {
+        'begin': '\\G'
+        'end': '(?=[;{])'
+        'name': 'meta.at-rule.supports.header.css'
+        'patterns': [
+          {
+           'captures':
+             '1':
+               'name': 'punctuation.definition.keyword.css'
+            'match': '(?i)\\G(@)supports'
+            'name': 'keyword.control.at-rule.supports.css'
+          }
+          {
+            'include': '#feature-query-operators'
+          }
+          {
+            'include': '#feature-query'
+          }
+          {
+            'include': '#comment-block'
+          }
+        ]
+      }
+      {
+        'begin': '{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.supports.begin.css'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.supports.end.css'
+        'name': 'meta.at-rule.supports.body.css'
+        'patterns': [
+          {
+            'include': '$self'
+          }
+        ]
+      }
+    ]
+  }
+  {
     'begin': '(?i)((@)viewport)(?=[\\s{\'";]|/\\*|$)\\s*'
     'beginCaptures':
       '1':
@@ -484,6 +529,34 @@
         'name': 'punctuation.definition.comment.css'
     'end': '\\*/'
     'name': 'comment.block.css'
+  'feature-query':
+    'begin': '\\('
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.condition.begin.bracket.round.css'
+    'end': '\\)'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.condition.end.bracket.round.css'
+    'name': 'meta.feature-query.css'
+    'patterns': [
+      {
+        'include': '#feature-query-operators'
+      }
+      {
+        'include': '#feature-query'
+      }
+    ]
+  'feature-query-operators':
+    'patterns': [
+      {
+        'match': '(?i)(?<=[\\s()]|^|\\*/)(and|not|or)(?=[\\s()]|$|/\\*)'
+        'name': 'keyword.operator.logical.$1.feature.css'
+      }
+      {
+        'include': '#rule-list-innards'
+      }
+    ]
   'font-features':
     'begin': '''(?xi)
       ((@)(annotation|character-variant|ornaments|styleset|stylistic|swash))

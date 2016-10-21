@@ -832,6 +832,292 @@ describe 'CSS grammar', ->
           expect(tokens[6]).toEqual value: '-50.2%', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.percentile.css']
           expect(tokens[16]).toEqual value: '.25%', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.percentile.css']
 
+      describe '@supports', ->
+        it 'tokenises feature queries', ->
+          {tokens} = grammar.tokenizeLine('@supports (font-size: 1em){ }')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'supports', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css']
+          expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(tokens[4]).toEqual value: 'font-size', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(tokens[7]).toEqual value: '1', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(tokens[8]).toEqual value: 'em', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(tokens[9]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(tokens[10]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.begin.css']
+          expect(tokens[12]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.end.css']
+
+        it 'matches logical operators', ->
+          lines = grammar.tokenizeLines """
+            @supports not (font-size: 1em){ }
+            @supports (font-size: 1em) and (font-size: 1em){ }
+            @supports (font-size: 1em) or (font-size: 1em){ }
+          """
+          expect(lines[0][3]).toEqual value: 'not', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.not.feature.css']
+          expect(lines[1][11]).toEqual value: 'and', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.and.feature.css']
+          expect(lines[2][11]).toEqual value: 'or', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.or.feature.css']
+
+        it 'matches custom variables in feature queries', ->
+          {tokens} = grammar.tokenizeLine('@supports (--foo: green){}')
+          expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(tokens[4]).toEqual value: '--foo', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'variable.css']
+          expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(tokens[7]).toEqual value: 'green', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.color.w3c-standard-color-name.css']
+          expect(tokens[8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+
+        it "doesn't mistake brackets in string literals for feature queries", ->
+          lines = grammar.tokenizeLines """
+            @supports not ((tab-size:4) or (-moz-tab-size:4)){
+              body::before{content: "Come on, Microsoft (Get it together already)…"; }
+            }
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'supports', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css']
+          expect(lines[0][3]).toEqual value: 'not', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.not.feature.css']
+          expect(lines[0][7]).toEqual value: 'tab-size', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[0][12]).toEqual value: 'or', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'keyword.operator.logical.or.feature.css']
+          expect(lines[0][15]).toEqual value: '-moz-tab-size', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.vendored.property-name.css']
+          expect(lines[0][20]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.begin.css']
+          expect(lines[1][1]).toEqual value: 'body', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.name.tag.css']
+          expect(lines[1][2]).toEqual value: '::', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
+          expect(lines[1][3]).toEqual value: 'before', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+          expect(lines[1][4]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[1][5]).toEqual value: 'content', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[1][6]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[1][8]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(lines[1][9]).toEqual value: 'Come on, Microsoft (Get it together already)…', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css']
+          expect(lines[1][10]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(lines[1][11]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+          expect(lines[1][13]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[2][0]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.end.css']
+
+        it 'tokenises multiple feature queries', ->
+          {tokens} = grammar.tokenizeLine('@supports (display:table-cell) or ((display:list-item) and (display:run-in)){')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'supports', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css']
+          expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(tokens[4]).toEqual value: 'display', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(tokens[6]).toEqual value: 'table-cell', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.property-value.css']
+          expect(tokens[7]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(tokens[9]).toEqual value: 'or', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.or.feature.css']
+          expect(tokens[11]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(tokens[12]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(tokens[13]).toEqual value: 'display', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(tokens[14]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(tokens[15]).toEqual value: 'list-item', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.property-value.css']
+          expect(tokens[16]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(tokens[18]).toEqual value: 'and', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'keyword.operator.logical.and.feature.css']
+          expect(tokens[20]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(tokens[21]).toEqual value: 'display', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(tokens[22]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(tokens[23]).toEqual value: 'run-in', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.property-value.css']
+          expect(tokens[24]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(tokens[25]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(tokens[26]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.begin.css']
+
+        it 'embeds rulesets and other at-rules', ->
+          lines = grammar.tokenizeLines """
+            @supports (animation-name: test) {
+              #node {
+                animation-name: test;
+              }
+              body > header[data-name="attr"] ~ *:not(:first-child){
+                content: "😂👌"
+              }
+              @keyframes important1 {
+                from {
+                  margin-top: 50px;
+                  margin-bottom: 100px
+                }
+                50%  { margin-top: 150px !important; } /* Ignored */
+                to   { margin-top: 100px; }
+              }
+            }
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'supports', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css']
+          expect(lines[0][3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(lines[0][4]).toEqual value: 'animation-name', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[0][5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(lines[0][7]).toEqual value: 'test', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css']
+          expect(lines[0][8]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(lines[0][10]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.begin.css']
+          expect(lines[1][1]).toEqual value: '#', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+          expect(lines[1][2]).toEqual value: 'node', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+          expect(lines[1][4]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[2][1]).toEqual value: 'animation-name', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[2][2]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[2][4]).toEqual value: 'test', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-value.css']
+          expect(lines[2][5]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+          expect(lines[3][1]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[4][1]).toEqual value: 'body', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.name.tag.css']
+          expect(lines[4][2]).toEqual value: ' > ', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css']
+          expect(lines[4][3]).toEqual value: 'header', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.name.tag.css']
+          expect(lines[4][4]).toEqual value: '[', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+          expect(lines[4][5]).toEqual value: 'data-name', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+          expect(lines[4][6]).toEqual value: '=', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+          expect(lines[4][7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.attribute-value.css', 'punctuation.definition.string.begin.css']
+          expect(lines[4][8]).toEqual value: 'attr', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.attribute-value.css']
+          expect(lines[4][9]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.attribute-value.css', 'punctuation.definition.string.end.css']
+          expect(lines[4][10]).toEqual value: ']', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.css']
+          expect(lines[4][11]).toEqual value: ' ~ ', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css']
+          expect(lines[4][12]).toEqual value: '*', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.name.tag.wildcard.css']
+          expect(lines[4][13]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(lines[4][14]).toEqual value: 'not', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(lines[4][15]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(lines[4][16]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(lines[4][17]).toEqual value: 'first-child', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(lines[4][18]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'punctuation.section.function.css']
+          expect(lines[4][19]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[5][1]).toEqual value: 'content', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[5][2]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[5][4]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(lines[5][5]).toEqual value: '😂👌', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css']
+          expect(lines[5][6]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+          expect(lines[6][1]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[7][1]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css', 'punctuation.definition.keyword.css']
+          expect(lines[7][2]).toEqual value: 'keyframes', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css']
+          expect(lines[7][4]).toEqual value: 'important1 ', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css']
+          expect(lines[7][5]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'punctuation.section.keyframes.begin.css']
+          expect(lines[8][1]).toEqual value: 'from', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.css']
+          expect(lines[8][3]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[9][1]).toEqual value: 'margin-top', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[9][2]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[9][4]).toEqual value: '50', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[9][5]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[9][6]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+          expect(lines[10][1]).toEqual value: 'margin-bottom', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[10][2]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[10][4]).toEqual value: '100', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[10][5]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[11][1]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[12][1]).toEqual value: '50%', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.percentile.css']
+          expect(lines[12][3]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[12][5]).toEqual value: 'margin-top', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[12][6]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[12][8]).toEqual value: '150', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[12][9]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[12][11]).toEqual value: '!important', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'keyword.other.important.css']
+          expect(lines[12][12]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+          expect(lines[12][14]).toEqual value: '} ', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[12][15]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[12][16]).toEqual value: ' Ignored ', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'comment.block.css']
+          expect(lines[12][17]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[13][1]).toEqual value: 'to', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.css']
+          expect(lines[13][3]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[13][5]).toEqual value: 'margin-top', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[13][6]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+          expect(lines[13][8]).toEqual value: '100', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[13][9]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[13][10]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+          expect(lines[13][12]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[14][1]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css', 'meta.at-rule.keyframes.body.css', 'punctuation.section.keyframes.end.css']
+          expect(lines[14][2]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.header.css']
+          expect(lines[15][0]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.end.css']
+
+        it 'matches injected comments', ->
+          # NB: This particular example actually isn't valid @supports
+          # syntax; it's just for stress-testing boundary-matching.
+          lines = grammar.tokenizeLines """
+            @supports/*===*/not/*==****************|
+            ==*/(display:table-cell)/*============*/ and (display: list-item)/*}*/{}
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'supports', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css']
+          expect(lines[0][2]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[0][3]).toEqual value: '===', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css']
+          expect(lines[0][4]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[0][5]).toEqual value: 'not', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.not.feature.css']
+          expect(lines[0][6]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[0][7]).toEqual value: '==****************|', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css']
+          expect(lines[1][0]).toEqual value: '==', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css']
+          expect(lines[1][1]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[1][2]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(lines[1][3]).toEqual value: 'display', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[1][4]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(lines[1][5]).toEqual value: 'table-cell', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.property-value.css']
+          expect(lines[1][6]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(lines[1][7]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[1][8]).toEqual value: '============', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css']
+          expect(lines[1][9]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[1][11]).toEqual value: 'and', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.and.feature.css']
+          expect(lines[1][13]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(lines[1][19]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[1][20]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css']
+          expect(lines[1][21]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'comment.block.css', 'punctuation.definition.comment.css']
+          expect(lines[1][22]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.begin.css']
+          expect(lines[1][23]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.end.css']
+
+        it 'matches feature queries across multiple lines', ->
+          lines = grammar.tokenizeLines """
+            @supports
+              (box-shadow: 0 0 2px rgba(0,0,0,.5) inset) or
+              (-moz-box-shadow: 0 0 2px black inset) or
+              (-webkit-box-shadow: 0 0 2px black inset) or
+              (-o-box-shadow: 0 0 2px black inset)
+            { .noticebox { } }
+          """
+          expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css', 'punctuation.definition.keyword.css']
+          expect(lines[0][1]).toEqual value: 'supports', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.control.at-rule.supports.css']
+          expect(lines[1][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(lines[1][2]).toEqual value: 'box-shadow', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.property-name.css']
+          expect(lines[1][3]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(lines[1][5]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[1][7]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[1][9]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[1][10]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[1][12]).toEqual value: 'rgba', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'support.function.misc.css']
+          expect(lines[1][13]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+          expect(lines[1][14]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+          expect(lines[1][15]).toEqual value: ',', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.separator.comma.css']
+          expect(lines[1][16]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+          expect(lines[1][17]).toEqual value: ',', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.separator.comma.css']
+          expect(lines[1][18]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+          expect(lines[1][19]).toEqual value: ',', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.separator.comma.css']
+          expect(lines[1][20]).toEqual value: '.5', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+          expect(lines[1][21]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+          expect(lines[1][23]).toEqual value: 'inset', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.property-value.css']
+          expect(lines[1][24]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(lines[1][26]).toEqual value: 'or', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.or.feature.css']
+          expect(lines[2][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(lines[2][2]).toEqual value: '-moz-box-shadow', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.vendored.property-name.css']
+          expect(lines[2][3]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(lines[2][5]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[2][7]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[2][9]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[2][10]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[2][12]).toEqual value: 'black', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.color.w3c-standard-color-name.css']
+          expect(lines[2][14]).toEqual value: 'inset', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.property-value.css']
+          expect(lines[2][15]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(lines[2][17]).toEqual value: 'or', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.or.feature.css']
+          expect(lines[3][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(lines[3][2]).toEqual value: '-webkit-box-shadow', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.vendored.property-name.css']
+          expect(lines[3][3]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(lines[3][5]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[3][7]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[3][9]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[3][10]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[3][12]).toEqual value: 'black', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.color.w3c-standard-color-name.css']
+          expect(lines[3][14]).toEqual value: 'inset', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.property-value.css']
+          expect(lines[3][15]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(lines[3][17]).toEqual value: 'or', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'keyword.operator.logical.or.feature.css']
+          expect(lines[4][1]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.begin.bracket.round.css']
+          expect(lines[4][2]).toEqual value: '-o-box-shadow', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-name.css', 'support.type.vendored.property-name.css']
+          expect(lines[4][3]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.separator.key-value.css']
+          expect(lines[4][5]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[4][7]).toEqual value: '0', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[4][9]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css']
+          expect(lines[4][10]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+          expect(lines[4][12]).toEqual value: 'black', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.color.w3c-standard-color-name.css']
+          expect(lines[4][14]).toEqual value: 'inset', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'meta.property-value.css', 'support.constant.property-value.css']
+          expect(lines[4][15]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.header.css', 'meta.feature-query.css', 'punctuation.definition.condition.end.bracket.round.css']
+          expect(lines[5][0]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.begin.css']
+          expect(lines[5][2]).toEqual value: '.', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+          expect(lines[5][3]).toEqual value: 'noticebox', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+          expect(lines[5][5]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+          expect(lines[5][7]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+          expect(lines[5][9]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.end.css']
+
       describe '@namespace', ->
         it 'tokenises @namespace statements correctly', ->
           {tokens} = grammar.tokenizeLine('@namespace "XML";')
