@@ -642,6 +642,75 @@
           }
         ]
       }
+      # Gradients
+      {
+        'begin': '''(?xi) (?<![\\w-])
+          (
+            (                            # Captured for scope-name
+              (?:-webkit-|-moz-|-o-)?    # Accept prefixed/historical variants
+              (?:repeating-)?            # "Repeating"-type gradient
+              (?:linear|radial|conic)    # Shape
+            )
+            -gradient
+          )
+          (\\()
+        '''
+        'beginCaptures':
+          '1':
+            'name': 'support.function.gradient.css'
+          '3':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'name': 'meta.function.${2:/downcase}.gradient.css'
+        'patterns': [
+          {
+            'match': '(?i)(?<![\\w-])(from|to|at)(?![\\w-])'
+            'name': 'keyword.operator.gradient.css'
+          }
+          {
+            'include': '#property-values'
+          }
+        ]
+      }
+      # Gradients (Deprecated/original Webkit syntax)
+      {
+        'begin': '(?i)(?<![\\w-])(-webkit-gradient)(\\()'
+        'beginCaptures':
+          '1':
+            'name': 'invalid.deprecated.gradient.function.css'
+          '2':
+            'name': 'punctuation.section.function.css'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.function.css'
+        'name': 'meta.function.legacy-webkit.gradient.css'
+        'patterns': [
+          {
+            'begin': '(?i)(?<![\\w-])(from|to|color-stop)(\\()'
+            'beginCaptures':
+              '1':
+                'name': 'invalid.deprecated.function.css'
+              '2':
+                'name': 'punctuation.section.function.css'
+            'end': '\\)'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.function.css'
+            'patterns': [
+              {
+                'include': '#property-values'
+              }
+            ]
+          }
+          {
+            'include': '#property-values'
+          }
+        ]
+      }
       # Misc functions
       {
         'begin': '''(?xi) (?<![\\w-])
@@ -1010,13 +1079,13 @@
           (absolute|active|add|additive|alias|all|all-petite-caps|all-scroll|all-small-caps|alpha|alphabetic|alternate|alternate-reverse
           |always|auto|auto-pos|available|avoid|avoid-column|avoid-page|avoid-region|backwards|balance|baseline|below|bidi-override|block
           |bold|bolder|border|border-box|both|bottom|bottom-outside|break-all|break-word|bullets|capitalize|caption|cell|center|char|circle
-          |clip|clone|close-quote|closest-side|col-resize|collapse|color|color-burn|color-dodge|column|column-reverse|common-ligatures
+          |clip|clone|close-quote|closest-corner|closest-side|col-resize|collapse|color|color-burn|color-dodge|column|column-reverse|common-ligatures
           |condensed|contain|content|content-box|contents|context-menu|contextual|copy|cover|crisp-edges|crosshair|cyclic|darken|dashed
           |decimal|default|dense|diagonal-fractions|difference|digits|disabled|disc|discretionary-ligatures|distribute|distribute-all-lines
           |distribute-letter|distribute-space|dot|dotted|double|double-circle|e-resize|each-line|ease|ease-in|ease-in-out|ease-out|ellipsis
-          |embed|end|evenodd|ew-resize|exclude|exclusion|expanded|extends|extra-condensed|extra-expanded|farthest-side|fill|fill-available
-          |fill-box|filled|fit-content|fixed|flat|flex|flex-end|flex-start|flip|forwards|from-image|full-width|geometricPrecision|georgian
-          |grab|grabbing|grid|groove|hand|hanging|hard-light|help|hidden|hide|historical-forms|historical-ligatures|horizontal|horizontal-tb
+          |embed|end|ellipse|evenodd|ew-resize|exclude|exclusion|expanded|extends|extra-condensed|extra-expanded|farthest-corner|farthest-side
+          |fill|fill-available|fill-box|filled|fit-content|fixed|flat|flex|flex-end|flex-start|flip|forwards|from-image|full-width|geometricPrecision
+          |georgian|grab|grabbing|grid|groove|hand|hanging|hard-light|help|hidden|hide|historical-forms|historical-ligatures|horizontal|horizontal-tb
           |hue|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|inactive|infinite|inherit|initial|inline
           |inline-block|inline-end|inline-flex|inline-grid|inline-list-item|inline-start|inline-table|inset|inside|inter-character
           |inter-ideograph|inter-word|intersect|invert|isolate|isolate-override|italic|jis04|jis78|jis83|jis90|justify|justify-all|kannada
@@ -1027,7 +1096,7 @@
           |no-open-quote|no-repeat|none|nonzero|normal|not-allowed|nowrap|ns-resize|numbers|numeric|nw-resize|nwse-resize|oblique
           |oldstyle-nums|open|open-quote|optimizeLegibility|optimizeQuality|optimizeSpeed|ordinal|outset|outside|over|overlay|overline
           |padding|padding-box|page|painted|pan-down|pan-left|pan-right|pan-up|pan-x|pan-y|paused|petite-caps|pixelated|plaintext|pointer
-          |portrait|pre|pre-line|pre-wrap|preserve-3d|progress|proportional-nums|proportional-width|proximity|recto|region|relative|repeat
+          |portrait|pre|pre-line|pre-wrap|preserve-3d|progress|proportional-nums|proportional-width|proximity|radial|recto|region|relative|repeat
           |repeat-x|repeat-y|reverse|revert|ridge|right|rl|round|row|row-resize|row-reverse|row-severse|rtl|ruby|ruby-base|ruby-base-container
           |ruby-text|ruby-text-container|run-in|running|s-resize|saturation|scale-down|screen|scroll|scroll-position|se-resize|semi-condensed
           |semi-expanded|separate|sesame|show|sideways|sideways-left|sideways-lr|sideways-right|sideways-rl|simplified|slashed-zero|slice

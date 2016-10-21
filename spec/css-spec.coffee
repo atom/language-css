@@ -2230,6 +2230,206 @@ describe 'CSS grammar', ->
             expect(lines[6][9]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'comment.block.css', 'punctuation.definition.comment.css']
             expect(lines[7][1]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
 
+        describe 'gradients', ->
+          it 'tokenises linear gradients', ->
+            {tokens} = grammar.tokenizeLine('a{ background-image: linear-gradient( 45deg, blue, red ); }')
+            expect(tokens[6]).toEqual value: 'linear-gradient', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'support.function.gradient.css']
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'punctuation.section.function.css']
+            expect(tokens[9]).toEqual value: '45', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'constant.numeric.css']
+            expect(tokens[10]).toEqual value: 'deg', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[11]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'punctuation.separator.comma.css']
+            expect(tokens[13]).toEqual value: 'blue', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'support.constant.color.w3c-standard-color-name.css']
+            expect(tokens[14]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'punctuation.separator.comma.css']
+            expect(tokens[16]).toEqual value: 'red', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'support.constant.color.w3c-standard-color-name.css']
+            expect(tokens[18]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'punctuation.section.function.css']
+            expect(tokens[19]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+
+            {tokens} = grammar.tokenizeLine('a{ background-image: LINear-graDIEnt( ellipse to left top, blue, red);')
+            expect(tokens[6]).toEqual value: 'LINear-graDIEnt', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'support.function.gradient.css']
+            expect(tokens[9]).toEqual value: 'ellipse', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'support.constant.property-value.css']
+            expect(tokens[11]).toEqual value: 'to', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'keyword.operator.gradient.css']
+            expect(tokens[13]).toEqual value: 'left', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'support.constant.property-value.css']
+            expect(tokens[15]).toEqual value: 'top', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'support.constant.property-value.css']
+            expect(tokens[16]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'punctuation.separator.comma.css']
+            expect(tokens[18]).toEqual value: 'blue', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'support.constant.color.w3c-standard-color-name.css']
+            expect(tokens[19]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'punctuation.separator.comma.css']
+            expect(tokens[21]).toEqual value: 'red', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.linear.gradient.css', 'support.constant.color.w3c-standard-color-name.css']
+
+          it 'tokenises radial gradients', ->
+            {tokens} = grammar.tokenizeLine('a{ background-image: radial-gradient(farthest-corner at 45px 45px , #f00 0%, #00f 100%);}')
+            expect(tokens[6]).toEqual value: 'radial-gradient', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'support.function.gradient.css']
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'punctuation.section.function.css']
+            expect(tokens[8]).toEqual value: 'farthest-corner', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'support.constant.property-value.css']
+            expect(tokens[10]).toEqual value: 'at', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'keyword.operator.gradient.css']
+            expect(tokens[12]).toEqual value: '45', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css']
+            expect(tokens[13]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[15]).toEqual value: '45', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css']
+            expect(tokens[16]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[18]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'punctuation.separator.comma.css']
+            expect(tokens[20]).toEqual value: '#', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.other.color.rgb-value.hex.css', 'punctuation.definition.constant.css']
+            expect(tokens[21]).toEqual value: 'f00', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.other.color.rgb-value.hex.css']
+            expect(tokens[23]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css']
+            expect(tokens[24]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css', 'keyword.other.unit.css']
+
+            {tokens} = grammar.tokenizeLine('a{ background-image: RADial-gradiENT(16px at 60px 50%,#000 0%, #000 14px, rgba(0,0,0,.3) 18px, transparent 19px)}')
+            expect(tokens[6]).toEqual value: 'RADial-gradiENT', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'support.function.gradient.css']
+            expect(tokens[7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'punctuation.section.function.css']
+            expect(tokens[8]).toEqual value: '16', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css']
+            expect(tokens[9]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[11]).toEqual value: 'at', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'keyword.operator.gradient.css']
+            expect(tokens[13]).toEqual value: '60', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css']
+            expect(tokens[14]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[16]).toEqual value: '50', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css']
+            expect(tokens[17]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(tokens[18]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'punctuation.separator.comma.css']
+            expect(tokens[19]).toEqual value: '#', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.other.color.rgb-value.hex.css', 'punctuation.definition.constant.css']
+            expect(tokens[20]).toEqual value: '000', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.other.color.rgb-value.hex.css']
+            expect(tokens[33]).toEqual value: 'rgba', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'support.function.misc.css']
+            expect(tokens[34]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+            expect(tokens[35]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+            expect(tokens[36]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'punctuation.separator.comma.css']
+            expect(tokens[41]).toEqual value: '.3', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+            expect(tokens[42]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+            expect(tokens[48]).toEqual value: 'transparent', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'support.constant.property-value.css']
+
+          it 'matches gradients that span multiple lines with injected comments', ->
+            lines = grammar.tokenizeLines """
+              a{
+                background-image: raDIAL-gradiENT(
+                  ellipse farthest-corner/*@*/at/*@*/470px 47px,/*===
+              ========*/#FFFF80 20%, rgba(204, 153, 153, 0.4) 30%,/*))))))))}*/#E6E6FF 60%); }
+            """
+            expect(lines[1][4]).toEqual value: 'raDIAL-gradiENT', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'support.function.gradient.css']
+            expect(lines[2][1]).toEqual value: 'ellipse', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'support.constant.property-value.css']
+            expect(lines[2][3]).toEqual value: 'farthest-corner', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'support.constant.property-value.css']
+            expect(lines[2][4]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[2][5]).toEqual value: '@', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css']
+            expect(lines[2][6]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[2][7]).toEqual value: 'at', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'keyword.operator.gradient.css']
+            expect(lines[2][8]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[2][11]).toEqual value: '470', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css']
+            expect(lines[2][12]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[2][16]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'punctuation.separator.comma.css']
+            expect(lines[2][17]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[2][18]).toEqual value: '===', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css']
+            expect(lines[3][0]).toEqual value: '========', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css']
+            expect(lines[3][2]).toEqual value: '#', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.other.color.rgb-value.hex.css', 'punctuation.definition.constant.css']
+            expect(lines[3][3]).toEqual value: 'FFFF80', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.other.color.rgb-value.hex.css']
+            expect(lines[3][9]).toEqual value: 'rgba', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'support.function.misc.css']
+            expect(lines[3][10]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+            expect(lines[3][20]).toEqual value: '0.4', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'constant.numeric.css']
+            expect(lines[3][21]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'meta.function.color.rgba-value.css', 'punctuation.section.function.css']
+            expect(lines[3][26]).toEqual value: '/*', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[3][27]).toEqual value: '))))))))}', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css']
+            expect(lines[3][28]).toEqual value: '*/', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'comment.block.css', 'punctuation.definition.comment.css']
+            expect(lines[3][29]).toEqual value: '#', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.other.color.rgb-value.hex.css', 'punctuation.definition.constant.css']
+            expect(lines[3][30]).toEqual value: 'E6E6FF', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.radial.gradient.css', 'constant.other.color.rgb-value.hex.css']
+
+          it 'highlights vendored gradient functions', ->
+            lines = grammar.tokenizeLines """
+              .grad {
+                background-image: -webkit-linear-gradient(top,  /* For Chrome 25 and Safari 6, iOS 6.1, Android 4.3 */ hsl(0, 80%, 70%), #bada55);
+                background-image:    -moz-linear-gradient(top,  /* For Firefox (3.6 to 15) */ hsl(0, 80%, 70%), #bada55);
+                background-image:      -o-linear-gradient(top,  /* For old Opera (11.1 to 12.0) */  hsl(0, 80%, 70%), #bada55);
+              }
+            """
+            expect(lines[1][4]).toEqual value: '-webkit-linear-gradient', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'support.function.gradient.css']
+            expect(lines[1][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'punctuation.section.function.css']
+            expect(lines[1][6]).toEqual value: 'top', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'support.constant.property-value.css']
+            expect(lines[1][10]).toEqual value: ' For Chrome 25 and Safari 6, iOS 6.1, Android 4.3 ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'comment.block.css']
+            expect(lines[1][13]).toEqual value: 'hsl', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'meta.function.color.hsl-value.css', 'support.function.misc.css']
+            expect(lines[1][22]).toEqual value: '70', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'meta.function.color.hsl-value.css', 'constant.numeric.css']
+            expect(lines[1][23]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'meta.function.color.hsl-value.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[1][24]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'meta.function.color.hsl-value.css', 'punctuation.section.function.css']
+            expect(lines[1][27]).toEqual value: '#', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'constant.other.color.rgb-value.hex.css', 'punctuation.definition.constant.css']
+            expect(lines[1][28]).toEqual value: 'bada55', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'constant.other.color.rgb-value.hex.css']
+            expect(lines[1][29]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-webkit-linear.gradient.css', 'punctuation.section.function.css']
+            expect(lines[2][4]).toEqual value: '-moz-linear-gradient', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-moz-linear.gradient.css', 'support.function.gradient.css']
+            expect(lines[2][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-moz-linear.gradient.css', 'punctuation.section.function.css']
+            expect(lines[2][6]).toEqual value: 'top', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-moz-linear.gradient.css', 'support.constant.property-value.css']
+            expect(lines[2][7]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-moz-linear.gradient.css', 'punctuation.separator.comma.css']
+            expect(lines[2][10]).toEqual value: ' For Firefox (3.6 to 15) ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-moz-linear.gradient.css', 'comment.block.css']
+            expect(lines[2][13]).toEqual value: 'hsl', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-moz-linear.gradient.css', 'meta.function.color.hsl-value.css', 'support.function.misc.css']
+            expect(lines[2][14]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-moz-linear.gradient.css', 'meta.function.color.hsl-value.css', 'punctuation.section.function.css']
+            expect(lines[2][24]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-moz-linear.gradient.css', 'meta.function.color.hsl-value.css', 'punctuation.section.function.css']
+            expect(lines[2][29]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-moz-linear.gradient.css', 'punctuation.section.function.css']
+            expect(lines[3][4]).toEqual value: '-o-linear-gradient', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-o-linear.gradient.css', 'support.function.gradient.css']
+            expect(lines[3][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-o-linear.gradient.css', 'punctuation.section.function.css']
+            expect(lines[3][10]).toEqual value: ' For old Opera (11.1 to 12.0) ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-o-linear.gradient.css', 'comment.block.css']
+            expect(lines[3][13]).toEqual value: 'hsl', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-o-linear.gradient.css', 'meta.function.color.hsl-value.css', 'support.function.misc.css']
+            expect(lines[3][14]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.-o-linear.gradient.css', 'meta.function.color.hsl-value.css', 'punctuation.section.function.css']
+
+          it 'highlights antique Webkit syntax as deprecated', ->
+            lines = grammar.tokenizeLines """
+              .grad {
+                background-image: -webkit-gradient(linear, 0% 0%, 0% 100%,
+                  from( rgb(0, 171, 235)),
+                  color-stop(0.5, rgb(255, 255, 255)),
+                  color-stop(0.5, rgb(102, 204, 0)),
+                  to(rgb(255, 255, 255))),
+                  -webkit-gradient(radial, 45 45, 10, 52 50, 30, from(#A7D30C), to(rgba(1,159,98,0)), color-stop(90%, #019F62)),
+                      -webkit-gradient(radial, 105 105, 20, 112 120, 50, from(#ff5f98), to(rgba(255,1,136,0)), color-stop(75%, #ff0188)),
+                      -webkit-gradient(radial, 95 15, 15, 102 20, 40, from(#00c9ff), to(rgba(0,201,255,0)), color-stop(80%, #00b5e2)),
+                      -webkit-gradient(radial, 0 150, 50, 0 140, 90, from(#f4f201), to(rgba(228, 199,0,0)), color-stop(80%, #e4c700));
+              }
+            """
+            expect(lines[1][4]).toEqual value: '-webkit-gradient', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'invalid.deprecated.gradient.function.css']
+            expect(lines[1][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[1][6]).toEqual value: 'linear', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'support.constant.property-value.css']
+            expect(lines[1][7]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.separator.comma.css']
+            expect(lines[1][19]).toEqual value: '100', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'constant.numeric.css']
+            expect(lines[1][20]).toEqual value: '%', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'constant.numeric.css', 'keyword.other.unit.css']
+            expect(lines[2][1]).toEqual value: 'from', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'invalid.deprecated.function.css']
+            expect(lines[2][2]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[2][4]).toEqual value: 'rgb', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'support.function.misc.css']
+            expect(lines[2][5]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'punctuation.section.function.css']
+            expect(lines[2][9]).toEqual value: '171', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'constant.numeric.css']
+            expect(lines[2][10]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'punctuation.separator.comma.css']
+            expect(lines[2][14]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[3][1]).toEqual value: 'color-stop', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'invalid.deprecated.function.css']
+            expect(lines[3][2]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[3][3]).toEqual value: '0.5', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'constant.numeric.css']
+            expect(lines[3][4]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.separator.comma.css']
+            expect(lines[3][16]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[3][17]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.separator.comma.css']
+            expect(lines[4][1]).toEqual value: 'color-stop', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'invalid.deprecated.function.css']
+            expect(lines[4][2]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[4][3]).toEqual value: '0.5', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'constant.numeric.css']
+            expect(lines[4][4]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.separator.comma.css']
+            expect(lines[4][6]).toEqual value: 'rgb', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'support.function.misc.css']
+            expect(lines[4][7]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'punctuation.section.function.css']
+            expect(lines[4][8]).toEqual value: '102', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'constant.numeric.css']
+            expect(lines[4][9]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'punctuation.separator.comma.css']
+            expect(lines[4][11]).toEqual value: '204', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'constant.numeric.css']
+            expect(lines[4][12]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'punctuation.separator.comma.css']
+            expect(lines[4][14]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'constant.numeric.css']
+            expect(lines[4][15]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'punctuation.section.function.css']
+            expect(lines[4][16]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[4][17]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.separator.comma.css']
+            expect(lines[5][1]).toEqual value: 'to', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'invalid.deprecated.function.css']
+            expect(lines[5][2]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[5][12]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgb-value.css', 'punctuation.section.function.css']
+            expect(lines[5][13]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[5][14]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[5][15]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.comma.css']
+            expect(lines[6][1]).toEqual value: '-webkit-gradient', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'invalid.deprecated.gradient.function.css']
+            expect(lines[6][2]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[6][3]).toEqual value: 'radial', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'support.constant.property-value.css']
+            expect(lines[6][4]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.separator.comma.css']
+            expect(lines[6][8]).toEqual value: '45', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'constant.numeric.css']
+            expect(lines[6][31]).toEqual value: 'rgba', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'meta.function.color.rgba-value.css', 'support.function.misc.css']
+            expect(lines[7][1]).toEqual value: '-webkit-gradient', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'invalid.deprecated.gradient.function.css']
+            expect(lines[7][2]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[9][1]).toEqual value: '-webkit-gradient', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'invalid.deprecated.gradient.function.css']
+            expect(lines[9][2]).toEqual value: '(', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[9][3]).toEqual value: 'radial', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'support.constant.property-value.css']
+            expect(lines[9][4]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.separator.comma.css']
+            expect(lines[9][6]).toEqual value: '0', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'constant.numeric.css']
+            expect(lines[9][8]).toEqual value: '150', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'constant.numeric.css']
+            expect(lines[9][54]).toEqual value: ')', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'meta.function.legacy-webkit.gradient.css', 'punctuation.section.function.css']
+            expect(lines[9][55]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+            expect(lines[10][0]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
         describe 'other functions', ->
           it 'tokenises basic-shape functions', ->
             lines = grammar.tokenizeLines """
