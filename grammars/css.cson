@@ -1427,42 +1427,78 @@
         'name': 'entity.other.attribute-name.id.css'
       }
       {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.css'
-          '2':
-            'name': 'entity.other.namespace-prefix.css'
-          '3':
-            'name': 'punctuation.separator.css'
-          '4':
-            'name': 'entity.other.attribute-name.css'
-          '5':
-            'name': 'keyword.operator.pattern.css'
-          '6':
-            'name': 'string.unquoted.attribute-value.css'
-          '7':
-            'name': 'string.quoted.attribute-value.css'
-          '8':
-            'name': 'punctuation.definition.string.begin.css'
-          '9':
-            'name': 'punctuation.definition.string.end.css'
-          '10':
-            'name': 'punctuation.definition.entity.css'
-        'match': '''(?x)
-          (\\[)\\s*
-          (?:(\\g<ident>|\\*)?(\\|))?     # qualified name prefix
-          ([\\w:&&[^0-9]][\\w:.-]*+)\\s*  # attribute name
-          (?:
-            ([~|^$*]?=)\\s*
-            (?:                           # attribute value
-              (\\g<ident>)
-            | ((?>([\'"])(?:[^\\\\]|\\\\.)*?(\\k<-2>)))
-            )\\s*
-          )?
-          (\\])
-          (?<ident>-?+[-a-zA-Z_\\P{ASCII}][-a-zA-Z0-9_\\P{ASCII}]*+){0}
-        '''
+        'begin': '\\['
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.entity.begin.bracket.square.css'
+        'end': '\\]'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.entity.end.bracket.square.css'
         'name': 'meta.attribute-selector.css'
+        'patterns': [
+          {
+            'include': '#comment-block'
+          }
+          {
+            'include': '#string-double'
+          }
+          {
+            'include': '#string-single'
+          }
+          {
+            'captures':
+              '1':
+                'name': 'storage.modifier.ignore-case.css'
+            'match': '(?<=["\'\\s]|^|\\*/)\\s*([iI])\\s*(?=[\\s\\]]|$|/\\*)'
+          }
+          {
+            'captures':
+              '1':
+                'name': 'string.unquoted.attribute-value.css'
+            'match': '(?<==)\\s*([^\\s\\]]+)'
+          }
+          {
+            'match': '[~|^$*]?='
+            'name': 'keyword.operator.pattern.css'
+          }
+          {
+            'match': '\\|'
+            'name': 'punctuation.separator.css'
+          }
+          {
+            'captures':
+              '1':
+                'name': 'entity.other.namespace-prefix.css'
+            'match': '''(?x)
+              
+              # Qualified namespace prefix
+              (  -?(?!\\d)(?:[\\w-]|[^\\x00-\\x7F])+
+              |  \\*
+              )
+              
+              # Lookahead to ensure there's a valid identifier ahead
+              (?=
+                \\| (?!\\s|=|$|\\])
+
+                (?: -?(?!\\d)
+                 |   [\\w-]
+                 |   [^\\x00-\\x7F]
+                 )
+              )
+            '''
+          }
+          {
+            'captures':
+              '1':
+                'name': 'entity.other.attribute-name.css'
+            'match': '''(?x)
+              (-?(?!\\d)(?:[\\w-]|[^\\x00-\\x7F])+)
+              \\s*
+              (?=[~|^\\]$*=]|/\\*)
+            '''
+          }
+        ]
       }
       {
         'include': '#pseudo-classes'
