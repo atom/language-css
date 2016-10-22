@@ -564,10 +564,13 @@
     ]
   'comment-block':
     'begin': '/\\*'
-    'captures':
+    'beginCaptures':
       '0':
-        'name': 'punctuation.definition.comment.css'
+        'name': 'punctuation.definition.comment.begin.css'
     'end': '\\*/'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.comment.end.css'
     'name': 'comment.block.css'
   'escapes':
     'patterns': [
