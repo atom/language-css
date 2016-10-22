@@ -1060,14 +1060,34 @@
       {
         'captures':
           '1':
-            'name': 'keyword.other.unit.css'
-        'match': '''(?xi)
-          (?<!\\w|-)
-          (?:
-            [-+]? [0-9]+ (?:\\.[0-9]+)? |
-            \\.   [0-9]+
+            'name': 'keyword.other.unit.percentage.css'
+          '2':
+            'name': 'keyword.other.unit.${2:/downcase}-unit.css'
+        'match': '''(?xi) (?<!\\w|-)
+          [-+]?                               # Sign indicator
+
+          (?:                                 # Numerals
+              [0-9]+ (?:\\.[0-9]+)?           # Integer/float with leading digits
+            | \\.[0-9]+                       # Float without leading digits
           )
-          (%|(?:ch|cm|deg|dpcm|dpi|dppx|em|ex|fr|grad|hz|in|khz|mm|mozmm|ms|pc|pt|px|q|rad|rem|s|turn|vh|vmax|vmin|vw)\\b)?
+
+          (?:                                 # Scientific notation
+            (?<=[0-9])                        # Exponent must follow a digit
+            [Ee]                              # Exponent indicator
+            [-+]?                             # Possible sign indicator
+            [0-9]+                            # Exponent value
+          )?
+
+          (?:                                 # Possible unit for data-type:
+            (%)                               # - Percentage
+            | ( deg|grad|rad|turn             # - Angle
+              | Hz|kHz                        # - Frequency
+              | ch|cm|em|ex|in|mm|mozmm|pc|   # - Length
+                pt|px|q|rem|vh|vmax|vmin|vw
+              | dpi|dpcm|dppx                 # - Resolution
+              | s|ms                          # - Time
+              )\\b
+          )?
         '''
         'name': 'constant.numeric.css'
       }
