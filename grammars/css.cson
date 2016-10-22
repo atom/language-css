@@ -20,6 +20,9 @@
     'include': '#comment-block'
   }
   {
+    'include': '#escapes'
+  }
+  {
     'include': '#selector'
   }
   {
@@ -135,6 +138,9 @@
         'include': '#comment-block'
       }
       {
+        'include': '#escapes'
+      }
+      {
         'include': '#rule-list'
       }
     ]
@@ -204,6 +210,9 @@
       {
         'include': '#comment-block'
       }
+      {
+        'include': '#escapes'
+      }
     ]
   }
   {
@@ -242,6 +251,9 @@
             'include': '#comment-block'
           }
           {
+            'include': '#escapes'
+          }
+          {
             'match': '[^\'")\\s]+'
             'name': 'variable.parameter.document-rule.css'
           }
@@ -256,6 +268,9 @@
       }
       {
         'include': '#comment-block'
+      }
+      {
+        'include': '#escapes'
       }
     ]
   }
@@ -277,6 +292,9 @@
           {
             'include': '#comment-block'
           }
+          {
+            'include': '#escapes'
+          }
         ]
       }
       {
@@ -292,6 +310,9 @@
         'patterns': [
           {
             'include': '#comment-block'
+          }
+          {
+            'include': '#escapes'
           }
           {
             'captures':
@@ -350,6 +371,9 @@
           {
             'include': '#comment-block'
           }
+          {
+            'include': '#escapes'
+          }
         ]
       }
       {
@@ -383,6 +407,9 @@
       {
         'include': '#comment-block'
       }
+      {
+        'include': '#escapes'
+      }
     ]
   }
   {
@@ -398,6 +425,9 @@
     'patterns': [
       {
         'include': '#comment-block'
+      }
+      {
+        'include': '#escapes'
       }
     ]
   }
@@ -430,6 +460,11 @@
             ]
           '2':
             'name': 'entity.name.function.namespace-prefix.css'
+            'patterns': [
+              {
+                'include': '#escapes'
+              }
+            ]
         'match': '''(?xi)
           (?:\\G|^|(?<=\\s))
           (?=
@@ -442,12 +477,17 @@
           (.*?)                                    # Grouped to embed #comment-block
           (
             (?: [-a-zA-Z_]    | [^\\x00-\\x7F] )   # First letter
-            (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F] )*  # Remainder of identifier
+            (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F]     # Remainder of identifier
+              | \\\\(?:[0-9a-fA-F]{1,6}|.)
+            )*
           )
         '''
       }
       {
         'include': '#comment-block'
+      }
+      {
+        'include': '#escapes'
       }
       {
         'include': '#string-double'
@@ -529,6 +569,21 @@
         'name': 'punctuation.definition.comment.css'
     'end': '\\*/'
     'name': 'comment.block.css'
+  'escapes':
+    'patterns': [
+      {
+        'match': '\\\\[0-9a-fA-F]{1,6}'
+        'name': 'constant.character.escape.codepoint.css'
+      }
+      {
+        'match': '\\\\$'
+        'name': 'constant.character.escape.newline.css'
+      }
+      {
+        'match': '\\\\.'
+        'name': 'constant.character.escape.css'
+      }
+    ]
   'feature-query':
     'begin': '\\('
     'beginCaptures':
@@ -966,6 +1021,9 @@
         'include': '#comment-block'
       }
       {
+        'include': '#escapes'
+      }
+      {
         'include': '#media-types'
       }
       {
@@ -1258,6 +1316,9 @@
         'include': '#comment-block'
       }
       {
+        'include': '#escapes'
+      }
+      {
         'include': '#functions'
       }
       {
@@ -1345,6 +1406,9 @@
         'include': '#comment-block'
       }
       {
+        'include': '#escapes'
+      }
+      {
         'include': '#font-features'
       }
       {
@@ -1390,6 +1454,9 @@
     'name': 'meta.selector.css'
     'patterns': [
       {
+        'include': '#escapes'
+      }
+      {
         'captures':
           '1':
             'name': 'entity.other.namespace-prefix.css'
@@ -1425,11 +1492,15 @@
         'captures':
           '1':
             'name': 'punctuation.definition.entity.css'
+          '2':
+            'patterns': ['include': '#escapes']
         'match': '''(?x)
           (\\.)
-          -?+                               # possessive to avoid matching '-' followed by [0-9]
-          (?![0-9])
-          (?:[-a-zA-Z_0-9]|[^\\x00-\\x7F])+
+          (
+            -?+                             # possessive to avoid matching '-' followed by [0-9]
+            (?![0-9])
+            (?:[-a-zA-Z_0-9]|[^\\x00-\\x7F]|\\\\(?:[0-9a-fA-F]{1,6}|.))+
+          )
           (?=$|[\\s,.)\\[:{>+~|]|/\\*)      # to avoid matching '.B' in '.B&W'
         '''
         'name': 'entity.other.attribute-name.class.css'
@@ -1438,11 +1509,15 @@
         'captures':
           '1':
             'name': 'punctuation.definition.entity.css'
+          '2':
+            'patterns': ['include': '#escapes']
         'match': '''(?x)
           (\\#)
+          (
             -?+
             (?![0-9])
-            (?:[-a-zA-Z0-9_]|[^\\x00-\\x7F])+
+            (?:[-a-zA-Z0-9_]|[^\\x00-\\x7F]|\\\\(?:[0-9a-fA-F]{1,6}|.))+
+          )
           (?=$|[\\s,.:{>+~|])
         '''
         'name': 'entity.other.attribute-name.id.css'
@@ -1477,7 +1552,13 @@
             'captures':
               '1':
                 'name': 'string.unquoted.attribute-value.css'
-            'match': '(?<==)\\s*((?!/\\*)[^\'"\\s\\]]+)'
+                'patterns': [
+                  'include': '#escapes'
+                ]
+            'match': '(?x)(?<==)\\s*((?!/\\*)(?:[^\\\\"\'\\s\\]]|\\\\.)+)'
+          }
+          {
+            'include': '#escapes'
           }
           {
             'match': '[~|^$*]?='
@@ -1491,19 +1572,20 @@
             'captures':
               '1':
                 'name': 'entity.other.namespace-prefix.css'
+                'patterns': ['include': '#escapes']
             'match': '''(?x)
-              
+
               # Qualified namespace prefix
-              (  -?(?!\\d)(?:[\\w-]|[^\\x00-\\x7F])+
-              |  \\*
+              ( -?(?!\\d)(?:[\\w-]|[^\\x00-\\x7F]|\\\\(?:[0-9a-fA-F]{1,6}|.))+
+              | \\*
               )
-              
+
               # Lookahead to ensure there's a valid identifier ahead
               (?=
                 \\| (?!\\s|=|$|\\])
 
                 (?: -?(?!\\d)
-                 |   [\\w-]
+                 |   [\\\\\\w-]
                  |   [^\\x00-\\x7F]
                  )
               )
@@ -1513,8 +1595,11 @@
             'captures':
               '1':
                 'name': 'entity.other.attribute-name.css'
+                'patterns': [
+                  'include': '#escapes'
+                ]
             'match': '''(?x)
-              (-?(?!\\d)(?:[\\w-]|[^\\x00-\\x7F])+)
+              (-?(?!\\d)(?:[\\w-]|[^\\x00-\\x7F]|\\\\(?:[0-9a-fA-F]{1,6}|.))+)
               \\s*
               (?=[~|^\\]$*=]|/\\*)
             '''
@@ -1565,7 +1650,7 @@
             'name': 'punctuation.section.function.css'
         'patterns': [
           {
-            'match': '(?<=[(,\\s])[a-zA-Z]+(-[a-zA-Z0-9]*+)*+(?=[),\\s])'
+            'match': '(?<=[(,\\s])[a-zA-Z]+(-[a-zA-Z0-9]*+|\\\\(?:[0-9a-fA-F]{1,6}|.))*+(?=[),\\s])'
             'name': 'support.constant.language-range.css'
           }
           {
@@ -1579,6 +1664,9 @@
                 'name': 'punctuation.definition.string.end.css'
             'name': 'string.quoted.double.css'
             'patterns': [
+              {
+                'include': '#escapes'
+              }
               {
                 'match': '(?<=["\\s])[a-zA-Z*]+(-[a-zA-Z0-9*]*+)*+(?=["\\s])'
                 'name': 'support.constant.language-range.css'
@@ -1596,6 +1684,9 @@
                 'name': 'punctuation.definition.string.end.css'
             'name': 'string.quoted.single.css'
             'patterns': [
+              {
+                'include': '#escapes'
+              }
               {
                 'match': "(?<=['\\s])[a-zA-Z*]+(-[a-zA-Z0-9*]*+)*+(?=['\\s])"
                 'name': 'support.constant.language-range.css'
@@ -1682,8 +1773,7 @@
     'name': 'string.quoted.double.css'
     'patterns': [
       {
-        'match': '\\\\([0-9a-fA-F]{1,6}|.)'
-        'name': 'constant.character.escape.css'
+        'include': '#escapes'
       }
     ]
   'string-single':
@@ -1698,8 +1788,7 @@
     'name': 'string.quoted.single.css'
     'patterns': [
       {
-        'match': '\\\\([0-9a-fA-F]{1,6}|.)'
-        'name': 'constant.character.escape.css'
+        'include': '#escapes'
       }
     ]
   'tag-names':
@@ -1770,5 +1859,8 @@
       }
       {
         'include': '#comment-block'
+      }
+      {
+        'include': '#escapes'
       }
     ]

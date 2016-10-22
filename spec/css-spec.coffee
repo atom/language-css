@@ -194,6 +194,28 @@ describe 'CSS grammar', ->
         expect(tokens[12]).toEqual value: '   ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
         expect(tokens[13]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
 
+      it 'tokenises escape sequences inside attribute selectors', ->
+        {tokens} = grammar.tokenizeLine('a[name\\[0\\]="value"]')
+        expect(tokens[2]).toEqual value: 'name', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(tokens[3]).toEqual value: '\\[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css', 'constant.character.escape.css']
+        expect(tokens[4]).toEqual value: '0', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(tokens[5]).toEqual value: '\\]', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css', 'constant.character.escape.css']
+        expect(tokens[6]).toEqual value: '=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[10]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+      it 'tokenises escape sequences inside namespace prefixes', ->
+        {tokens} = grammar.tokenizeLine('a[name\\ space|Get\\ It\\?="kek"]')
+        expect(tokens[2]).toEqual value: 'name', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[3]).toEqual value: '\\ ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.namespace-prefix.css', 'constant.character.escape.css']
+        expect(tokens[4]).toEqual value: 'space', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[5]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.css']
+        expect(tokens[6]).toEqual value: 'Get', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(tokens[7]).toEqual value: '\\ ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css', 'constant.character.escape.css']
+        expect(tokens[8]).toEqual value: 'It', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(tokens[9]).toEqual value: '\\?', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css', 'constant.character.escape.css']
+        expect(tokens[10]).toEqual value: '=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[14]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
       it 'tokenises comments inside attribute selectors', ->
         {tokens} = grammar.tokenizeLine('span[/*]*/lang]')
         expect(tokens[0]).toEqual value: 'span', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
@@ -247,6 +269,19 @@ describe 'CSS grammar', ->
         expect(tokens[5]).toEqual value: '0xDEADCAFE=|~BEEFBABE', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
         expect(tokens[6]).toEqual value: '  ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
         expect(tokens[7]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+      it 'tokenises escape sequences in unquoted strings', ->
+        {tokens} = grammar.tokenizeLine('a[name\\[0\\]=a\\BAD\\AF\\]a\\ i] {}')
+        expect(tokens[6]).toEqual value: '=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[7]).toEqual value: 'a', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+        expect(tokens[8]).toEqual value: '\\BAD', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css', 'constant.character.escape.codepoint.css']
+        expect(tokens[9]).toEqual value: '\\AF', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css', 'constant.character.escape.codepoint.css']
+        expect(tokens[10]).toEqual value: '\\]', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css', 'constant.character.escape.css']
+        expect(tokens[11]).toEqual value: 'a', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+        expect(tokens[12]).toEqual value: '\\ ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css', 'constant.character.escape.css']
+        expect(tokens[13]).toEqual value: 'i', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+        expect(tokens[14]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+        expect(tokens[16]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
 
       it 'tokenises the ignore-case modifier at the end of a selector', ->
         {tokens} = grammar.tokenizeLine('a[attr=val i] a[attr="val" i] a[attr=\'val\'I] a[val^=  \'"\'i] a[attr= i] a[attr= i i]')
@@ -348,7 +383,7 @@ describe 'CSS grammar', ->
         expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
         expect(tokens[1]).toEqual value: '_', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
 
-      it 'does not tokenize tokens containing ASCII punctuation or symbols other than "-" and "_"', ->
+      it 'does not tokenize tokens containing unescaped ASCII punctuation or symbols other than "-" and "_"', ->
         {tokens} = grammar.tokenizeLine '.B&W'
         expect(tokens[0]).toEqual value: '.B&W', scopes: ['source.css', 'meta.selector.css']
 
@@ -363,6 +398,23 @@ describe 'CSS grammar', ->
       it 'does not tokenize a token consisting of one hyphen', ->
         {tokens} = grammar.tokenizeLine '.-'
         expect(tokens[0]).toEqual value: '.-', scopes: ['source.css', 'meta.selector.css']
+
+      it 'tokenises class selectors starting with an escape sequence', ->
+        {tokens} = grammar.tokenizeLine '.\\33\\44-model {'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '\\33', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'constant.character.escape.codepoint.css']
+        expect(tokens[2]).toEqual value: '\\44', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'constant.character.escape.codepoint.css']
+        expect(tokens[3]).toEqual value: '-model', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+        expect(tokens[5]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+
+      it 'tokenises class selectors ending with an escape sequence', ->
+        {tokens} = grammar.tokenizeLine '.la\\{tex\\} {'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'la', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+        expect(tokens[2]).toEqual value: '\\{', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'constant.character.escape.css']
+        expect(tokens[3]).toEqual value: 'tex', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+        expect(tokens[4]).toEqual value: '\\}', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'constant.character.escape.css']
+        expect(tokens[6]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
 
     describe 'id selectors', ->
       it 'tokenizes id selectors consisting of ASCII letters', ->
@@ -400,6 +452,23 @@ describe 'CSS grammar', ->
       it 'does not tokenize a hash token consisting of one hyphen', ->
         {tokens} = grammar.tokenizeLine '#-'
         expect(tokens[0]).toEqual value: '#-', scopes: ['source.css', 'meta.selector.css']
+
+      it 'tokenises ID selectors starting with an escape sequence', ->
+        {tokens} = grammar.tokenizeLine '#\\33\\44-model {'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '\\33', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'constant.character.escape.codepoint.css']
+        expect(tokens[2]).toEqual value: '\\44', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'constant.character.escape.codepoint.css']
+        expect(tokens[3]).toEqual value: '-model', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+        expect(tokens[5]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+
+      it 'tokenises ID selectors ending with an escape sequence', ->
+        {tokens} = grammar.tokenizeLine '#la\\{tex\\} {'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'la', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+        expect(tokens[2]).toEqual value: '\\{', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'constant.character.escape.css']
+        expect(tokens[3]).toEqual value: 'tex', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+        expect(tokens[4]).toEqual value: '\\}', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'constant.character.escape.css']
+        expect(tokens[6]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
 
     describe 'namespace prefixes', ->
       it 'tokenises arbitrary namespace prefixes', ->
@@ -1356,6 +1425,13 @@ describe 'CSS grammar', ->
           expect(tokens[3]).toEqual value: 'XML', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css']
           expect(tokens[4]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
           expect(tokens[5]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.namespace.css', 'punctuation.terminator.at-rule.css']
+
+        it 'tokenises escape sequences in prefixes', ->
+          {tokens} = grammar.tokenizeLine('@namespace pre\\ fix "http://url/";')
+          expect(tokens[3]).toEqual value: 'pre', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
+          expect(tokens[4]).toEqual value: '\\ ', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css', 'constant.character.escape.css']
+          expect(tokens[5]).toEqual value: 'fix', scopes: ['source.css', 'meta.at-rule.namespace.css', 'entity.name.function.namespace-prefix.css']
+          expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.namespace.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
 
         it 'allows arguments to span multiple lines', ->
           lines = grammar.tokenizeLines """
@@ -2869,7 +2945,7 @@ describe 'CSS grammar', ->
       expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
       expect(tokens[6]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
       expect(tokens[7]).toEqual value: "'", scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
-      expect(tokens[8]).toEqual value: '\\c0ffee', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'constant.character.escape.css']
+      expect(tokens[8]).toEqual value: '\\c0ffee', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'constant.character.escape.codepoint.css']
 
     it 'tokenizes escape sequences in double-quoted strings', ->
       {tokens} = grammar.tokenizeLine 'very-custom { content: "\\c0ffee" }'
@@ -2882,7 +2958,38 @@ describe 'CSS grammar', ->
       expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
       expect(tokens[6]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
       expect(tokens[7]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
-      expect(tokens[8]).toEqual value: '\\c0ffee', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'constant.character.escape.css']
+      expect(tokens[8]).toEqual value: '\\c0ffee', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'constant.character.escape.codepoint.css']
+
+    it 'tokenises escape sequences in selectors', ->
+      {tokens} = grammar.tokenizeLine('\\61 \\{ {  } \\}')
+      expect(tokens[0]).toEqual value: '\\61', scopes: ['source.css', 'constant.character.escape.codepoint.css']
+      expect(tokens[2]).toEqual value: '\\{', scopes: ['source.css', 'constant.character.escape.css']
+      expect(tokens[4]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+      expect(tokens[6]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+      expect(tokens[8]).toEqual value: '\\}', scopes: ['source.css', 'constant.character.escape.css']
+
+      {tokens} = grammar.tokenizeLine('\\61\\ \\. \\@media {}') # Matches <a><.><@media></@media></.></a>
+      expect(tokens[0]).toEqual value: '\\61', scopes: ['source.css', 'constant.character.escape.codepoint.css']
+      expect(tokens[1]).toEqual value: '\\ ', scopes: ['source.css', 'constant.character.escape.css']
+      expect(tokens[2]).toEqual value: '\\.', scopes: ['source.css', 'constant.character.escape.css']
+      expect(tokens[4]).toEqual value: '\\@', scopes: ['source.css', 'constant.character.escape.css']
+      expect(tokens[5]).toEqual value: 'media ', scopes: ['source.css', 'meta.selector.css']
+      expect(tokens[6]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
+
+    it 'tokenises escape sequences in property lists', ->
+      {tokens} = grammar.tokenizeLine('a { \\77\\69\\64\\74\\68: 20px; }') # Same as writing "width: 20px"
+      expect(tokens[4]).toEqual value: '\\77', scopes: ['source.css', 'meta.property-list.css', 'constant.character.escape.codepoint.css']
+      expect(tokens[5]).toEqual value: '\\69', scopes: ['source.css', 'meta.property-list.css', 'constant.character.escape.codepoint.css']
+      expect(tokens[6]).toEqual value: '\\64', scopes: ['source.css', 'meta.property-list.css', 'constant.character.escape.codepoint.css']
+      expect(tokens[7]).toEqual value: '\\74', scopes: ['source.css', 'meta.property-list.css', 'constant.character.escape.codepoint.css']
+      expect(tokens[8]).toEqual value: '\\68', scopes: ['source.css', 'meta.property-list.css', 'constant.character.escape.codepoint.css']
+      expect(tokens[9]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+
+    it 'tokenises escape sequences in property values', ->
+      {tokens} = grammar.tokenizeLine('a { content: \\1F764; }')
+      expect(tokens[7]).toEqual value: '\\1F764', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.character.escape.codepoint.css']
+      expect(tokens[8]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(tokens[10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
 
   describe 'comments', ->
     it 'tokenises comments inside @import statements', ->
