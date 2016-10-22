@@ -178,6 +178,156 @@ describe 'CSS grammar', ->
         expect(tokens[6]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
         expect(tokens[7]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
 
+      it 'allows whitespace to be inserted between tokens', ->
+        {tokens} = grammar.tokenizeLine('span[  er|lang  |=   "%%"   ]')
+        expect(tokens[1]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.begin.bracket.square.css']
+        expect(tokens[2]).toEqual value: '  ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[3]).toEqual value: 'er', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.namespace-prefix.css']
+        expect(tokens[4]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.css']
+        expect(tokens[5]).toEqual value: 'lang', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(tokens[6]).toEqual value: '  ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[7]).toEqual value: '|=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[8]).toEqual value: '   ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[9]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[10]).toEqual value: '%%', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css']
+        expect(tokens[11]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+        expect(tokens[12]).toEqual value: '   ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[13]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+      it 'tokenises comments inside attribute selectors', ->
+        {tokens} = grammar.tokenizeLine('span[/*]*/lang]')
+        expect(tokens[0]).toEqual value: 'span', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(tokens[1]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.begin.bracket.square.css']
+        expect(tokens[2]).toEqual value: '/*', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(tokens[3]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css']
+        expect(tokens[4]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(tokens[5]).toEqual value: 'lang', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(tokens[6]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+      it 'tokenises quoted strings in attribute selectors', ->
+        {tokens} = grammar.tokenizeLine('a[href^="#"] a[href^= "#"] a[href^="#" ]')
+        expect(tokens[4]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[5]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css']
+        expect(tokens[6]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+        expect(tokens[12]).toEqual value: '^=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[13]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[14]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[15]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css']
+        expect(tokens[16]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+        expect(tokens[23]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[24]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css']
+        expect(tokens[25]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+        expect(tokens[26]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[27]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+        {tokens} = grammar.tokenizeLine("a[href^='#'] a[href^=  '#'] a[href^='#' ]")
+        expect(tokens[4]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[5]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css']
+        expect(tokens[6]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+        expect(tokens[12]).toEqual value: '^=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[13]).toEqual value: '  ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[14]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[15]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css']
+        expect(tokens[16]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+        expect(tokens[23]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[24]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css']
+        expect(tokens[25]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+        expect(tokens[26]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[27]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+      it 'tokenises unquoted strings in attribute selectors', ->
+        {tokens} = grammar.tokenizeLine('span[class~=Java]')
+        expect(tokens[3]).toEqual value: '~=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[4]).toEqual value: 'Java', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+        expect(tokens[5]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+        {tokens} = grammar.tokenizeLine('span[class^=  0xDEADCAFE=|~BEEFBABE  ]')
+        expect(tokens[3]).toEqual value: '^=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[4]).toEqual value: '  ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[5]).toEqual value: '0xDEADCAFE=|~BEEFBABE', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+        expect(tokens[6]).toEqual value: '  ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[7]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+      it 'tokenises the ignore-case modifier at the end of a selector', ->
+        {tokens} = grammar.tokenizeLine('a[attr=val i] a[attr="val" i] a[attr=\'val\'I] a[val^=  \'"\'i] a[attr= i] a[attr= i i]')
+        expect(tokens[6]).toEqual value: 'i', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'storage.modifier.ignore-case.css']
+        expect(tokens[7]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+        expect(tokens[16]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[17]).toEqual value: 'i', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'storage.modifier.ignore-case.css']
+        expect(tokens[26]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+        expect(tokens[27]).toEqual value: 'I', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'storage.modifier.ignore-case.css']
+        expect(tokens[28]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+        expect(tokens[34]).toEqual value: '  ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[35]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+        expect(tokens[36]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css']
+        expect(tokens[37]).toEqual value: "'", scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+        expect(tokens[38]).toEqual value: 'i', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'storage.modifier.ignore-case.css']
+        expect(tokens[39]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+        expect(tokens[44]).toEqual value: '=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[45]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[46]).toEqual value: 'i', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+        expect(tokens[47]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+        expect(tokens[52]).toEqual value: '=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(tokens[53]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[54]).toEqual value: 'i', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+        expect(tokens[55]).toEqual value: ' ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(tokens[56]).toEqual value: 'i', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'storage.modifier.ignore-case.css']
+        expect(tokens[57]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+      it 'tokenises attribute selectors spanning multiple lines', ->
+        lines = grammar.tokenizeLines """
+          span[
+            
+            ns|lang/**/
+            |=
+          "pt"]
+        """
+        expect(lines[0][0]).toEqual value: 'span', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(lines[0][1]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.begin.bracket.square.css']
+        expect(lines[1][0]).toEqual value: '  ', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css']
+        expect(lines[2][1]).toEqual value: 'ns', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.namespace-prefix.css']
+        expect(lines[2][2]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.css']
+        expect(lines[2][3]).toEqual value: 'lang', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(lines[2][4]).toEqual value: '/*', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[2][5]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[3][1]).toEqual value: '|=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(lines[4][0]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+        expect(lines[4][1]).toEqual value: 'pt', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css']
+        expect(lines[4][2]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+        expect(lines[4][3]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+        lines = grammar.tokenizeLines """
+          span[/*===
+          ==|span[/*}
+          ====*/*|lang/*]=*/~=/*"|"*/"en-AU"/*
+           |
+          */
+          i]
+        """
+        expect(lines[0][2]).toEqual value: '/*', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[0][3]).toEqual value: '===', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css']
+        expect(lines[1][0]).toEqual value: '==|span[/*}', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css']
+        expect(lines[2][0]).toEqual value: '====', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css']
+        expect(lines[2][1]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[2][2]).toEqual value: '*', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.namespace-prefix.css']
+        expect(lines[2][3]).toEqual value: '|', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.separator.css']
+        expect(lines[2][4]).toEqual value: 'lang', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(lines[2][5]).toEqual value: '/*', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[2][6]).toEqual value: ']=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css']
+        expect(lines[2][7]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[2][8]).toEqual value: '~=', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'keyword.operator.pattern.css']
+        expect(lines[2][9]).toEqual value: '/*', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[2][10]).toEqual value: '"|"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css']
+        expect(lines[2][11]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[2][12]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+        expect(lines[2][13]).toEqual value: 'en-AU', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css']
+        expect(lines[2][14]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+        expect(lines[2][15]).toEqual value: '/*', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[3][0]).toEqual value: ' |', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css']
+        expect(lines[4][0]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'comment.block.css', 'punctuation.definition.comment.css']
+        expect(lines[5][0]).toEqual value: 'i', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'storage.modifier.ignore-case.css']
+        expect(lines[5][1]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
     describe 'class selectors', ->
       it 'tokenizes class selectors containing non-ASCII letters', ->
         {tokens} = grammar.tokenizeLine '.étendard'
@@ -1574,7 +1724,6 @@ describe 'CSS grammar', ->
           expect(lines[1][5]).toEqual value: 'landscape', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
           expect(lines[1][6]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
           expect(lines[2][0]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
-
 
     describe 'capitalisation', ->
       it 'ignores case in at-rules', ->

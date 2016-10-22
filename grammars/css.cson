@@ -1456,7 +1456,7 @@
             'captures':
               '1':
                 'name': 'string.unquoted.attribute-value.css'
-            'match': '(?<==)\\s*([^\\s\\]]+)'
+            'match': '(?<==)\\s*((?!/\\*)[^\'"\\s\\]]+)'
           }
           {
             'match': '[~|^$*]?='
