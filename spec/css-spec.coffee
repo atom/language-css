@@ -2991,6 +2991,84 @@ describe 'CSS grammar', ->
       expect(tokens[8]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
       expect(tokens[10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
 
+  describe 'unclosed strings', ->
+    it 'highlights an unterminated string as an error', ->
+      {tokens} = grammar.tokenizeLine("a{ content: 'aaaa")
+      expect(tokens[4]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+      expect(tokens[6]).toEqual value: "'", scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[7]).toEqual value: 'aaaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'invalid.illegal.unclosed.string.css']
+
+      {tokens} = grammar.tokenizeLine('a{ content: "aaaa')
+      expect(tokens[4]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+      expect(tokens[6]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[7]).toEqual value: 'aaaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'invalid.illegal.unclosed.string.css']
+
+    it "knows when a string is line-wrapped", ->
+      lines = grammar.tokenizeLines """
+        a{
+          content: "aaaaa\\\\\\
+        aaa"; color: red;
+        }
+      """
+      expect(lines[1][4]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(lines[1][5]).toEqual value: 'aaaaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css']
+      expect(lines[1][6]).toEqual value: '\\\\', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'constant.character.escape.css']
+      expect(lines[1][7]).toEqual value: '\\', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'constant.character.escape.newline.css']
+      expect(lines[2][0]).toEqual value: 'aaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css']
+      expect(lines[2][1]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
+      expect(lines[2][2]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(lines[2][4]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+
+      lines = grammar.tokenizeLines """
+        a{
+          content: 'aaaaa\\\\\\
+        aaa'; color: red;
+        }
+      """
+      expect(lines[1][4]).toEqual value: "'", scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+      expect(lines[1][5]).toEqual value: 'aaaaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css']
+      expect(lines[1][6]).toEqual value: '\\\\', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'constant.character.escape.css']
+      expect(lines[1][7]).toEqual value: '\\', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'constant.character.escape.newline.css']
+      expect(lines[2][0]).toEqual value: 'aaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css']
+      expect(lines[2][1]).toEqual value: "'", scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+      expect(lines[2][2]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(lines[2][4]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+
+    it 'highlights escape sequences inside invalid strings', ->
+      {tokens} = grammar.tokenizeLine('a{ content: "aaa\\"aa')
+      expect(tokens[6]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[7]).toEqual value: 'aaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'invalid.illegal.unclosed.string.css']
+      expect(tokens[8]).toEqual value: '\\"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'invalid.illegal.unclosed.string.css', 'constant.character.escape.css']
+      expect(tokens[9]).toEqual value: 'aa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'invalid.illegal.unclosed.string.css']
+
+      {tokens} = grammar.tokenizeLine("a{ content: 'aaa\\'aa")
+      expect(tokens[6]).toEqual value: "'", scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
+      expect(tokens[7]).toEqual value: 'aaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'invalid.illegal.unclosed.string.css']
+      expect(tokens[8]).toEqual value: "\\'", scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'invalid.illegal.unclosed.string.css', 'constant.character.escape.css']
+      expect(tokens[9]).toEqual value: 'aa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.single.css', 'invalid.illegal.unclosed.string.css']
+
+    it 'highlights unclosed lines in line-wrapped strings', ->
+      lines = grammar.tokenizeLines """
+        a{
+          content: "aaa\\"aa\\
+        aaaa
+        aaaa; color: red;
+        }
+      """
+      expect(lines[1][4]).toEqual value: '"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+      expect(lines[1][5]).toEqual value: 'aaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css']
+      expect(lines[1][6]).toEqual value: '\\"', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'constant.character.escape.css']
+      expect(lines[1][7]).toEqual value: 'aa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css']
+      expect(lines[1][8]).toEqual value: '\\', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'constant.character.escape.newline.css']
+      expect(lines[2][0]).toEqual value: 'aaaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'string.quoted.double.css', 'invalid.illegal.unclosed.string.css']
+      expect(lines[3][0]).toEqual value: 'aaaa', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+      expect(lines[3][1]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(lines[3][3]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(lines[3][4]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+      expect(lines[3][6]).toEqual value: 'red', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.color.w3c-standard-color-name.css']
+      expect(lines[3][7]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(lines[4][0]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.css']
+
   describe 'comments', ->
     it 'tokenises comments inside @import statements', ->
       {tokens} = grammar.tokenizeLine('@import /* url("name"); */ "1.css";')
