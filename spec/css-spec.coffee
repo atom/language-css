@@ -178,6 +178,39 @@ describe 'CSS grammar', ->
         expect(tokens[6]).toEqual value: '"', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
         expect(tokens[7]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
 
+      it 'tokenises compound ID/attribute selectors', ->
+        {tokens} = grammar.tokenizeLine('#div[id="0"]{ }')
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'div', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+        expect(tokens[2]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.begin.bracket.square.css']
+        expect(tokens[3]).toEqual value: 'id', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(tokens[8]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+        {tokens} = grammar.tokenizeLine('.bar#div[id="0"]')
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'bar', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+        expect(tokens[2]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[3]).toEqual value: 'div', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+        expect(tokens[4]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.begin.bracket.square.css']
+        expect(tokens[5]).toEqual value: 'id', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+
+      it 'tokenises compound class/attribute selectors', ->
+        {tokens} = grammar.tokenizeLine('.div[id="0"]{ }')
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'div', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+        expect(tokens[2]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.begin.bracket.square.css']
+        expect(tokens[3]).toEqual value: 'id', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(tokens[8]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
+        {tokens} = grammar.tokenizeLine('#bar.div[id]')
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'bar', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
+        expect(tokens[2]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[3]).toEqual value: 'div', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+        expect(tokens[4]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.begin.bracket.square.css']
+        expect(tokens[5]).toEqual value: 'id', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'entity.other.attribute-name.css']
+        expect(tokens[6]).toEqual value: ']', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.end.bracket.square.css']
+
       it 'allows whitespace to be inserted between tokens', ->
         {tokens} = grammar.tokenizeLine('span[  er|lang  |=   "%%"   ]')
         expect(tokens[1]).toEqual value: '[', scopes: ['source.css', 'meta.selector.css', 'meta.attribute-selector.css', 'punctuation.definition.entity.begin.bracket.square.css']
