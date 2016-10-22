@@ -1012,7 +1012,8 @@
                 'name': 'keyword.operator.arithmetic.css'
               '3':
                 'name': 'constant.numeric.css'
-            'match': '\\s*(\\d+)(/)(\\d+)'
+            'match': '\\s*(\\d+)\\s*(/)\\s*(\\d+)'
+            'name': 'meta.ratio.css'
           }
           {
             'include': '#numeric-values'

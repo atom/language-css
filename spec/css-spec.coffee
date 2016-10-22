@@ -896,6 +896,19 @@ describe 'CSS grammar', ->
         expect(tokens[6]).toEqual value: '{', scopes: ['source.css', 'punctuation.section.property-list.begin.css']
         expect(tokens[7]).toEqual value: '}', scopes: ['source.css', 'punctuation.section.property-list.end.css']
 
+      it 'allows spaces inside ratio values', ->
+        {tokens} = grammar.tokenizeLine('@media (min-aspect-ratio: 3 / 4) and (max-aspect-ratio: 20   /   17) {}')
+        expect(tokens[7]).toEqual value: '3', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css', 'constant.numeric.css']
+        expect(tokens[8]).toEqual value: ' ', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css']
+        expect(tokens[9]).toEqual value: '/', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css', 'keyword.operator.arithmetic.css']
+        expect(tokens[10]).toEqual value: ' ', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css']
+        expect(tokens[11]).toEqual value: '4', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css', 'constant.numeric.css']
+        expect(tokens[20]).toEqual value: '20', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css', 'constant.numeric.css']
+        expect(tokens[21]).toEqual value: '   ', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css']
+        expect(tokens[22]).toEqual value: '/', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css', 'keyword.operator.arithmetic.css']
+        expect(tokens[23]).toEqual value: '   ', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css']
+        expect(tokens[24]).toEqual value: '17', scopes: ['source.css', 'meta.at-rule.media.css', 'meta.ratio.css', 'constant.numeric.css']
+
       describe '@keyframes', ->
         it 'tokenises keyframe lists correctly', ->
           lines = grammar.tokenizeLines """
