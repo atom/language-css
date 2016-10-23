@@ -23,6 +23,9 @@
     'include': '#escapes'
   }
   {
+    'include': '#combinators'
+  }
+  {
     'include': '#selector'
   }
   {
@@ -560,6 +563,17 @@
           (?![\\w-])
         '''
         'name': 'invalid.deprecated.color.system.css'
+      }
+    ]
+  'combinators':
+    'patterns': [
+      {
+        'match': '/deep/|>>>'
+        'name': 'invalid.deprecated.combinator.css'
+      }
+      {
+        'match': '>|\\+|~|>>'
+        'name': 'keyword.operator.combinator.css'
       }
     ]
   'comment-block':
@@ -1607,6 +1621,9 @@
     'patterns': [
       {
         'include': '#escapes'
+      }
+      {
+        'include': '#combinators'
       }
       {
         'captures':
