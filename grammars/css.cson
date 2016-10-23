@@ -33,7 +33,7 @@
     'end': ';|(?=$)'
     'endCaptures':
       '0':
-        'name': 'punctuation.terminator.at-rule.css'
+        'name': 'punctuation.terminator.rule.css'
     'name': 'meta.at-rule.charset.css'
     'patterns': [
       {
@@ -237,11 +237,11 @@
           '1':
             'name': 'support.function.${1:/downcase}-rule.css'
           '2':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\s*(\\))\\s*'
         'endCaptures':
           '1':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'name': 'meta.function.${1:/downcase}-rule.css'
         'patterns': [
           {
@@ -266,8 +266,7 @@
         'include': '#url'
       }
       {
-        'match': ','
-        'name': 'punctuation.separator.comma.css'
+        'include': '#commas'
       }
       {
         'include': '#comment-block'
@@ -447,7 +446,7 @@
     'end': ';|(<=["\')])|(?=[@{])'
     'endCaptures':
       '0':
-        'name': 'punctuation.terminator.at-rule.css'
+        'name': 'punctuation.terminator.rule.css'
     'name': 'meta.at-rule.namespace.css'
     'patterns': [
       {
@@ -502,7 +501,7 @@
   }
   {
     'match': ';'
-    'name': 'punctuation.terminator.at-rule.css'
+    'name': 'punctuation.terminator.rule.css'
   }
   {
     'begin': '(?={)'
@@ -576,6 +575,9 @@
         'name': 'keyword.operator.combinator.css'
       }
     ]
+  'commas':
+    'match': ','
+    'name': 'punctuation.separator.list.comma.css'
   'comment-block':
     'begin': '/\\*'
     'beginCaptures':
@@ -642,7 +644,7 @@
     'end': '(?<=})\\s*'
     'endCaptures':
       '0':
-        'name': 'punctuation.terminator.at-rule.css'
+        'name': 'punctuation.terminator.rule.css'
     'name': 'meta.at-rule.${3:/downcase}.css'
     'patterns': [
       {
@@ -679,11 +681,11 @@
           '1':
             'name': 'support.function.calc.css'
           '2':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'name': 'meta.function.calc.css'
         'patterns': [
           {
@@ -702,11 +704,11 @@
           '1':
             'name': 'support.function.misc.css'
           '2':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'name': 'meta.function.color.${1:/downcase}-value.css'
         'patterns': [
           {
@@ -731,11 +733,11 @@
           '1':
             'name': 'support.function.gradient.css'
           '3':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'name': 'meta.function.${2:/downcase}.gradient.css'
         'patterns': [
           {
@@ -754,11 +756,11 @@
           '1':
             'name': 'invalid.deprecated.gradient.function.css'
           '2':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'name': 'meta.function.legacy-webkit.gradient.css'
         'patterns': [
           {
@@ -767,11 +769,11 @@
               '1':
                 'name': 'invalid.deprecated.function.css'
               '2':
-                'name': 'punctuation.section.function.css'
+                'name': 'punctuation.section.function.begin.bracket.round.css'
             'end': '\\)'
             'endCaptures':
               '0':
-                'name': 'punctuation.section.function.css'
+                'name': 'punctuation.section.function.end.bracket.round.css'
             'patterns': [
               {
                 'include': '#property-values'
@@ -820,11 +822,11 @@
           '1':
             'name': 'support.function.misc.css'
           '2':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'name': 'meta.function.misc.css'
         'patterns': [
           {
@@ -843,11 +845,11 @@
           '1':
             'name': 'support.function.shape.css'
           '2':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'name': 'meta.function.shape.css'
         'patterns': [
           {
@@ -866,11 +868,11 @@
           '1':
             'name': 'support.function.timing-function.css'
           '2':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'name': 'meta.function.timing-function.css'
         'patterns': [
           {
@@ -896,11 +898,11 @@
           '1':
             'name': 'support.function.transform.css'
           '2':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'patterns': [
           {
             'include': '#property-values'
@@ -917,11 +919,11 @@
           '1':
             'name': 'support.function.misc.css'
           '2':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'name': 'meta.function.variable.css'
         'patterns': [
           {
@@ -945,11 +947,11 @@
           '2':
             'name': 'punctuation.definition.entity.css'
           '3':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'patterns': [
           {
             'match': '(?i)(?<![\\w-])(ltr|rtl)(?![\\w-])'
@@ -969,11 +971,11 @@
           '2':
             'name': 'punctuation.definition.entity.css'
           '3':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'patterns': [
           {
             'match': '(?<=[(,\\s])[a-zA-Z]+(-[a-zA-Z0-9]*+|\\\\(?:[0-9a-fA-F]{1,6}|.))*+(?=[),\\s])'
@@ -1020,8 +1022,7 @@
             ]
           }
           {
-            'match': ','
-            'name': 'punctuation.separator.comma.css'
+            'include': '#commas'
           }
         ]
       }
@@ -1034,11 +1035,11 @@
           '2':
             'name': 'punctuation.definition.entity.css'
           '3':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'patterns': [
           {
             'include': '#selector'
@@ -1057,11 +1058,11 @@
           '2':
             'name': 'punctuation.definition.entity.css'
           '3':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.function.css'
+            'name': 'punctuation.section.function.end.bracket.round.css'
         'patterns': [
           {
             'match': '(?i)[+-]?(\\d+n?|n)(\\s*[+-]\\s*\\d+)?'
@@ -1196,8 +1197,7 @@
         'name': 'invalid.illegal.comma.css'
       }
       {
-        'match': ','
-        'name': 'punctuation.delimiter.arbitrary-repetition.comma.css'
+        'include': '#commas'
       }
       {
         'begin': '(\\()\\s*'
@@ -1463,8 +1463,7 @@
   'property-values':
     'patterns': [
       {
-        'match': ','
-        'name': 'punctuation.separator.comma.css'
+        'include': '#commas'
       }
       {
         'include': '#comment-block'
@@ -1899,11 +1898,11 @@
       '1':
         'name': 'support.function.url.css'
       '2':
-        'name': 'punctuation.section.function.css'
+        'name': 'punctuation.section.function.begin.bracket.round.css'
     'end': '\\s*(\\))\\s*'
     'endCaptures':
       '1':
-        'name': 'punctuation.section.function.css'
+        'name': 'punctuation.section.function.end.bracket.round.css'
     'name': 'meta.function.url.css'
     'patterns': [
       {
