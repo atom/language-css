@@ -1217,9 +1217,6 @@
       }
     ]
   'property-names':
-    'begin': '(?<![-a-zA-Z])(?=[-a-zA-Z])'
-    'end': '$|(?![-a-zA-Z])'
-    'name': 'meta.property-name.css'
     'patterns': [
       {
         'match': '''(?xi) (?<![\\w-])
@@ -1420,7 +1417,14 @@
         'name': 'variable.css'
       }
       {
-        'include': '#property-names'
+        'begin': '(?<![-a-zA-Z])(?=[-a-zA-Z])'
+        'end': '$|(?![-a-zA-Z])'
+        'name': 'meta.property-name.css'
+        'patterns': [
+          {
+            'include': '#property-names'
+          }
+        ]
       }
       {
         'begin': '(:)\\s*'
