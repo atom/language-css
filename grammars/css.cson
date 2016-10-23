@@ -969,8 +969,8 @@
             # Spec-compliant syntax
             [-_]
             (?: webkit              # Webkit/Blink
-              | apple
-              | khtml
+              | apple|khtml         # Webkit aliases
+              | epub                # ePub3
               | moz                 # Gecko
               | ms                  # Microsoft
               | o                   # Presto (pre-Opera 15)
@@ -1158,37 +1158,37 @@
     'patterns': [
       {
         'match': '''(?xi) (?<![\\w-])
-          (absolute|active|add|additive|alias|all|all-petite-caps|all-scroll|all-small-caps|alpha|alphabetic|alternate|alternate-reverse
-          |always|auto|auto-pos|available|avoid|avoid-column|avoid-page|avoid-region|backwards|balance|baseline|below|bidi-override|block
-          |bold|bolder|border|border-box|both|bottom|bottom-outside|break-all|break-word|bullets|capitalize|caption|cell|center|char|circle
-          |clip|clone|close-quote|closest-corner|closest-side|col-resize|collapse|color|color-burn|color-dodge|column|column-reverse|common-ligatures
-          |condensed|contain|content|content-box|contents|context-menu|contextual|copy|cover|crisp-edges|crosshair|cyclic|darken|dashed
-          |decimal|default|dense|diagonal-fractions|difference|digits|disabled|disc|discretionary-ligatures|distribute|distribute-all-lines
-          |distribute-letter|distribute-space|dot|dotted|double|double-circle|e-resize|each-line|ease|ease-in|ease-in-out|ease-out|ellipsis
-          |embed|end|ellipse|evenodd|ew-resize|exclude|exclusion|expanded|extends|extra-condensed|extra-expanded|farthest-corner|farthest-side
-          |fill|fill-available|fill-box|filled|fit-content|fixed|flat|flex|flex-end|flex-start|flip|forwards|from-image|full-width|geometricPrecision
-          |georgian|grab|grabbing|grid|groove|hand|hanging|hard-light|help|hidden|hide|historical-forms|historical-ligatures|horizontal|horizontal-tb
-          |hue|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|inactive|infinite|inherit|initial|inline
-          |inline-block|inline-end|inline-flex|inline-grid|inline-list-item|inline-start|inline-table|inset|inside|inter-character
-          |inter-ideograph|inter-word|intersect|invert|isolate|isolate-override|italic|jis04|jis78|jis83|jis90|justify|justify-all|kannada
-          |keep-all|landscape|large|larger|left|lighten|lighter|line|line-edge|line-through|linear|lining-nums|list-item|local|loose
-          |lowercase|lr|lr-tb|ltr|luminance|luminosity|main-size|mandatory|manipulation|manual|margin-box|match-parent|match-source
-          |max-content|medium|menu|message-box|middle|min-content|mixed|move|multiply|n-resize|ne-resize|nearest-neighbor|nesw-resize
-          |newspaper|no-clip|no-close-quote|no-common-ligatures|no-contextual|no-discretionary-ligatures|no-drop|no-historical-ligatures
-          |no-open-quote|no-repeat|none|nonzero|normal|not-allowed|nowrap|ns-resize|numbers|numeric|nw-resize|nwse-resize|oblique
-          |oldstyle-nums|open|open-quote|optimizeLegibility|optimizeQuality|optimizeSpeed|ordinal|outset|outside|over|overlay|overline
-          |padding|padding-box|page|painted|pan-down|pan-left|pan-right|pan-up|pan-x|pan-y|paused|petite-caps|pixelated|plaintext|pointer
-          |portrait|pre|pre-line|pre-wrap|preserve-3d|progress|proportional-nums|proportional-width|proximity|radial|recto|region|relative|repeat
-          |repeat-x|repeat-y|reverse|revert|ridge|right|rl|round|row|row-resize|row-reverse|row-severse|rtl|ruby|ruby-base|ruby-base-container
-          |ruby-text|ruby-text-container|run-in|running|s-resize|saturation|scale-down|screen|scroll|scroll-position|se-resize|semi-condensed
-          |semi-expanded|separate|sesame|show|sideways|sideways-left|sideways-lr|sideways-right|sideways-rl|simplified|slashed-zero|slice
-          |small|small-caps|small-caption|smaller|smooth|soft-light|solid|space|space-around|space-between|spell-out|square|stacked-fractions
-          |start|static|status-bar|step-end|step-start|sticky|stretch|strict|stroke|stroke-box|style|sub|subgrid|subtract|super|sw-resize
-          |symbolic|table|table-caption|table-cell|table-column|table-column-group|table-footer-group|table-header-group|table-row
-          |table-row-group|tabular-nums|tb|tb-rl|text|text-bottom|text-top|thick|thin|titling-caps|top|top-outside|traditional|transparent
-          |triangle|ultra-condensed|ultra-expanded|under|underline|unicase|unset|uppercase|upright|use-glyph-orientation|verso|vertical
-          |vertical-ideographic|vertical-lr|vertical-rl|vertical-text|view-box|visible|visibleFill|visiblePainted|visibleStroke|w-resize
-          |wait|wavy|weight|whitespace|words|wrap|wrap-reverse|x-large|x-small|xx-large|xx-small|zero|zoom-in|zoom-out)
+          (above|absolute|active|add|additive|after-edge|alias|all|all-petite-caps|all-scroll|all-small-caps|alpha|alphabetic|alternate|alternate-reverse
+          |always|antialiased|auto|auto-pos|available|avoid|avoid-column|avoid-page|avoid-region|backwards|balance|baseline|before-edge|below|bevel
+          |bidi-override|blink|block|block-axis|block-start|block-end|bold|bolder|border|border-box|both|bottom|bottom-outside|break-all|break-word|bullets
+          |butt|capitalize|caption|cell|center|central|char|circle|clip|clone|close-quote|closest-corner|closest-side|col-resize|collapse|color|color-burn
+          |color-dodge|column|column-reverse|common-ligatures|compact|condensed|contain|content|content-box|contents|context-menu|contextual|copy|cover
+          |crisp-edges|crispEdges|crosshair|cyclic|darken|dashed|decimal|default|dense|diagonal-fractions|difference|digits|disabled|disc|discretionary-ligatures
+          |distribute|distribute-all-lines|distribute-letter|distribute-space|dot|dotted|double|double-circle|e-resize|each-line|ease|ease-in
+          |ease-in-out|ease-out|economy|ellipse|ellipsis|embed|end|evenodd|ew-resize|exact|exclude|exclusion|expanded|extends|extra-condensed|extra-expanded
+          |farthest-corner|farthest-side|fill|fill-available|fill-box|filled|fit-content|fixed|flat|flex|flex-end|flex-start|flip|forwards|freeze
+          |from-image|full-width|geometricPrecision|georgian|grab|grabbing|grayscale|grid|groove|hand|hanging|hard-light|help|hidden|hide
+          |historical-forms|historical-ligatures|horizontal|horizontal-tb|hue|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space
+          |ideographic|inactive|infinite|inherit|initial|inline|inline-axis|inline-block|inline-end|inline-flex|inline-grid|inline-list-item|inline-start
+          |inline-table|inset|inside|inter-character|inter-ideograph|inter-word|intersect|invert|isolate|isolate-override|italic|jis04|jis78|jis83
+          |jis90|justify|justify-all|kannada|keep-all|landscape|large|larger|left|lighten|lighter|line|line-edge|line-through|linear|linearRGB
+          |lining-nums|list-item|local|loose|lowercase|lr|lr-tb|ltr|luminance|luminosity|main-size|mandatory|manipulation|manual|margin-box|match-parent
+          |match-source|mathematical|max-content|medium|menu|message-box|middle|min-content|miter|mixed|move|multiply|n-resize|narrower|ne-resize
+          |nearest-neighbor|nesw-resize|newspaper|no-change|no-clip|no-close-quote|no-common-ligatures|no-contextual|no-discretionary-ligatures
+          |no-drop|no-historical-ligatures|no-open-quote|no-repeat|none|nonzero|normal|not-allowed|nowrap|ns-resize|numbers|numeric|nw-resize|nwse-resize
+          |oblique|oldstyle-nums|open|open-quote|optimizeLegibility|optimizeQuality|optimizeSpeed|ordinal|outset|outside|over|overlay|overline|padding
+          |padding-box|page|painted|pan-down|pan-left|pan-right|pan-up|pan-x|pan-y|paused|petite-caps|pixelated|plaintext|pointer|portrait|pre|pre-line
+          |pre-wrap|preserve-3d|progress|progressive|proportional-nums|proportional-width|proximity|radial|recto|region|relative|remove|repeat|repeat-[xy]
+          |reset-size|reverse|revert|ridge|right|rl|rl-tb|round|row|row-resize|row-reverse|row-severse|rtl|ruby|ruby-base|ruby-base-container|ruby-text
+          |ruby-text-container|run-in|running|s-resize|saturation|scale-down|screen|scroll|scroll-position|se-resize|semi-condensed|semi-expanded|separate
+          |sesame|show|sideways|sideways-left|sideways-lr|sideways-right|sideways-rl|simplified|slashed-zero|slice|small|small-caps|small-caption|smaller
+          |smooth|soft-light|solid|space|space-around|space-between|spell-out|square|sRGB|stacked-fractions|start|static|status-bar|step-end|step-start
+          |sticky|stretch|strict|stroke|stroke-box|style|sub|subgrid|subpixel-antialiased|subtract|super|sw-resize|symbolic|table|table-caption|table-cell
+          |table-column|table-column-group|table-footer-group|table-header-group|table-row|table-row-group|tabular-nums|tb|tb-rl|text|text-after-edge
+          |text-before-edge|text-bottom|text-top|thick|thin|titling-caps|top|top-outside|touch|traditional|transparent|triangle|ultra-condensed|ultra-expanded
+          |under|underline|unicase|unset|uppercase|upright|use-glyph-orientation|use-script|verso|vertical|vertical-ideographic|vertical-lr|vertical-rl
+          |vertical-text|view-box|visible|visibleFill|visiblePainted|visibleStroke|w-resize|wait|wavy|weight|whitespace|wider|words|wrap|wrap-reverse
+          |x-large|x-small|xx-large|xx-small|zero|zoom-in|zoom-out)
           (?![\\w-])
         '''
         'name': 'support.constant.property-value.css'
@@ -1208,7 +1208,7 @@
         'name': 'support.constant.property-value.list-style-type.css'
       }
       {
-        'match': '(?<![\\w-])(?i:-(?:ah|apple|atsc|hp|khtml|moz|ms|o|rim|ro|tc|wap|webkit|xv)|(?:mso|prince))-[a-zA-Z-]+'
+        'match': '(?<![\\w-])(?i:-(?:ah|apple|atsc|epub|hp|khtml|moz|ms|o|rim|ro|tc|wap|webkit|xv)|(?:mso|prince))-[a-zA-Z-]+'
         'name': 'support.constant.vendored.property-value.css'
       }
       {
@@ -1228,8 +1228,8 @@
               additive-symbols|align-content|align-items|align-self|all|animation|animation-delay|animation-direction
             | animation-duration|animation-fill-mode|animation-iteration-count|animation-name|animation-play-state
             | animation-timing-function|backface-visibility|background|background-attachment|background-blend-mode
-            | background-clip|background-color|background-image|background-origin|background-position|background-repeat
-            | background-size|block-size|border|border-block-end|border-block-end-color|border-block-end-style
+            | background-clip|background-color|background-image|background-origin|background-position|background-position-[xy]
+            | background-repeat|background-size|block-size|border|border-block-end|border-block-end-color|border-block-end-style
             | border-block-end-width|border-block-start|border-block-start-color|border-block-start-style
             | border-block-start-width|border-bottom|border-bottom-color|border-bottom-left-radius|border-bottom-right-radius
             | border-bottom-style|border-bottom-width|border-collapse|border-color|border-image|border-image-outset
@@ -1305,7 +1305,7 @@
         'name': 'support.type.property-name.css'
       }
       {
-        'match': '(?<![\\w-])(?i:-(?:ah|apple|atsc|hp|khtml|moz|ms|o|rim|ro|tc|wap|webkit|xv)|(?:mso|prince))-[a-zA-Z-]+'
+        'match': '(?<![\\w-])(?i:-(?:ah|apple|atsc|epub|hp|khtml|moz|ms|o|rim|ro|tc|wap|webkit|xv)|(?:mso|prince))-[a-zA-Z-]+'
         'name': 'support.type.vendored.property-name.css'
       }
     ]
