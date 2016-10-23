@@ -2226,6 +2226,16 @@ describe 'CSS grammar', ->
       {tokens} = grammar.tokenizeLine('a{ text-shadow: a, b; }')
       expect(tokens[7]).toEqual value: ',', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'punctuation.separator.comma.css']
 
+    it 'tokenises superfluous semicolons', ->
+      lines = grammar.tokenizeLines '''
+      .test{   width:  20em;;;;;;;;;
+      ;;;;;;;;;height: 10em; }
+      '''
+      for i in [0..8]
+        expect(lines[0][i+9]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+        expect(lines[1][i]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(lines[1][9]).toEqual value: 'height', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+
     describe 'values', ->
       it 'tokenizes color keywords', ->
         {tokens} = grammar.tokenizeLine '#jon { color: snow; }'
