@@ -32,17 +32,11 @@
     'include': '#at-rules'
   }
   {
-    'match': ';'
-    'name': 'punctuation.terminator.rule.css'
+    'include': '#rule-list'
   }
   {
-    'begin': '(?={)'
-    'end': '(?!\\G)'
-    'patterns': [
-      {
-        'include': '#rule-list'
-      }
-    ]
+    'match': ';'
+    'name': 'punctuation.terminator.rule.css'
   }
   {
     'match': '}'
