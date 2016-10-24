@@ -135,6 +135,14 @@ describe 'CSS grammar', ->
         {tokens} = grammar.tokenizeLine 'halo_night'
         expect(tokens[0]).toEqual value: 'halo_night', scopes: ['source.css', 'meta.selector.css']
 
+      it 'does not tokenise identifiers following an @ symbol', ->
+        {tokens} = grammar.tokenizeLine '@some-weird-new-feature'
+        expect(tokens[1]).not.toEqual value: 'some-weird-new-feature', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+
+      it 'does not tokenise identifiers in unfamiliar functions', ->
+        {tokens} = grammar.tokenizeLine 'some-edgy-new-function()'
+        expect(tokens[0]).not.toEqual value: 'some-edgy-new-function', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+
     describe 'attribute selectors', ->
       it 'tokenizes attribute selectors without values', ->
         {tokens} = grammar.tokenizeLine '[title]'
@@ -710,8 +718,7 @@ describe 'CSS grammar', ->
           expect(tokens[5]).toEqual value: ';', scopes: ['source.css', 'punctuation.terminator.rule.css']
 
           {tokens} = grammar.tokenizeLine('@import-file.css;')
-          expect(tokens[0]).toEqual value: '@', scopes: ['source.css']
-          expect(tokens[1]).toEqual value: 'import-file', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.custom.css']
+          expect(tokens.length).toEqual 2
 
         it 'matches a URL that starts on the next line', ->
           lines = grammar.tokenizeLines '@import\nurl("file.css");'
@@ -864,16 +871,16 @@ describe 'CSS grammar', ->
           expect(tokens[7]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.end.bracket.round.css']
 
         it 'tokenises level 4 media-query syntax', ->
-            lines = grammar.tokenizeLines """
-              @media (min-width >= 0px)
-                 and (max-width <= 400)
-                 and (min-height > 400)
-                 and (max-height < 200)
-            """
-            expect(lines[0][6]).toEqual value: '>=', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
-            expect(lines[1][6]).toEqual value: '<=', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
-            expect(lines[2][6]).toEqual value: '>', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
-            expect(lines[3][6]).toEqual value: '<', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
+          lines = grammar.tokenizeLines """
+            @media (min-width >= 0px)
+               and (max-width <= 400)
+               and (min-height > 400)
+               and (max-height < 200)
+          """
+          expect(lines[0][6]).toEqual value: '>=', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
+          expect(lines[1][6]).toEqual value: '<=', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
+          expect(lines[2][6]).toEqual value: '>', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
+          expect(lines[3][6]).toEqual value: '<', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
 
         it 'tokenises comments between media types', ->
           {tokens} = grammar.tokenizeLine('@media/* */only/* */screen/* */and (min-width:1100px){}')

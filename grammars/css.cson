@@ -1792,7 +1792,7 @@
       }
       # Custom HTML elements
       {
-        'match': '''(?x) (?<![\\w-])
+        'match': '''(?x) (?<![@\\w-])
           (?=            # Custom element names must:
             [a-z]        # - start with a lowercase ASCII letter,
             \\w* -       # - contain at least one dash
@@ -1801,7 +1801,7 @@
             (?![A-Z])    # No uppercase ASCII letters are allowed
             [\\w-]       # Allow any other word character or dash
           )+
-          (?![\\w-])
+          (?![(\\w-])
         '''
         'name': 'entity.name.tag.custom.css'
       }
