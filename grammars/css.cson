@@ -1042,13 +1042,7 @@
             'name': 'punctuation.section.function.end.bracket.round.css'
         'patterns': [
           {
-            'include': '#combinators'
-          }
-          {
-            'include': '#selector'
-          }
-          {
-            'include': '#comment-block'
+            'include': '#selector-innards'
           }
         ]
       }
@@ -1271,6 +1265,47 @@
       )
       (?=$|[{,\\s;]|/\\*)
     '''
+  'nested-selector':
+    'begin': '''(?ix) (?<!\\w|-)
+      (?=
+        \\s*
+        (?: &             # Direct nesting
+          | @nest         # Nesting @-rule (complex nesting)
+            (?![\\w-])
+        )
+      )
+    '''
+    'end': '(?<=})\\s*|(?=[/;])'
+    'patterns': [
+      {
+        # Selector component
+        'begin': '\\G'
+        'end': '\\s*(?={)|(?=[/;])'
+        'name': 'meta.nested.selector.css'
+        'patterns': [
+          {
+            'include': '#selector-innards'
+          }
+        ]
+      }
+      {
+        'begin': '{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.section.property-list.begin.css'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.section.property-list.end.css'
+        'name': 'meta.nested.property-list.css'
+        'patterns': [
+          {
+            'include': '#rule-list-innards'
+          }
+        ]
+      }
+    ]
+
   'numeric-values':
     'patterns': [
       {
@@ -1610,6 +1645,9 @@
         'match': ';'
         'name': 'punctuation.terminator.rule.css'
       }
+      {
+        'include': '#nested-selector'
+      }
     ]
   'selector':
     'begin': '''(?x) \\s*
@@ -1625,6 +1663,27 @@
     'end': '(?=[/@{)])'
     'name': 'meta.selector.css'
     'patterns': [
+      {
+        'include': '#selector-innards'
+      }
+    ]
+  'selector-innards':
+    'patterns': [
+      {
+        'match': '&'
+        'name': 'keyword.operator.nesting.css'
+      }
+      {
+        'include': '#comment-block'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'keyword.control.at-rule.import.css'
+          '2':
+            'name': 'punctuation.definition.keyword.css'
+        'match': '(?i)((@)nest)(?![\\w-])\\s*'
+      }
       {
         'include': '#escapes'
       }

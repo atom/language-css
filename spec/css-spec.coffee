@@ -57,8 +57,8 @@ describe 'CSS grammar', ->
       expect(lines[0][3]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
       expect(lines[0][4]).toEqual value: 'not', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
       expect(lines[0][5]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.begin.bracket.round.css']
-      expect(lines[0][6]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
-      expect(lines[0][7]).toEqual value: 'first-child', scopes: ['source.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+      expect(lines[0][6]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+      expect(lines[0][7]).toEqual value: 'first-child', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
       expect(lines[0][8]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.end.bracket.round.css']
       expect(lines[0][9]).toEqual value: '::', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
       expect(lines[0][10]).toEqual value: 'before', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-element.css']
@@ -437,7 +437,7 @@ describe 'CSS grammar', ->
 
       it 'does not tokenize tokens containing unescaped ASCII punctuation or symbols other than "-" and "_"', ->
         {tokens} = grammar.tokenizeLine '.B&W'
-        expect(tokens[0]).toEqual value: '.B&W', scopes: ['source.css', 'meta.selector.css']
+        expect(tokens[0].scopes).not.toEqual ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
 
       it 'does not tokenize tokens beginning with [0-9]', ->
         {tokens} = grammar.tokenizeLine '.666'
@@ -1260,8 +1260,8 @@ describe 'CSS grammar', ->
           expect(lines[4][17]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
           expect(lines[4][18]).toEqual value: 'not', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
           expect(lines[4][19]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'punctuation.section.function.begin.bracket.round.css']
-          expect(lines[4][20]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
-          expect(lines[4][21]).toEqual value: 'first-child', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(lines[4][20]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(lines[4][21]).toEqual value: 'first-child', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
           expect(lines[4][22]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.selector.css', 'punctuation.section.function.end.bracket.round.css']
           expect(lines[4][23]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.css']
           expect(lines[5][1]).toEqual value: 'content', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
@@ -2060,13 +2060,13 @@ describe 'CSS grammar', ->
           expect(tokens[1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
           expect(tokens[2]).toEqual value: 'not', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
           expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.begin.bracket.round.css']
-          expect(tokens[4]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
-          expect(tokens[5]).toEqual value: 'class-name', scopes: ['source.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+          expect(tokens[4]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+          expect(tokens[5]).toEqual value: 'class-name', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
           expect(tokens[6]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.end.bracket.round.css']
           expect(tokens[7]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
           expect(tokens[8]).toEqual value: 'not', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
           expect(tokens[9]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.begin.bracket.round.css']
-          expect(tokens[10]).toEqual value: 'div', scopes: ['source.css', 'meta.selector.css', 'meta.selector.css', 'entity.name.tag.css']
+          expect(tokens[10]).toEqual value: 'div', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
           expect(tokens[11]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.end.bracket.round.css']
 
         it 'tokenises injected comments', ->
@@ -2076,8 +2076,8 @@ describe 'CSS grammar', ->
           expect(tokens[4]).toEqual value: '/*', scopes: ['source.css', 'meta.selector.css', 'comment.block.css', 'punctuation.definition.comment.begin.css']
           expect(tokens[5]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'comment.block.css']
           expect(tokens[6]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css', 'comment.block.css', 'punctuation.definition.comment.end.css']
-          expect(tokens[7]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
-          expect(tokens[8]).toEqual value: 'class-name', scopes: ['source.css', 'meta.selector.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+          expect(tokens[7]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+          expect(tokens[8]).toEqual value: 'class-name', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
           expect(tokens[9]).toEqual value: '/*', scopes: ['source.css', 'meta.selector.css', 'comment.block.css', 'punctuation.definition.comment.begin.css']
           expect(tokens[10]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'comment.block.css']
           expect(tokens[11]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css', 'comment.block.css', 'punctuation.definition.comment.end.css']
@@ -3287,6 +3287,101 @@ describe 'CSS grammar', ->
       expect(tokens[2][4]).toEqual value: 'rotate', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
       expect(tokens[2][10]).toEqual value: 'translateX', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
       expect(tokens[2][16]).toEqual value: 'scale', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
+
+  describe 'nested selectors', ->
+    describe 'direct nesting', ->
+      it 'tokenises nesting selectors', ->
+        {tokens} = grammar.tokenizeLine('a { & b {} }')
+        expect(tokens[4]).toEqual value: '&', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.operator.nesting.css']
+
+      it 'tokenises multiple nesting selectors', ->
+        lines = grammar.tokenizeLines """
+          .foo, .bar {
+            color: blue;
+            & + .baz, &.qux { color: red; }
+          }
+        """
+        expect(lines[2][1]).toEqual value: '&', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.operator.nesting.css']
+        expect(lines[2][8]).toEqual value: '&', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.operator.nesting.css']
+
+      it "doesn't highlight nesting selectors at top-level", ->
+        {tokens} = grammar.tokenizeLine '& { }'
+        expect(tokens[0]).toEqual value: '& ', scopes: ['source.css']
+
+      it "doesn't highlight nesting selectors inside attribute selectors", ->
+        {tokens} = grammar.tokenizeLine('a{&.thing[name=&attr]{ color: #f00; }}')
+        expect(tokens[8]).toEqual value: '&attr', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'meta.attribute-selector.css', 'string.unquoted.attribute-value.css']
+
+    describe 'complex nesting', ->
+      it 'tokenises @nest', ->
+        {tokens} = grammar.tokenizeLine('a { @nest & { } }')
+        expect(tokens[4]).toEqual value: '@', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
+        expect(tokens[5]).toEqual value: 'nest', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.control.at-rule.import.css']
+        expect(tokens[7]).toEqual value: '&', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.operator.nesting.css']
+
+      it "doesn't tokenise @nest at top-level", ->
+        {tokens} = grammar.tokenizeLine '@nest'
+        expect(tokens[1]).not.toEqual value: 'nest', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.control.at-rule.import.css']
+
+      it 'tokenises @nest rules with complex compound selectors', ->
+        lines = grammar.tokenizeLines """
+          .foo {
+            color: red;
+
+            @nest div #thing:not(> .aa &) {
+              color: blue;
+            }
+          }
+        """
+        expect(lines[3][1]).toEqual value: '@', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.control.at-rule.import.css', 'punctuation.definition.keyword.css']
+        expect(lines[3][2]).toEqual value: 'nest', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.control.at-rule.import.css']
+        expect(lines[3][4]).toEqual value: 'div', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.name.tag.css']
+        expect(lines[3][6]).toEqual value: '#', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
+        expect(lines[3][7]).toEqual value: 'thing', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.id.css']
+        expect(lines[3][8]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+        expect(lines[3][9]).toEqual value: 'not', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+        expect(lines[3][11]).toEqual value: '>', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.operator.combinator.css']
+        expect(lines[3][13]).toEqual value: '.', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(lines[3][14]).toEqual value: 'aa', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.class.css']
+        expect(lines[3][16]).toEqual value: '&', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'keyword.operator.nesting.css']
+
+    describe 'properties in nested rulesets', ->
+      it 'tokenises properties in nested rulesets', ->
+        lines = grammar.tokenizeLines """
+          a {
+            &::before{ content: &; }
+            &::after{  content: &  }
+            &:hover{
+              text-decoration: underline;
+              &.footer-link[name=&attr]{
+                color: #f00;
+              }
+            }
+          }
+        """
+        expect(lines[1][2]).toEqual value: '::', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.pseudo-element.css', 'punctuation.definition.entity.css']
+        expect(lines[1][3]).toEqual value: 'before', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.pseudo-element.css']
+        expect(lines[1][6]).toEqual value: 'content', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(lines[1][7]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'punctuation.separator.key-value.css']
+        expect(lines[1][9]).toEqual value: '&', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.property-value.css']
+        expect(lines[1][10]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'punctuation.terminator.rule.css']
+        expect(lines[2][6]).toEqual value: 'content', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(lines[2][9]).toEqual value: '&', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.property-value.css']
+        expect(lines[2][11]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'punctuation.section.property-list.end.css']
+        expect(lines[3][2]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+        expect(lines[3][3]).toEqual value: 'hover', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+        expect(lines[3][4]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'punctuation.section.property-list.begin.css']
+        expect(lines[4][1]).toEqual value: 'text-decoration', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(lines[4][2]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'punctuation.separator.key-value.css']
+        expect(lines[4][4]).toEqual value: 'underline', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+        expect(lines[4][5]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'punctuation.terminator.rule.css']
+        expect(lines[5][1]).toEqual value: '&', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.nested.selector.css', 'keyword.operator.nesting.css']
+        expect(lines[5][2]).toEqual value: '.', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(lines[5][3]).toEqual value: 'footer-link', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.nested.selector.css', 'entity.other.attribute-name.class.css']
+        expect(lines[6][1]).toEqual value: 'color', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.nested.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(lines[6][2]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.nested.property-list.css', 'punctuation.separator.key-value.css']
+        expect(lines[6][4]).toEqual value: '#', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.nested.property-list.css', 'meta.property-value.css', 'constant.other.color.rgb-value.hex.css', 'punctuation.definition.constant.css']
+        expect(lines[6][5]).toEqual value: 'f00', scopes: ['source.css', 'meta.property-list.css', 'meta.nested.property-list.css', 'meta.nested.property-list.css', 'meta.property-value.css', 'constant.other.color.rgb-value.hex.css']
 
   describe "firstLineMatch", ->
     it "recognises Emacs modelines", ->
