@@ -1042,6 +1042,9 @@
             'name': 'punctuation.section.function.end.bracket.round.css'
         'patterns': [
           {
+            'include': '#combinators'
+          }
+          {
             'include': '#selector'
           }
           {
@@ -1152,7 +1155,7 @@
           )
         )
       )
-      (?=\\s|$|:|\\)|/\\*)          # Terminates cleanly
+      (?=\\s|$|[><:=]|\\)|/\\*)     # Terminates cleanly
     '''
   'media-feature-keywords':
     'match': '''(?xi)
@@ -1218,6 +1221,10 @@
           {
             'match': ':'
             'name': 'punctuation.separator.key-value.css'
+          }
+          {
+            'match': '[><]=|[=<>]'
+            'name': 'keyword.operator.comparison.css'
           }
           {
             'captures':

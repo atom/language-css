@@ -863,6 +863,18 @@ describe 'CSS grammar', ->
           expect(tokens[6]).toEqual value: 'wide', scopes: ['source.css', 'meta.at-rule.media.css']
           expect(tokens[7]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.parameters.end.bracket.round.css']
 
+        it 'tokenises level 4 media-query syntax', ->
+            lines = grammar.tokenizeLines """
+              @media (min-width >= 0px)
+                 and (max-width <= 400)
+                 and (min-height > 400)
+                 and (max-height < 200)
+            """
+            expect(lines[0][6]).toEqual value: '>=', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
+            expect(lines[1][6]).toEqual value: '<=', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
+            expect(lines[2][6]).toEqual value: '>', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
+            expect(lines[3][6]).toEqual value: '<', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.operator.comparison.css']
+
         it 'tokenises comments between media types', ->
           {tokens} = grammar.tokenizeLine('@media/* */only/* */screen/* */and (min-width:1100px){}')
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
