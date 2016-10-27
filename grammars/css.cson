@@ -66,7 +66,7 @@
               '4':
                 'name': 'invalid.illegal.whitespace.charset.css'
               '5':
-                'name': 'invalid.illegal.unquoted-identifier.charset.css'
+                'name': 'invalid.illegal.not-double-quoted.charset.css'
               '6':
                 'name': 'invalid.illegal.unclosed-string.charset.css'
               '7':
@@ -83,11 +83,11 @@
               (\\x20{2,}|\\t+)      # More than one space used, or a tab
               |
               (?<=@charset\\x20)    # Beginning of charset name
-              ([^"';]+)             # Not quoted
+              ([^";]+)              # Not double-quoted
               |
-              (["'][^"']+$)         # Unclosed quote
+              ("[^"]+$)             # Unclosed quote
               |
-              (?<=["'])             # After charset name
+              (?<=")                # After charset name
               ([^;]+)               # Unexpected junk instead of semicolon
             '''
           }

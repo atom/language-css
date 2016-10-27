@@ -586,13 +586,13 @@ describe 'CSS grammar', ->
     describe 'at-rules', ->
       describe '@charset', ->
         it 'tokenises @charset rules at the start of a file', ->
-          lines = grammar.tokenizeLines "@charset 'US-ASCII';"
+          lines = grammar.tokenizeLines '@charset "US-ASCII";'
           expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css', 'punctuation.definition.keyword.css']
           expect(lines[0][1]).toEqual value: 'charset', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css']
           expect(lines[0][2]).toEqual value: ' ', scopes: ['source.css', 'meta.at-rule.charset.css']
-          expect(lines[0][3]).toEqual value: "'", scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
-          expect(lines[0][4]).toEqual value: 'US-ASCII', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.single.css']
-          expect(lines[0][5]).toEqual value: "'", scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
+          expect(lines[0][3]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.double.css', 'punctuation.definition.string.begin.css']
+          expect(lines[0][4]).toEqual value: 'US-ASCII', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.double.css']
+          expect(lines[0][5]).toEqual value: '"', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.double.css', 'punctuation.definition.string.end.css']
           expect(lines[0][6]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.charset.css', 'punctuation.terminator.rule.css']
 
           lines = grammar.tokenizeLines('/* Not the first line */\n@charset "UTF-8";')
@@ -607,10 +607,8 @@ describe 'CSS grammar', ->
           expect(lines[0][0]).toEqual value: ' ', scopes: ['source.css', 'meta.at-rule.charset.css', 'invalid.illegal.leading-whitespace.charset.css']
           expect(lines[0][1]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css', 'punctuation.definition.keyword.css']
           expect(lines[0][2]).toEqual value: 'charset', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css']
-          expect(lines[0][4]).toEqual value: "'", scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.single.css', 'punctuation.definition.string.begin.css']
-          expect(lines[0][5]).toEqual value: 'US-ASCII', scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.single.css']
-          expect(lines[0][6]).toEqual value: "'", scopes: ['source.css', 'meta.at-rule.charset.css', 'string.quoted.single.css', 'punctuation.definition.string.end.css']
-          expect(lines[0][7]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.charset.css', 'punctuation.terminator.rule.css']
+          expect(lines[0][4]).toEqual value: "'US-ASCII'", scopes: ['source.css', 'meta.at-rule.charset.css', 'invalid.illegal.not-double-quoted.charset.css']
+          expect(lines[0][5]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.charset.css', 'punctuation.terminator.rule.css']
 
           lines = grammar.tokenizeLines '@charset  "iso-8859-15";'
           expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.charset.css', 'keyword.control.at-rule.charset.css', 'punctuation.definition.keyword.css']
