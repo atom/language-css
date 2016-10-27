@@ -102,9 +102,6 @@
           {
             'include': '#string-double'
           }
-          {
-            'include': '#string-single'
-          }
         ]
       }
       {
@@ -571,7 +568,7 @@
         'name': 'invalid.deprecated.combinator.css'
       }
       {
-        'match': '>|\\+|~|>>'
+        'match': '>>|>|\\+|~'
         'name': 'keyword.operator.combinator.css'
       }
     ]
@@ -706,7 +703,7 @@
         'endCaptures':
           '0':
             'name': 'punctuation.section.function.end.bracket.round.css'
-        'name': 'meta.function.color.${1:/downcase}-value.css'
+        'name': 'meta.function.color.css'
         'patterns': [
           {
             'include': '#property-values'
@@ -824,7 +821,7 @@
         'name': 'meta.function.shape.css'
         'patterns': [
           {
-            'match': '(?<=\\s|^|\\*/)(?i:at|round)(?=\\s|$|/\\*)'
+            'match': '(?i)(?<=\\s|^|\\*/)(at|round)(?=\\s|$|/\\*)'
             'name': 'keyword.operator.shape.css'
           }
           {
@@ -1120,7 +1117,6 @@
   'media-feature-keywords':
     'match': '''(?xi)
       (?<=^|\\s|:|\\*/)
-
       (?: portrait                  # Orientation
         | landscape
         | progressive               # Scan types
@@ -1130,7 +1126,6 @@
         | minimal-ui
         | browser
       )
-
       (?=\\s|\\)|$)
     '''
     'name': 'support.constant.property-value.css'
@@ -1258,7 +1253,6 @@
         'include': '#rule-list'
       }
     ]
-
   'numeric-values':
     'patterns': [
       {
@@ -1297,8 +1291,9 @@
                 pt|px|q|rem|vh|vmax|vmin|vw
               | dpi|dpcm|dppx                 # - Resolution
               | s|ms                          # - Time
-              )\\b
-          )?
+              )
+            \\b                               # Boundary checking intentionally lax to
+          )?                                  # facilitate embedding in CSS-like grammars
         '''
         'name': 'constant.numeric.css'
       }
@@ -1683,7 +1678,11 @@
           '1':
             'name': 'punctuation.definition.entity.css'
           '2':
-            'patterns': ['include': '#escapes']
+            'patterns': [
+              {
+                'include': '#escapes'
+              }
+            ]
         'match': '''(?x)
           (\\.)
           (
@@ -1766,7 +1765,11 @@
             'captures':
               '1':
                 'name': 'entity.other.namespace-prefix.css'
-                'patterns': ['include': '#escapes']
+                'patterns': [
+                  {
+                    'include': '#escapes'
+                  }
+                ]
             'match': '''(?x)
               # Qualified namespace prefix
               ( -?(?!\\d)(?:[\\w-]|[^\\x00-\\x7F]|\\\\(?:[0-9a-fA-F]{1,6}|.))+
