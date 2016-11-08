@@ -1226,33 +1226,6 @@
       )
       (?=$|[{,\\s;]|/\\*)
     '''
-  'nested-selector':
-    'begin': '''(?ix) (?<!\\w|-)
-      (?=
-        \\s*
-        (?: &             # Direct nesting
-          | @nest         # Nesting @-rule (complex nesting)
-            (?![\\w-])
-        )
-      )
-    '''
-    'end': '(?<=})\\s*|(?=[/;])'
-    'patterns': [
-      {
-        # Selector component
-        'begin': '\\G'
-        'end': '\\s*(?={)|(?=[/;])'
-        'name': 'meta.nested.selector.css'
-        'patterns': [
-          {
-            'include': '#selector-innards'
-          }
-        ]
-      }
-      {
-        'include': '#rule-list'
-      }
-    ]
   'numeric-values':
     'patterns': [
       {
@@ -1595,9 +1568,6 @@
       {
         'match': ';'
         'name': 'punctuation.terminator.rule.css'
-      }
-      {
-        'include': '#nested-selector'
       }
     ]
   'selector':
