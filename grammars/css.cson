@@ -40,7 +40,7 @@
   }
   {
     'match': '}'
-    'name': 'punctuation.section.end.css'
+    'name': 'punctuation.section.property-list.end.bracket.curly.css'
   }
 ]
 'repository':
@@ -172,7 +172,7 @@
         'end': '}|(?=;)'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.property-list.end.css'
+            'name': 'punctuation.section.property-list.end.bracket.curly.css'
         'patterns': [
           {
             'begin': '(?i)(@)media(?=\\s|\\(|$|/\\*)'
@@ -193,7 +193,7 @@
             'begin': '{'
             'beginCaptures':
               '0':
-                'name': 'punctuation.section.property-list.begin.css'
+                'name': 'punctuation.section.property-list.begin.bracket.curly.css'
             'end': '(?=})'
             'patterns': [
               {
@@ -221,21 +221,61 @@
       }
       {
         # @counter-style
-        'begin': '(?i)((@)counter-style)(?=[\\s{\'";]|/\\*|$)\\s*'
-        'beginCaptures':
-          '1':
-            'name': 'keyword.control.at-rule.counter-style.css'
-          '2':
-            'name': 'punctuation.definition.keyword.css'
-        'contentName': 'variable.parameter.style-name.css'
-        'end': '\\s*(?={|[@;])'
-        'name': 'meta.at-rule.counter-style.css'
+        'begin': '(?i)(?=@counter-style(?:[\\s{\'";]|/\\*|$))'
+        'end': '(?<=})\\s*'
         'patterns': [
           {
-            'include': '#comment-block'
+            'captures':
+              '0':
+                'name': 'keyword.control.at-rule.counter-style.css'
+              '1':
+                'name': 'punctuation.definition.keyword.css'
+            'match': '(?i)\\G(@)counter-style'
+            'name': 'meta.at-rule.counter-style.header.css'
           }
           {
-            'include': '#escapes'
+            'begin': '(?<=@counter-style)'
+            'end': '(?=\\s*{)'
+            'name': 'meta.at-rule.counter-style.header.css'
+            'patterns': [
+              {
+                'include': '#comment-block'
+              }
+              {
+                'include': '#escapes'
+              }
+              {
+                'match': '''(?x)
+                  (?:[-a-zA-Z_]    | [^\\x00-\\x7F])     # First letter
+                  (?:[-a-zA-Z0-9_] | [^\\x00-\\x7F]      # Remainder of identifier
+                    |\\\\(?:[0-9a-fA-F]{1,6}|.)
+                  )*
+                '''
+                'name': 'variable.parameter.style-name.css'
+              }
+            ]
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.property-list.begin.bracket.curly.css'
+            'end': '}'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.property-list.end.bracket.curly.css'
+            'name': 'meta.at-rule.counter-style.body.css'
+            'patterns': [
+              {
+                'include': '#comment-block'
+              }
+              {
+                'include': '#escapes'
+              }
+              {
+                'include': '#rule-list-innards'
+              }
+            ]
           }
         ]
       }
@@ -250,7 +290,7 @@
         'end': '{|(?=[@;])'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.property-list.begin.css'
+            'name': 'punctuation.section.property-list.begin.bracket.curly.css'
         'name': 'meta.at-rule.document.css'
         'patterns': [
           {
@@ -302,17 +342,18 @@
         # @keyframes
         'begin': '(?i)((@)keyframes)(?=[\\s{\'";]|/\\*|$)\\s*'
         'beginCaptures':
+          '0':
+            'name': 'meta.at-rule.keyframes.header.css'
           '1':
             'name': 'keyword.control.at-rule.keyframes.css'
           '2':
             'name': 'punctuation.definition.keyword.css'
         'end': '(?<=})\\s*'
-        'name': 'meta.at-rule.keyframes.header.css'
         'patterns': [
           {
             'begin': '\\G'
-            'end': '(?={)'
-            'name': 'variable.parameter.keyframe-list.css'
+            'end': '(?=\\s*{)'
+            'name': 'meta.at-rule.keyframes.header.css'
             'patterns': [
               {
                 'include': '#comment-block'
@@ -320,17 +361,26 @@
               {
                 'include': '#escapes'
               }
+              {
+                'match': '''(?x)
+                  (?:[-a-zA-Z_]    | [^\\x00-\\x7F])     # First letter
+                  (?:[-a-zA-Z0-9_] | [^\\x00-\\x7F]      # Remainder of identifier
+                    |\\\\(?:[0-9a-fA-F]{1,6}|.)
+                  )*
+                '''
+                'name': 'variable.parameter.keyframe-list.css'
+              }
             ]
           }
           {
             'begin': '{'
             'beginCaptures':
               '0':
-                'name': 'punctuation.section.keyframes.begin.css'
+                'name': 'punctuation.section.keyframes.begin.bracket.curly.css'
             'end': '}'
             'endCaptures':
               '0':
-                'name': 'punctuation.section.keyframes.end.css'
+                'name': 'punctuation.section.keyframes.end.bracket.curly.css'
             'name': 'meta.at-rule.keyframes.body.css'
             'patterns': [
               {
@@ -393,11 +443,11 @@
             'begin': '{'
             'beginCaptures':
               '0':
-                'name': 'punctuation.section.supports.begin.css'
+                'name': 'punctuation.section.supports.begin.bracket.curly.css'
             'end': '}'
             'endCaptures':
               '0':
-                'name': 'punctuation.section.supports.end.css'
+                'name': 'punctuation.section.supports.end.bracket.curly.css'
             'name': 'meta.at-rule.supports.body.css'
             'patterns': [
               {
@@ -645,11 +695,11 @@
         'begin': '{'
         'beginCaptures':
           '0':
-            'name': 'punctuation.section.property-list.begin.css'
+            'name': 'punctuation.section.property-list.begin.bracket.curly.css'
         'end': '(})|(?<=})'
         'endCaptures':
           '0':
-            'name': 'punctuation.section.property-list.end.css'
+            'name': 'punctuation.section.property-list.end.bracket.curly.css'
         'name': 'meta.property-list.font-feature.css'
         'patterns': [
           {
@@ -798,6 +848,10 @@
         'name': 'meta.function.misc.css'
         'patterns': [
           {
+            'match': '(?i)(?<=[,\\s"]|\\*/|^)\\d+x(?=[\\s,"\')]|/\\*|$)'
+            'name': 'constant.numeric.other.density.css'
+          }
+          {
             'include': '#property-values'
           }
           {
@@ -921,6 +975,12 @@
           '0':
             'name': 'punctuation.section.function.end.bracket.round.css'
         'patterns': [
+          {
+            'include': '#comment-block'
+          }
+          {
+            'include': '#escapes'
+          }
           {
             'match': '(?i)(?<![\\w-])(ltr|rtl)(?![\\w-])'
             'name': 'support.constant.text-direction.css'
@@ -1240,7 +1300,7 @@
           '1':
             'name': 'keyword.other.unit.percentage.css'
           '2':
-            'name': 'keyword.other.unit.${2:/downcase}-unit.css'
+            'name': 'keyword.other.unit.${2:/downcase}.css'
         'match': '''(?xi) (?<!\\w|-)
           [-+]?                               # Sign indicator
 
@@ -1464,8 +1524,10 @@
     'captures':
       '1':
         'name': 'punctuation.definition.entity.css'
+      '2':
+        'name': 'invalid.illegal.colon.css'
     'match': '''(?xi)
-      (:)
+      (:)(:*)
       (?: active|any-link|checked|default|disabled|empty|enabled|first
         | (?:first|last|only)-(?:child|of-type)|focus|fullscreen|host|hover
         | in-range|indeterminate|invalid|left|link|optional|out-of-range
@@ -1511,11 +1573,11 @@
     'begin': '{'
     'beginCaptures':
       '0':
-        'name': 'punctuation.section.property-list.begin.css'
+        'name': 'punctuation.section.property-list.begin.bracket.curly.css'
     'end': '(})|(?<=})'
     'endCaptures':
       '0':
-        'name': 'punctuation.section.property-list.end.css'
+        'name': 'punctuation.section.property-list.end.bracket.curly.css'
     'name': 'meta.property-list.css'
     'patterns': [
       'include': '#rule-list-innards'
@@ -1581,7 +1643,7 @@
         )
       )
     '''
-    'end': '(?=[/@{)])'
+    'end': '(?=\\s*[/@{)])'
     'name': 'meta.selector.css'
     'patterns': [
       {
@@ -1596,6 +1658,9 @@
       }
       {
         'include': '#comment-block'
+      }
+      {
+        'include': '#commas'
       }
       {
         'captures':
