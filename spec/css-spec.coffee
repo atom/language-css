@@ -439,7 +439,9 @@ describe 'CSS grammar', ->
 
       it 'does not tokenize tokens containing unescaped ASCII punctuation or symbols other than "-" and "_"', ->
         {tokens} = grammar.tokenizeLine '.B&W'
-        expect(tokens[0].scopes).not.toEqual ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+        expect(tokens[0]).toEqual value: '.B', scopes: ['source.css', 'meta.selector.css']
+        expect(tokens[1]).toEqual value: '&', scopes: ['source.css', 'meta.selector.css', 'keyword.operator.nesting.css']
+        expect(tokens[2]).toEqual value: 'W', scopes: ['source.css', 'meta.selector.css']
 
       it 'does not tokenize tokens beginning with [0-9]', ->
         {tokens} = grammar.tokenizeLine '.666'
@@ -1309,7 +1311,6 @@ describe 'CSS grammar', ->
           expect(lines[13][10]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
           expect(lines[13][12]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.body.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
           expect(lines[14][1]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'meta.at-rule.keyframes.body.css', 'punctuation.section.keyframes.end.bracket.curly.css']
-          expect(lines[14][2]).toEqual value: '', scopes: ['source.css', 'meta.at-rule.supports.body.css']
           expect(lines[15][0]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.supports.body.css', 'punctuation.section.supports.end.bracket.curly.css']
 
         it 'matches injected comments', ->

@@ -293,7 +293,7 @@
       }
       {
         # @document
-        'begin': '(?i)((@)document)(?:\\s+|$|(?=[\'";{]|/\\*))'
+        'begin': '(?i)((@)document)(?=$|[\\s\'";{]|/\\*)'
         'beginCaptures':
           '1':
             'name': 'keyword.control.at-rule.document.css'
@@ -306,15 +306,15 @@
         'name': 'meta.at-rule.document.css'
         'patterns': [
           {
-            'begin': '(?i)\\s*(?<![\\w-])(url-prefix|domain|regexp)(\\()\\s*'
+            'begin': '(?i)(?<![\\w-])(url-prefix|domain|regexp)(\\()'
             'beginCaptures':
               '1':
                 'name': 'support.function.document-rule.css'
               '2':
                 'name': 'punctuation.section.function.begin.bracket.round.css'
-            'end': '\\s*(\\))\\s*'
+            'end': '\\)'
             'endCaptures':
-              '1':
+              '0':
                 'name': 'punctuation.section.function.end.bracket.round.css'
             'name': 'meta.function.document-rule.css'
             'patterns': [
@@ -349,7 +349,7 @@
       }
       {
         # @keyframes
-        'begin': '(?i)((@)keyframes)(?=[\\s{\'";]|/\\*|$)\\s*'
+        'begin': '(?i)((@)keyframes)(?=[\\s{\'";]|/\\*|$)'
         'beginCaptures':
           '0':
             'name': 'meta.at-rule.keyframes.header.css'
@@ -357,7 +357,7 @@
             'name': 'keyword.control.at-rule.keyframes.css'
           '2':
             'name': 'punctuation.definition.keyword.css'
-        'end': '(?<=})\\s*'
+        'end': '(?<=})'
         'patterns': [
           {
             'begin': '\\G'
@@ -420,7 +420,7 @@
       {
         # @supports
         'begin': '(?i)(?=@supports(?:\\s|\\(|$|/\\*))'
-        'end': '(?<=})\\s*|(?=;)'
+        'end': '(?<=})|(?=;)'
         'patterns': [
           {
             'begin': '\\G'
@@ -702,7 +702,7 @@
         'beginCaptures':
           '0':
             'name': 'punctuation.section.property-list.begin.bracket.curly.css'
-        'end': '(})|(?<=})'
+        'end': '}|(?<=})'
         'endCaptures':
           '0':
             'name': 'punctuation.section.property-list.end.bracket.curly.css'
@@ -712,7 +712,9 @@
             # Font-feature name
             'match': '''(?x)
               (?: [-a-zA-Z_]    | [^\\x00-\\x7F] )   # First letter
-              (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F] )*  # Remainder of identifier
+              (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F]     # Remainder of identifier
+                | \\\\(?:[0-9a-fA-F]{1,6}|.)
+              )*
             '''
             'name': 'variable.font-feature.css'
           }
@@ -1224,9 +1226,9 @@
         'include': '#commas'
       }
       {
-        'begin': '(\\()\\s*'
+        'begin': '\\('
         'beginCaptures':
-          '1':
+          '0':
             'name': 'punctuation.definition.parameters.begin.bracket.round.css'
         'end': '\\)'
         'endCaptures':
@@ -1255,7 +1257,7 @@
                 'name': 'keyword.operator.arithmetic.css'
               '3':
                 'name': 'constant.numeric.css'
-            'match': '\\s*(\\d+)\\s*(/)\\s*(\\d+)'
+            'match': '(\\d+)\\s*(/)\\s*(\\d+)'
             'name': 'meta.ratio.css'
           }
           {
@@ -1636,13 +1638,16 @@
       }
     ]
   'selector':
-    'begin': '''(?x) \\s*
+    'begin': '''(?x)
       (?=
         (?:\\|)?                    # Possible anonymous namespace prefix
         (?:
           [-\\[:.*\\#a-zA-Z_]       # Valid selector character
           |
           [^\\x00-\\x7F]            # Which can include non-ASCII symbols
+          |
+          \\\\                      # Or an escape sequence
+          (?:[0-9a-fA-F]{1,6}|.)
         )
       )
     '''
@@ -1671,7 +1676,7 @@
             'name': 'keyword.control.at-rule.import.css'
           '2':
             'name': 'punctuation.definition.keyword.css'
-        'match': '(?i)((@)nest)(?![\\w-])\\s*'
+        'match': '(?i)((@)nest)(?![\\w-])'
       }
       {
         'include': '#escapes'
@@ -1697,7 +1702,9 @@
           )
           (
             (?: [-a-zA-Z_]    | [^\\x00-\\x7F] )   # First letter
-            (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F] )*  # Remainder of identifier
+            (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F]     # Remainder of identifier
+              | \\\\(?:[0-9a-fA-F]{1,6}|.)
+            )*
             |
             \\*     # Universal namespace
           )?
@@ -1959,15 +1966,15 @@
         'name': 'punctuation.separator.dash.unicode-range.css'
     'match': '(?<![\\w-])[Uu]\\+[0-9A-Fa-f?]{1,6}(?:(-)[0-9A-Fa-f]{1,6})?(?![\\w-])'
   'url':
-    'begin': '(?i)(?<![\\w@-])(url)(\\()\\s*'
+    'begin': '(?i)(?<![\\w@-])(url)(\\()'
     'beginCaptures':
       '1':
         'name': 'support.function.url.css'
       '2':
         'name': 'punctuation.section.function.begin.bracket.round.css'
-    'end': '\\s*(\\))'
+    'end': '\\)'
     'endCaptures':
-      '1':
+      '0':
         'name': 'punctuation.section.function.end.bracket.round.css'
     'name': 'meta.function.url.css'
     'patterns': [
