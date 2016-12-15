@@ -100,7 +100,22 @@
             'match': '((@)charset)(?=\\s)'
           }
           {
-            'include': '#string-double'
+            'begin': '"'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.string.begin.css'
+            'end': '"|$'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.string.end.css'
+            'name': 'string.quoted.double.css'
+            'patterns': [
+              {
+                'begin': '(?:\\G|^)(?=(?:[^"])+$)'
+                'end': '$'
+                'name': 'invalid.illegal.unclosed.string.css'
+              }
+            ]
           }
         ]
       }
@@ -128,10 +143,7 @@
             ]
           }
           {
-            'include': '#string-double'
-          }
-          {
-            'include': '#string-single'
+            'include': '#string'
           }
           {
             'include': '#comment-block'
@@ -307,10 +319,7 @@
             'name': 'meta.function.document-rule.css'
             'patterns': [
               {
-                'include': '#string-single'
-              }
-              {
-                'include': '#string-double'
+                'include': '#string'
               }
               {
                 'include': '#comment-block'
@@ -557,10 +566,7 @@
             'include': '#escapes'
           }
           {
-            'include': '#string-double'
-          }
-          {
-            'include': '#string-single'
+            'include': '#string'
           }
         ]
       }
@@ -1510,10 +1516,7 @@
         'include': '#color-keywords'
       }
       {
-        'include': '#string-double'
-      }
-      {
-        'include': '#string-single'
+        'include': '#string'
       }
       {
         'match': '!\\s*important'
@@ -1765,10 +1768,7 @@
             'include': '#comment-block'
           }
           {
-            'include': '#string-double'
-          }
-          {
-            'include': '#string-single'
+            'include': '#string'
           }
           {
             'captures':
@@ -1860,54 +1860,59 @@
         'name': 'entity.name.tag.custom.css'
       }
     ]
-  'string-double':
-    'begin': '"'
-    'beginCaptures':
-      '0':
-        'name': 'punctuation.definition.string.begin.css'
-    'end': '"|(?<!\\\\)(?=$|\\n)'
-    'endCaptures':
-      '0':
-        'name': 'punctuation.definition.string.end.css'
-    'name': 'string.quoted.double.css'
+  'string':
     'patterns': [
       {
-        'begin': '(?:\\G|^)(?=(?:[^\\\\"]|\\\\.)+$)'
-        'end': '$'
-        'name': 'invalid.illegal.unclosed.string.css'
+        'begin': '"'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.css'
+        'end': '"|(?<!\\\\)(?=$|\\n)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.css'
+        'name': 'string.quoted.double.css'
         'patterns': [
+          {
+            'begin': '(?:\\G|^)(?=(?:[^\\\\"]|\\\\.)+$)'
+            'end': '$'
+            'name': 'invalid.illegal.unclosed.string.css'
+            'patterns': [
+              {
+                'include': '#escapes'
+              }
+            ]
+          }
           {
             'include': '#escapes'
           }
         ]
       }
       {
-        'include': '#escapes'
-      }
-    ]
-  'string-single':
-    'begin': '\''
-    'beginCaptures':
-      '0':
-        'name': 'punctuation.definition.string.begin.css'
-    'end': "'|(?<!\\\\)(?=$|\\n)"
-    'endCaptures':
-      '0':
-        'name': 'punctuation.definition.string.end.css'
-    'name': 'string.quoted.single.css'
-    'patterns': [
-      {
-        'begin': "(?:\\G|^)(?=(?:[^\\\\']|\\\\.)+$)"
-        'end': '$'
-        'name': 'invalid.illegal.unclosed.string.css'
+        'begin': '\''
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.css'
+        'end': "'|(?<!\\\\)(?=$|\\n)"
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.css'
+        'name': 'string.quoted.single.css'
         'patterns': [
+          {
+            'begin': "(?:\\G|^)(?=(?:[^\\\\']|\\\\.)+$)"
+            'end': '$'
+            'name': 'invalid.illegal.unclosed.string.css'
+            'patterns': [
+              {
+                'include': '#escapes'
+              }
+            ]
+          }
           {
             'include': '#escapes'
           }
         ]
-      }
-      {
-        'include': '#escapes'
       }
     ]
   'tag-names':
@@ -1971,10 +1976,7 @@
         'name': 'variable.parameter.url.css'
       }
       {
-        'include': '#string-single'
-      }
-      {
-        'include': '#string-double'
+        'include': '#string'
       }
       {
         'include': '#comment-block'
