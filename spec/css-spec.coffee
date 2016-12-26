@@ -462,7 +462,7 @@ describe 'CSS grammar', ->
 
       expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
       expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.css', 'keyword.control.at-rule.media.css']
-      expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css']
+      expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.media.feature.begin.css']
       expect(tokens[4]).toEqual value: 'max-height', scopes: ['source.css', 'meta.at-rule.media.css', 'support.type.property-name.media.css']
       expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.separator.key-value.css']
       expect(tokens[7]).toEqual value: '40', scopes: ['source.css', 'meta.at-rule.media.css', 'constant.numeric.css']
@@ -470,7 +470,7 @@ describe 'CSS grammar', ->
       expect(tokens[9]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css', 'punctuation.definition.comment.css']
       expect(tokens[10]).toEqual value: ' comment ', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css']
       expect(tokens[11]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.media.css', 'comment.block.css', 'punctuation.definition.comment.css']
-      expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css']
+      expect(tokens[12]).toEqual value: ')', scopes: ['source.css', 'meta.at-rule.media.css', 'punctuation.definition.media.feature.end.css']
 
     it 'tokenizes inline comments', ->
       {tokens} = grammar.tokenizeLine 'section {border:4px/*padding:1px*/}'

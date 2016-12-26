@@ -293,7 +293,12 @@
         'beginCaptures':
           '1':
             'name': 'keyword.operator.logic.media.css'
+          '2':
+            'name': 'punctuation.definition.media.feature.begin.css'
         'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.media.feature.end.css'
         'patterns': [
           {
             'begin': '(?x)\n\t                            (\n\t                                ((min|max)-)?\n\t                                (\n\t                                    ((device-)?(height|width|aspect-ratio))|\n\t                                    (color(-index)?)|monochrome|resolution\n\t                                )\n\t                            )|grid|scan|orientation\n\t                            \\s*(?=[:)])'
