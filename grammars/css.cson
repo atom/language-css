@@ -1521,7 +1521,7 @@
         'include': '#string'
       }
       {
-        'match': '!\\s*important'
+        'match': '!\\s*important(?![\\w-])'
         'name': 'keyword.other.important.css'
       }
     ]
