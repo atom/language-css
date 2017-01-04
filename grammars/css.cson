@@ -146,9 +146,6 @@
             'include': '#string'
           }
           {
-            'include': '#comment-block'
-          }
-          {
             'include': '#url'
           }
           {
@@ -158,7 +155,7 @@
       }
       {
         # @font-face
-        'begin': '(?i)((@)font-face)\\s*(?={|$|/\\*)'
+        'begin': '(?i)((@)font-face)(?=\\s*|{|$|/\\*)'
         'beginCaptures':
           '1':
             'name': 'keyword.control.at-rule.font-face.css'
@@ -180,7 +177,7 @@
       }
       {
         # @media
-        'begin': '(?i)(?=@media(?:\\s|\\(|$|/\\*))'
+        'begin': '(?i)(?=@media(\\s|\\(|$|/\\*))'
         'end': '}|(?=;)'
         'endCaptures':
           '0':
@@ -193,7 +190,7 @@
                 'name': 'keyword.control.at-rule.media.css'
               '1':
                 'name': 'punctuation.definition.keyword.css'
-            'end': '\\s*(?=[;{])'
+            'end': '(?=\\s*[{;])'
             'name': 'meta.at-rule.media.css'
             'patterns': [
               {
@@ -223,7 +220,7 @@
             'name': 'keyword.control.at-rule.page.css'
           '1':
             'name': 'punctuation.definition.keyword.css'
-        'end': '\\s*(?=$|[{:;])'
+        'end': '(?=\\s*($|[:{;]))'
         'name': 'meta.at-rule.page.css'
         'patterns': [
           {
@@ -233,8 +230,8 @@
       }
       {
         # @counter-style
-        'begin': '(?i)(?=@counter-style(?:[\\s{\'";]|/\\*|$))'
-        'end': '(?<=})\\s*'
+        'begin': '(?i)(?=@counter-style(?:[\\s\'"{;]|/\\*|$))'
+        'end': '(?<=})'
         'patterns': [
           {
             'captures':
@@ -293,7 +290,7 @@
       }
       {
         # @document
-        'begin': '(?i)((@)document)(?=$|[\\s\'";{]|/\\*)'
+        'begin': '(?i)((@)document)(?=$|[\\s\'"{;]|/\\*)'
         'beginCaptures':
           '1':
             'name': 'keyword.control.at-rule.document.css'
@@ -349,7 +346,7 @@
       }
       {
         # @keyframes
-        'begin': '(?i)((@)keyframes)(?=[\\s{\'";]|/\\*|$)'
+        'begin': '(?i)((@)keyframes)(?=[\\s\'"{;]|/\\*|$)'
         'beginCaptures':
           '0':
             'name': 'meta.at-rule.keyframes.header.css'
@@ -424,7 +421,7 @@
         'patterns': [
           {
             'begin': '\\G'
-            'end': '(?=[;{])'
+            'end': '(?=\\s*[{;])'
             'name': 'meta.at-rule.supports.header.css'
             'patterns': [
               {
@@ -468,13 +465,13 @@
       }
       {
         # @viewport
-        'begin': '(?i)((@)viewport)(?=[\\s{\'";]|/\\*|$)'
+        'begin': '(?i)((@)viewport)(?=[\\s\'"{;]|/\\*|$)'
         'beginCaptures':
           '1':
             'name': 'keyword.control.at-rule.viewport.css'
           '2':
             'name': 'punctuation.definition.keyword.css'
-        'end': '(?=[{;@])'
+        'end': '(?=\\s*[{;@])'
         'name': 'meta.at-rule.viewport.css'
         'patterns': [
           {
@@ -487,14 +484,14 @@
       }
       {
         # @font-feature-values
-        'begin': '(?i)((@)font-feature-values)(?=[\\s{\'";]|/\\*|$)\\s*'
+        'begin': '(?i)((@)font-feature-values)(?=[\\s\'"{;]|/\\*|$)\\s*'
         'beginCaptures':
           '1':
             'name': 'keyword.control.at-rule.font-feature-values.css'
           '2':
             'name': 'punctuation.definition.keyword.css'
         'contentName': 'variable.parameter.font-name.css'
-        'end': '\\s*(?={|[@;])'
+        'end': '(?=\\s*[@{;])'
         'name': 'meta.at-rule.font-features.css'
         'patterns': [
           {
@@ -687,7 +684,7 @@
   'font-features':
     'begin': '''(?xi)
       ((@)(annotation|character-variant|ornaments|styleset|stylistic|swash))
-      (?=[\\s{@'";]|/\\*|$)\\s*
+      (?=[\\s@'"{;]|/\\*|$)
     '''
     'beginCaptures':
       '1':
@@ -1199,7 +1196,7 @@
     'name': 'support.constant.property-value.css'
   'media-query':
     'begin': '\\G'
-    'end': '\\s*(?=[{;])'
+    'end': '(?=\\s*[{;])'
     'patterns': [
       {
         'include': '#comment-block'
@@ -1270,8 +1267,8 @@
       }
     ]
   'media-query-list':
-    'begin': '\\s*(?=[^{;])'
-    'end': '\\s*(?=[{;])'
+    'begin': '(?=\\s*[^{;])'
+    'end': '(?=\\s*[{;])'
     'patterns': [
       {
         'include': '#media-query'
@@ -1788,7 +1785,9 @@
               '1':
                 'name': 'string.unquoted.attribute-value.css'
                 'patterns': [
-                  'include': '#escapes'
+                  {
+                    'include': '#escapes'
+                  }
                 ]
             'match': '(?x)(?<==)\\s*((?!/\\*)(?:[^\\\\"\'\\s\\]]|\\\\.)+)'
           }
@@ -1832,7 +1831,9 @@
               '1':
                 'name': 'entity.other.attribute-name.css'
                 'patterns': [
-                  'include': '#escapes'
+                  {
+                    'include': '#escapes'
+                  }
                 ]
             'match': '''(?x)
               (-?(?!\\d)(?:[\\w-]|[^\\x00-\\x7F]|\\\\(?:[0-9a-fA-F]{1,6}|.))+)
