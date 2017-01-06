@@ -168,43 +168,6 @@
         ]
       }
       {
-        # @media
-        'begin': '(?i)(?=@media(\\s|\\(|/\\*|$))'
-        'end': '}'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.section.property-list.end.bracket.curly.css'
-        'patterns': [
-          {
-            'begin': '(?i)(@)media(?=\\s|\\(|/\\*|$)'
-            'beginCaptures':
-              '0':
-                'name': 'keyword.control.at-rule.media.css'
-              '1':
-                'name': 'punctuation.definition.keyword.css'
-            'end': '(?=\\s*[{;])'
-            'name': 'meta.at-rule.media.css'
-            'patterns': [
-              {
-                'include': '#media-query-list'
-              }
-            ]
-          }
-          {
-            'begin': '{'
-            'beginCaptures':
-              '0':
-                'name': 'punctuation.section.property-list.begin.bracket.curly.css'
-            'end': '(?=})'
-            'patterns': [
-              {
-                'include': '$self'
-              }
-            ]
-          }
-        ]
-      }
-      {
         # @page
         'begin': '(?i)(@)page(?=[\\s:{]|/\\*|$)'
         'captures':
@@ -217,6 +180,44 @@
         'patterns': [
           {
             'include': '#rule-list'
+          }
+        ]
+      }
+      {
+        # @media
+        'begin': '(?i)(?=@media(\\s|\\(|/\\*|$))'
+        'end': '(?<=})'
+        'patterns': [
+          {
+            'begin': '(?i)\\G(@)media'
+            'beginCaptures':
+              '0':
+                'name': 'keyword.control.at-rule.media.css'
+              '1':
+                'name': 'punctuation.definition.keyword.css'
+            'end': '(?=\\s*[{;])'
+            'name': 'meta.at-rule.media.header.css'
+            'patterns': [
+              {
+                'include': '#media-query-list'
+              }
+            ]
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.media.begin.bracket.curly.css'
+            'end': '}'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.media.end.bracket.curly.css'
+            'name': 'meta.at-rule.media.body.css'
+            'patterns': [
+              {
+                'include': '$self'
+              }
+            ]
           }
         ]
       }
@@ -345,10 +346,7 @@
             'name': 'meta.at-rule.document.body.css'
             'patterns': [
               {
-                'include': '#selector'
-              }
-              {
-                'include': '#rule-list'
+                'include': '$self'
               }
             ]
           }
@@ -697,7 +695,7 @@
         'name': 'keyword.control.at-rule.${3:/downcase}.css'
       '2':
         'name': 'punctuation.definition.keyword.css'
-    'end': '(?<=})\\s*'
+    'end': '(?<=})'
     'name': 'meta.at-rule.${3:/downcase}.css'
     'patterns': [
       {
@@ -705,7 +703,7 @@
         'beginCaptures':
           '0':
             'name': 'punctuation.section.property-list.begin.bracket.curly.css'
-        'end': '}|(?<=})'
+        'end': '}'
         'endCaptures':
           '0':
             'name': 'punctuation.section.property-list.end.bracket.curly.css'
