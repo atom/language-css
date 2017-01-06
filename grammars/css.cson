@@ -119,7 +119,7 @@
             'name': 'keyword.control.at-rule.import.css'
           '2':
             'name': 'punctuation.definition.keyword.css'
-        'end': ';|(?=})'
+        'end': ';'
         'endCaptures':
           '0':
             'name': 'punctuation.terminator.rule.css'
@@ -170,7 +170,7 @@
       {
         # @media
         'begin': '(?i)(?=@media(\\s|\\(|/\\*|$))'
-        'end': '}|(?=;)'
+        'end': '}'
         'endCaptures':
           '0':
             'name': 'punctuation.section.property-list.end.bracket.curly.css'
@@ -206,7 +206,7 @@
       }
       {
         # @page
-        'begin': '(?i)(@)page(?=[\\s:{;]|/\\*|$)'
+        'begin': '(?i)(@)page(?=[\\s:{]|/\\*|$)'
         'captures':
           '0':
             'name': 'keyword.control.at-rule.page.css'
