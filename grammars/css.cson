@@ -1582,7 +1582,7 @@
     'beginCaptures':
       '0':
         'name': 'punctuation.section.property-list.begin.bracket.curly.css'
-    'end': '(})|(?<=})'
+    'end': '}'
     'endCaptures':
       '0':
         'name': 'punctuation.section.property-list.end.bracket.curly.css'
