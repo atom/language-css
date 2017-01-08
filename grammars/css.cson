@@ -518,7 +518,7 @@
             'name': 'keyword.control.at-rule.namespace.css'
           '2':
             'name': 'punctuation.definition.keyword.css'
-        'end': ';|(<=["\')])|(?=[@{])'
+        'end': ';|(?=[@{])'
         'endCaptures':
           '0':
             'name': 'punctuation.terminator.rule.css'
