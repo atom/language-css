@@ -296,7 +296,7 @@
                 'name': 'keyword.control.at-rule.document.css'
               '1':
                 'name': 'punctuation.definition.keyword.css'
-            'end': '(?=\\s*{)'
+            'end': '(?=\\s*[{;])'
             'name': 'meta.at-rule.document.header.css'
             'patterns': [
               {
