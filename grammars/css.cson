@@ -1080,7 +1080,7 @@
                 'include': '#escapes'
               }
               {
-                'match': "(?<=['\\s])[a-zA-Z*]+(-[a-zA-Z0-9*]*+)*(?=['\\s])"
+                'match': "(?<=['\\s])[a-zA-Z*]+(-[a-zA-Z0-9*]*)*(?=['\\s])"
                 'name': 'support.constant.language-range.css'
               }
             ]
