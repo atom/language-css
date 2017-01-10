@@ -980,7 +980,13 @@
         'patterns': [
           {
             'name': 'variable.argument.css'
-            'match': '--[\\w-]+'
+            'match': '''(?x)
+              --
+              (?:[-a-zA-Z_]    | [^\\x00-\\x7F])     # First letter
+              (?:[-a-zA-Z0-9_] | [^\\x00-\\x7F]      # Remainder of identifier
+                |\\\\(?:[0-9a-fA-F]{1,6}|.)
+              )*
+            '''
           }
           {
             'include': '#property-values'
