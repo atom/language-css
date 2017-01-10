@@ -243,6 +243,13 @@
                 'include': '#escapes'
               }
               {
+                'captures':
+                  '0':
+                    'patterns': [
+                      {
+                        'include': '#escapes'
+                      }
+                    ]
                 'match': '''(?x)
                   (?:[-a-zA-Z_]    | [^\\x00-\\x7F])     # First letter
                   (?:[-a-zA-Z0-9_] | [^\\x00-\\x7F]      # Remainder of identifier
@@ -374,6 +381,13 @@
                 'include': '#escapes'
               }
               {
+                'captures':
+                  '0':
+                    'patterns': [
+                      {
+                        'include': '#escapes'
+                      }
+                    ]
                 'match': '''(?x)
                   (?:[-a-zA-Z_]    | [^\\x00-\\x7F])     # First letter
                   (?:[-a-zA-Z0-9_] | [^\\x00-\\x7F]      # Remainder of identifier
@@ -711,6 +725,13 @@
         'patterns': [
           {
             # Font-feature name
+            'captures':
+              '0':
+                'patterns': [
+                  {
+                    'include': '#escapes'
+                  }
+                ]
             'match': '''(?x)
               (?: [-a-zA-Z_]    | [^\\x00-\\x7F] )   # First letter
               (?: [-a-zA-Z0-9_] | [^\\x00-\\x7F]     # Remainder of identifier

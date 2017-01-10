@@ -1130,6 +1130,14 @@ describe 'CSS grammar', ->
           expect(tokens[7]).toEqual value: '-50.2%', scopes: ['source.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.percentage.css']
           expect(tokens[18]).toEqual value: '.25%', scopes: ['source.css', 'meta.at-rule.keyframes.body.css', 'entity.other.keyframe-offset.percentage.css']
 
+        it 'highlights escape sequences inside identifiers', ->
+          {tokens} = grammar.tokenizeLine '@keyframes A\\1F602Z'
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'keyframes', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'keyword.control.at-rule.keyframes.css']
+          expect(tokens[3]).toEqual value: 'A', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css']
+          expect(tokens[4]).toEqual value: '\\1F602', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css', 'constant.character.escape.codepoint.css']
+          expect(tokens[5]).toEqual value: 'Z', scopes: ['source.css', 'meta.at-rule.keyframes.header.css', 'variable.parameter.keyframe-list.css']
+
       describe '@supports', ->
         it 'tokenises feature queries', ->
           {tokens} = grammar.tokenizeLine('@supports (font-size: 1em) { }')
@@ -1674,6 +1682,16 @@ describe 'CSS grammar', ->
           expect(lines[2][10]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'punctuation.section.property-list.end.bracket.curly.css']
           expect(lines[3][0]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
 
+        it 'highlights escape sequences inside feature-names', ->
+          {tokens} = grammar.tokenizeLine('@swash{ s\\000077a\\73hy: 1; }')
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.swash.css', 'keyword.control.at-rule.swash.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'swash', scopes: ['source.css', 'meta.at-rule.swash.css', 'keyword.control.at-rule.swash.css']
+          expect(tokens[4]).toEqual value: 's', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+          expect(tokens[5]).toEqual value: '\\000077', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css', 'constant.character.escape.codepoint.css']
+          expect(tokens[6]).toEqual value: 'a', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+          expect(tokens[7]).toEqual value: '\\73', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css', 'constant.character.escape.codepoint.css']
+          expect(tokens[8]).toEqual value: 'hy', scopes: ['source.css', 'meta.at-rule.swash.css', 'meta.property-list.font-feature.css', 'variable.font-feature.css']
+
       describe '@page', ->
         it 'tokenises @page blocks correctly', ->
           {tokens} = grammar.tokenizeLine('@page :first { }')
@@ -1765,6 +1783,14 @@ describe 'CSS grammar', ->
           expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.counter-style.header.css', 'keyword.control.at-rule.counter-style.css', 'punctuation.definition.keyword.css']
           expect(lines[0][1]).toEqual value: 'counter-style', scopes: ['source.css', 'meta.at-rule.counter-style.header.css', 'keyword.control.at-rule.counter-style.css']
           expect(lines[1][0]).toEqual value: 'winners-list', scopes: ['source.css', 'meta.at-rule.counter-style.header.css', 'variable.parameter.style-name.css']
+
+        it "highlights escape sequences inside the style's name", ->
+          {tokens} = grammar.tokenizeLine '@counter-style A\\01F602z'
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.counter-style.header.css', 'keyword.control.at-rule.counter-style.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'counter-style', scopes: ['source.css', 'meta.at-rule.counter-style.header.css', 'keyword.control.at-rule.counter-style.css']
+          expect(tokens[3]).toEqual value: 'A', scopes: ['source.css', 'meta.at-rule.counter-style.header.css', 'variable.parameter.style-name.css']
+          expect(tokens[4]).toEqual value: '\\01F602', scopes: ['source.css', 'meta.at-rule.counter-style.header.css', 'variable.parameter.style-name.css', 'constant.character.escape.codepoint.css']
+          expect(tokens[5]).toEqual value: 'z', scopes: ['source.css', 'meta.at-rule.counter-style.header.css', 'variable.parameter.style-name.css']
 
       describe '@document', ->
         it 'correctly tokenises @document rules', ->
