@@ -437,22 +437,6 @@ describe 'CSS grammar', ->
         expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
         expect(tokens[1]).toEqual value: '_', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
 
-      it 'does not tokenize tokens containing unescaped ASCII punctuation or symbols other than "-" and "_"', ->
-        {tokens} = grammar.tokenizeLine '.B&W'
-        expect(tokens[0]).toEqual value: '.B&W', scopes: ['source.css', 'meta.selector.css']
-
-      it 'does not tokenize tokens beginning with [0-9]', ->
-        {tokens} = grammar.tokenizeLine '.666'
-        expect(tokens[0]).toEqual value: '.666', scopes: ['source.css', 'meta.selector.css']
-
-      it 'does not tokenize tokens beginning with "-" followed by [0-9]', ->
-        {tokens} = grammar.tokenizeLine '.-911-'
-        expect(tokens[0]).toEqual value: '.-911-', scopes: ['source.css', 'meta.selector.css']
-
-      it 'does not tokenize a token consisting of one hyphen', ->
-        {tokens} = grammar.tokenizeLine '.-'
-        expect(tokens[0]).toEqual value: '.-', scopes: ['source.css', 'meta.selector.css']
-
       it 'tokenises class selectors starting with an escape sequence', ->
         {tokens} = grammar.tokenizeLine '.\\33\\44-model {'
         expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
@@ -469,6 +453,30 @@ describe 'CSS grammar', ->
         expect(tokens[3]).toEqual value: 'tex', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
         expect(tokens[4]).toEqual value: '\\}', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'constant.character.escape.css']
         expect(tokens[6]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+
+      it 'marks a class invalid if it contains unescaped ASCII punctuation or symbols other than "-" and "_"', ->
+        {tokens} = grammar.tokenizeLine '.B&W{'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'B&W', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+
+      it 'marks a class invalid if it starts with ASCII digits ([0-9])', ->
+        {tokens} = grammar.tokenizeLine '.666{'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '666', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+
+      it 'marks a class invalid if it starts with "-" followed by ASCII digits', ->
+        {tokens} = grammar.tokenizeLine '.-911-{'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '-911-', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+
+      it 'marks a class invalid if it consists of only one hyphen', ->
+        {tokens} = grammar.tokenizeLine '.-{'
+        expect(tokens[0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '-', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
 
     describe 'id selectors', ->
       it 'tokenizes id selectors consisting of ASCII letters', ->
@@ -491,21 +499,29 @@ describe 'CSS grammar', ->
         expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css', 'punctuation.definition.entity.css']
         expect(tokens[1]).toEqual value: '--d3bug--', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.id.css']
 
-      it 'does not tokenize hash tokens containing ASCII punctuation or symbols other than "-" and "_"', ->
-        {tokens} = grammar.tokenizeLine '#sort!'
-        expect(tokens[0]).toEqual value: '#sort!', scopes: ['source.css', 'meta.selector.css']
+      it 'marks an id invalid if it contains ASCII punctuation or symbols other than "-" and "_"', ->
+        {tokens} = grammar.tokenizeLine '#sort!{'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: 'sort!', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
 
-      it 'does not tokenize hash tokens beginning with [0-9]', ->
-        {tokens} = grammar.tokenizeLine '#666'
-        expect(tokens[0]).toEqual value: '#666', scopes: ['source.css', 'meta.selector.css']
+      it 'marks an id invalid if it starts with ASCII digits ([0-9])', ->
+        {tokens} = grammar.tokenizeLine '#666{'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '666', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
 
-      it 'does not tokenize hash tokens beginning with "-" followed by [0-9]', ->
-        {tokens} = grammar.tokenizeLine '#-911-'
-        expect(tokens[0]).toEqual value: '#-911-', scopes: ['source.css', 'meta.selector.css']
+      it 'marks an id invalid if it starts with "-" followed by ASCII digits', ->
+        {tokens} = grammar.tokenizeLine '#-911-{'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '-911-', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
 
-      it 'does not tokenize a hash token consisting of one hyphen', ->
-        {tokens} = grammar.tokenizeLine '#-'
-        expect(tokens[0]).toEqual value: '#-', scopes: ['source.css', 'meta.selector.css']
+      it 'marks an id invalid if it consists of one hyphen only', ->
+        {tokens} = grammar.tokenizeLine '#-{'
+        expect(tokens[0]).toEqual value: '#', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css', 'punctuation.definition.entity.css']
+        expect(tokens[1]).toEqual value: '-', scopes: ['source.css', 'meta.selector.css', 'invalid.illegal.bad-identifier.css']
+        expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
 
       it 'tokenises ID selectors starting with an escape sequence', ->
         {tokens} = grammar.tokenizeLine '#\\33\\44-model {'
