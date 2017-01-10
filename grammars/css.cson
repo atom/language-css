@@ -1337,7 +1337,7 @@
             'name': 'keyword.other.unit.percentage.css'
           '2':
             'name': 'keyword.other.unit.${2:/downcase}.css'
-        'match': '''(?xi) (?<!\\w|-)
+        'match': '''(?xi) (?<![\\w-])
           [-+]?                               # Sign indicator
 
           (?:                                 # Numerals
@@ -1347,7 +1347,7 @@
 
           (?:                                 # Scientific notation
             (?<=[0-9])                        # Exponent must follow a digit
-            [Ee]                              # Exponent indicator
+            E                                 # Exponent indicator
             [-+]?                             # Possible sign indicator
             [0-9]+                            # Exponent value
           )?
@@ -1630,7 +1630,13 @@
       }
       {
         # Custom properties
-        'match': '--[\\w-]+'
+        'match': '''(?x) (?<![\\w-])
+          --
+          (?:[-a-zA-Z_]    | [^\\x00-\\x7F])     # First letter
+          (?:[-a-zA-Z0-9_] | [^\\x00-\\x7F]      # Remainder of identifier
+            |\\\\(?:[0-9a-fA-F]{1,6}|.)
+          )*
+        '''
         'name': 'variable.css'
       }
       {
