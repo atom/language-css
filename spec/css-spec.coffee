@@ -2041,6 +2041,15 @@ describe 'CSS grammar', ->
         expect(tokens[1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
         expect(tokens[2]).toEqual value: 'first-child', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
 
+      it "doesn't tokenise pseudo-classes if followed by a semicolon or closed bracket", ->
+        {tokens} = grammar.tokenizeLine('p{ left:left }')
+        expect(tokens[0]).toEqual value: 'p', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+        expect(tokens[1]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+        expect(tokens[3]).toEqual value: 'left', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+        expect(tokens[4]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+        expect(tokens[5]).toEqual value: 'left', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+        expect(tokens[7]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
+
       describe ':dir()', ->
         it 'tokenises :dir() and its keywords', ->
           lines = grammar.tokenizeLines """

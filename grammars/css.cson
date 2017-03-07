@@ -1566,7 +1566,7 @@
         | in-range|indeterminate|invalid|left|link|optional|out-of-range
         | read-only|read-write|required|right|root|scope|target|unresolved
         | valid|visited
-      )(?![\\w-])
+      )(?![\\w-]|\\s*[;}])
     '''
     'name': 'entity.other.attribute-name.pseudo-class.css'
   'pseudo-elements':
@@ -1599,7 +1599,7 @@
           | spelling-error
         )
       )
-      (?![\\w-])
+      (?![\\w-]|\\s*[;}])
     '''
     'name': 'entity.other.attribute-name.pseudo-element.css'
   'rule-list':
