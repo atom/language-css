@@ -186,7 +186,7 @@
       {
         # @media
         'begin': '(?i)(?=@media(\\s|\\(|/\\*|$))'
-        'end': '(?<=})'
+        'end': '(?<=})(?!\\G)'
         'patterns': [
           {
             'begin': '(?i)\\G(@)media'
@@ -224,7 +224,7 @@
       {
         # @counter-style
         'begin': '(?i)(?=@counter-style([\\s\'"{;]|/\\*|$))'
-        'end': '(?<=})'
+        'end': '(?<=})(?!\\G)'
         'patterns': [
           {
             'begin': '(?i)\\G(@)counter-style'
@@ -287,7 +287,7 @@
       {
         # @document
         'begin': '(?i)(?=@document([\\s\'"{;]|/\\*|$))'
-        'end': '(?<=})'
+        'end': '(?<=})(?!\\G)'
         'patterns': [
           {
             'begin': '(?i)\\G(@)document'
@@ -362,7 +362,7 @@
       {
         # @keyframes
         'begin': '(?i)(?=@keyframes([\\s\'"{;]|/\\*|$))'
-        'end': '(?<=})'
+        'end': '(?<=})(?!\\G)'
         'patterns': [
           {
             'begin': '(?i)\\G(@)keyframes'
@@ -437,7 +437,7 @@
       {
         # @supports
         'begin': '(?i)(?=@supports(\\s|\\(|/\\*|$))'
-        'end': '(?<=})|(?=;)'
+        'end': '(?<=})(?!\\G)|(?=;)'
         'patterns': [
           {
             'begin': '(?i)\\G(@)supports'
