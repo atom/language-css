@@ -902,6 +902,20 @@ describe 'CSS grammar', ->
           expect(tokens[18]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
           expect(tokens[20]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
 
+          {tokens} = grammar.tokenizeLine('h1 { }@media only screen { }h2 { }')
+          expect(tokens[0]).toEqual value: 'h1', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+          expect(tokens[2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+          expect(tokens[4]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
+          expect(tokens[5]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.header.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
+          expect(tokens[6]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.header.css', 'keyword.control.at-rule.media.css']
+          expect(tokens[8]).toEqual value: 'only', scopes: ['source.css', 'meta.at-rule.media.header.css', 'keyword.operator.logical.only.media.css']
+          expect(tokens[10]).toEqual value: 'screen', scopes: ['source.css', 'meta.at-rule.media.header.css', 'support.constant.media.css']
+          expect(tokens[12]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.media.body.css', 'punctuation.section.media.begin.bracket.curly.css']
+          expect(tokens[14]).toEqual value: '}', scopes: ['source.css', 'meta.at-rule.media.body.css', 'punctuation.section.media.end.bracket.curly.css']
+          expect(tokens[15]).toEqual value: 'h2', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+          expect(tokens[17]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+          expect(tokens[19]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
+
         it 'tokenises level 4 media-query syntax', ->
           lines = grammar.tokenizeLines """
             @media (min-width >= 0px)
