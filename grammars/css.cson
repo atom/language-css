@@ -361,11 +361,11 @@
       }
       {
         # @keyframes
-        'begin': '(?i)(?=@keyframes([\\s\'"{;]|/\\*|$))'
+        'begin': '(?i)(?=@(?:-(?:webkit|moz|o|ms)-)?keyframes([\\s\'"{;]|/\\*|$))'
         'end': '(?<=})(?!\\G)'
         'patterns': [
           {
-            'begin': '(?i)\\G(@)keyframes'
+            'begin': '(?i)\\G(@)(?:-(?:webkit|moz|o|ms)-)?keyframes'
             'beginCaptures':
               '0':
                 'name': 'keyword.control.at-rule.keyframes.css'
