@@ -1774,6 +1774,8 @@
               )*
               (?:                                    # Invalid punctuation
                 [!"'%&(*;<?@^`|\\]}]                 # - NOTE: We exempt `)` from the list of checked
+                |                                    #   symbols to avoid matching `:not(.invalid)`
+                / (?!\\*)                            # - Avoid invalidating the start of a comment
               )+
             )
             # Mark remainder of selector invalid
