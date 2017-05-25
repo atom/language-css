@@ -1356,8 +1356,9 @@
             (%)                               # - Percentage
             | ( deg|grad|rad|turn             # - Angle
               | Hz|kHz                        # - Frequency
-              | ch|cm|em|ex|in|mm|mozmm|pc|   # - Length
-                pt|px|q|rem|vh|vmax|vmin|vw
+              | ch|cm|em|ex|fr|in|mm|mozmm|   # - Length
+                pc|pt|px|q|rem|vh|vmax|vmin|
+                vw
               | dpi|dpcm|dppx                 # - Resolution
               | s|ms                          # - Time
               )
