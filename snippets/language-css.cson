@@ -9,7 +9,17 @@
     'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/@charset'
   '@font-face':
     'prefix': 'fontface'
-    'body': '@font-face {\n\t$1\n}$0'
+    'body': '''@font-face {
+    \tfont-family: ${1:FontName};
+    \tfont-weight: normal;
+    \tfont-style: normal;
+    \tsrc: url("${2:fontfile}.eot");
+    \tsrc: url("${2:fontfile}.eot#iefix") format("embedded-opentype"),
+    \t\turl("${2:fontfile}.woff2") format("woff2"),
+    \t\turl("${2:fontfile}.ttf") format("truetype"),
+    \t\turl("${2:fontfile}.woff") format("woff"),
+    \t\turl("${2:fontfile}.svg#${1:FontName}") format("svg");
+    }$3'''
     'description': 'Specify online fonts to display text on their web pages.'
     'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face'
    '@import':
