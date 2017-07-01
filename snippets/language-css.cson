@@ -14,7 +14,7 @@
     'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face'
    '@import':
     'prefix': 'import'
-    'body': '@import "$0"'
+    'body': '@import "$0";'
     'description': 'Import style rules from other style sheets.'
     'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/@import'
    '@keyframes':
