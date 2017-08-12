@@ -3522,17 +3522,14 @@ describe 'CSS grammar', ->
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
 
   describe "performance regressions", ->
-    beforeEach ->
-      waitsForPromise ->
-        atom.packages.activatePackage('language-html')
-
-    it "does not hang with the following input", ->
+    it "does not hang on invalid input preceding an equals sign", ->
       cssGrammar = atom.grammars.grammarForScopeName('source.css')
       grammar = atom.grammars.grammarForScopeName('text.html.basic')
 
+      # This works fine
+      cssGrammar.tokenizeLine('<![CDATA[啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"')
+
+      # This hangs
       start = Date.now()
-      grammar.tokenizeLines """
-        <style type="text/css"><![CDATA[]]></style>
-        <![CDATA[啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"="
-      """
+      cssGrammar.tokenizeLine('<![CDATA[啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"=')
       expect(Date.now() - start).toBeLessThan(5000)
