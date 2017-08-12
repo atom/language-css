@@ -3520,3 +3520,19 @@ describe 'CSS grammar', ->
       """
       for line in invalid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
+
+  describe "performance regressions", ->
+    beforeEach ->
+      waitsForPromise ->
+        atom.packages.activatePackage('language-html')
+
+    it "does not hang with the following input", ->
+      cssGrammar = atom.grammars.grammarForScopeName('source.css')
+      grammar = atom.grammars.grammarForScopeName('text.html.basic')
+
+      start = Date.now()
+      grammar.tokenizeLines """
+        <style type="text/css"><![CDATA[]]></style>
+        <![CDATA[啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"="
+      """
+      expect(Date.now() - start).toBeLessThan(5000)
