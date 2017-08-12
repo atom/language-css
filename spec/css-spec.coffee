@@ -3438,6 +3438,22 @@ describe 'CSS grammar', ->
       expect(tokens[2][10]).toEqual value: 'translateX', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
       expect(tokens[2][16]).toEqual value: 'scale', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.function.transform.css']
 
+  describe "performance regressions", ->
+    it "does not hang when tokenizing invalid input preceding an equals sign", ->
+      grammar = atom.grammars.grammarForScopeName('source.css')
+      start = Date.now()
+      grammar.tokenizeLine('<![CDATA[啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"=')
+      expect(Date.now() - start).toBeLessThan(5000)
+
+    it "does not hang when tokenizing accidental HTML tags", ->
+      start = Date.now()
+      grammar.tokenizeLines """
+        <body>
+          [}~#{'ÁÂÃÄÅÆÇÈÊËÍÎ'.repeat(100)}
+        </body>
+      """
+      expect(Date.now() - start).toBeLessThan(5000)
+
   describe "firstLineMatch", ->
     it "recognises Emacs modelines", ->
       valid = """
@@ -3520,10 +3536,3 @@ describe 'CSS grammar', ->
       """
       for line in invalid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
-
-  describe "performance regressions", ->
-    it "does not hang on invalid input preceding an equals sign", ->
-      grammar = atom.grammars.grammarForScopeName('source.css')
-      start = Date.now()
-      grammar.tokenizeLine('<![CDATA[啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"=')
-      expect(Date.now() - start).toBeLessThan(5000)
