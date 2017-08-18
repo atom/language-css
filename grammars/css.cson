@@ -1400,7 +1400,7 @@
           |sticky|stretch|strict|stroke|stroke-box|style|sub|subgrid|subpixel-antialiased|subtract|super|sw-resize|symbolic|table|table-caption|table-cell
           |table-column|table-column-group|table-footer-group|table-header-group|table-row|table-row-group|tabular-nums|tb|tb-rl|text|text-after-edge
           |text-before-edge|text-bottom|text-top|thick|thin|titling-caps|top|top-outside|touch|traditional|transparent|triangle|ultra-condensed|ultra-expanded
-          |under|underline|unicase|unset|uppercase|upright|use-glyph-orientation|use-script|verso|vertical|vertical-ideographic|vertical-lr|vertical-rl
+          |under|underline|unicase|unset|uppercase|upright|upleft|downright|downleft|use-glyph-orientation|use-script|verso|vertical|vertical-ideographic|vertical-lr|vertical-rl
           |vertical-text|view-box|visible|visibleFill|visiblePainted|visibleStroke|w-resize|wait|wavy|weight|whitespace|wider|words|wrap|wrap-reverse
           |x-large|x-small|xx-large|xx-small|zero|zoom-in|zoom-out)
           (?![\\w-])
