@@ -1563,7 +1563,7 @@
     'match': '''(?xi)
       (:)(:*)
       (?: active|any-link|checked|default|disabled|empty|enabled|first
-        | (?:first|last|only)-(?:child|of-type)|focus|fullscreen|host|hover
+        | (?:first|last|only)-(?:child|of-type)|focus|focus-within|fullscreen|host|hover
         | in-range|indeterminate|invalid|left|link|optional|out-of-range
         | read-only|read-write|required|right|root|scope|target|unresolved
         | valid|visited
