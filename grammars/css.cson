@@ -663,7 +663,8 @@
         'name': 'constant.character.escape.codepoint.css'
       }
       {
-        'match': '\\\\$\\n?'
+        'begin': '\\\\$\\s*'
+        'end': '^(?<!\\G)'
         'name': 'constant.character.escape.newline.css'
       }
       {
