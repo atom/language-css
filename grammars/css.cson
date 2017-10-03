@@ -2032,7 +2032,7 @@
         | mrow|ms|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstack|mstyle|msub|msubsup
         | msup|mtable|mtd|mtext|mtr|munder|munderover|semantics
       )
-      (?=[+~>\\s,.\\#|){:\\[]|/\\*|$)
+      (?=[+~>\\s,.\\#|){\\[]|/\\*|:[^\\s]|$)
     '''
     'name': 'entity.name.tag.css'
   'unicode-range':
