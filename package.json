@@ -1,7 +1,7 @@
 {
   "name": "language-css",
   "description": "CSS support in Atom",
-  "version": "0.42.7",
+  "version": "0.42.8",
   "engines": {
     "atom": "*",
     "node": "*"
