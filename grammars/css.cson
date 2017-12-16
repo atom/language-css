@@ -1023,7 +1023,7 @@
             'name': 'support.constant.text-direction.css'
           }
           {
-            'include': '#property-value'
+            'include': '#property-values'
           }
         ]
       }
