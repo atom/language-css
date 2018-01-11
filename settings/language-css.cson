@@ -4,6 +4,7 @@
     'commentEnd': '*/'
     'foldEndPattern': '(?<!\\*)\\*\\*/|^\\s*\\}|\\/*\\s*@end\\s*\\*\\/'
   'autocomplete':
+    'extraWordCharacters': '-'
     'symbols':
       'selector':
         'selector': '.css.selector'
