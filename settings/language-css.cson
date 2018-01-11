@@ -1,6 +1,5 @@
 '.source.css':
   'editor':
-    'nonWordCharacters': '/\\()"\':,.;<>~!#$@%^&*|+=[]{}`?…'
     'commentStart': '/*'
     'commentEnd': '*/'
     'foldEndPattern': '(?<!\\*)\\*\\*/|^\\s*\\}|\\/*\\s*@end\\s*\\*\\/'
