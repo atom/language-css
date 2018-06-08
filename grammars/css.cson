@@ -1482,10 +1482,10 @@
 
             # SVG attributes
             | alignment-baseline|baseline-shift|clip-rule|color-interpolation|color-interpolation-filters|color-profile
-            | color-rendering|dominant-baseline|enable-background|fill|fill-opacity|fill-rule|flood-color|flood-opacity
-            | glyph-orientation-horizontal|glyph-orientation-vertical|kerning|lighting-color|marker-end|marker-mid
-            | marker-start|shape-rendering|stop-color|stop-opacity|stroke|stroke-dasharray|stroke-dashoffset|stroke-linecap
-            | stroke-linejoin|stroke-miterlimit|stroke-opacity|stroke-width|text-anchor|x|y
+            | color-rendering|cx|cy|dominant-baseline|enable-background|fill|fill-opacity|fill-rule|flood-color|flood-opacity
+            | glyph-orientation-horizontal|glyph-orientation-vertical|height|kerning|lighting-color|marker-end|marker-mid
+            | marker-start|r|rx|ry|shape-rendering|stop-color|stop-opacity|stroke|stroke-dasharray|stroke-dashoffset|stroke-linecap
+            | stroke-linejoin|stroke-miterlimit|stroke-opacity|stroke-width|text-anchor|width|x|y
 
             # Not listed on MDN; presumably deprecated
             | adjust|after|align|align-last|alignment|alignment-adjust|appearance|attachment|azimuth|background-break
