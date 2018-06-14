@@ -584,6 +584,39 @@
             'include': '#string'
           }
         ]
+      },
+      {
+        # @custom-at-rule
+        'begin': '(?i)(?=@[\\w-]+(\\s|\\(|/\\*|$))'
+        'end': '(?<=})(?!\\G)'
+        'patterns': [
+          {
+            'begin': '(?i)\\G(@)[\\w-]+'
+            'beginCaptures':
+              '0':
+                'name': 'keyword.control.at-rule.css'
+              '1':
+                'name': 'punctuation.definition.keyword.css'
+            'end': '(?=\\s*[{;])'
+            'name': 'meta.at-rule.header.css'
+          }
+          {
+            'begin': '{'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.section.begin.bracket.curly.css'
+            'end': '}'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.section.end.bracket.curly.css'
+            'name': 'meta.at-rule.body.css'
+            'patterns': [
+              {
+                'include': '$self'
+              }
+            ]
+          }
+        ]
       }
     ]
   'color-keywords':
