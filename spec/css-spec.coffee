@@ -137,8 +137,8 @@ describe 'CSS grammar', ->
 
       it 'does not tokenise identifiers following an @ symbol', ->
         {tokens} = grammar.tokenizeLine('@some-weird-new-feature')
-        expect(tokens[0]).toEqual value: '@', scopes: ['source.css']
-        expect(tokens[1]).toEqual value: 'some-weird-new-feature', scopes: ['source.css', 'meta.selector.css']
+        expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css', 'punctuation.definition.keyword.css']
+        expect(tokens[1]).toEqual value: 'some-weird-new-feature', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css']
 
       it 'does not tokenise identifiers in unfamiliar functions', ->
         {tokens} = grammar.tokenizeLine('some-edgy-new-function()')
@@ -619,8 +619,8 @@ describe 'CSS grammar', ->
           expect(lines[0][0]).toEqual value: '/*', scopes: ['source.css', 'comment.block.css', 'punctuation.definition.comment.begin.css']
           expect(lines[0][1]).toEqual value: ' Not the first line ', scopes: ['source.css', 'comment.block.css']
           expect(lines[0][2]).toEqual value: '*/', scopes: ['source.css', 'comment.block.css', 'punctuation.definition.comment.end.css']
-          expect(lines[1][0]).toEqual value: '@', scopes: ['source.css']
-          expect(lines[1][1]).toEqual value: 'charset "UTF-8";', scopes: ['source.css', 'meta.selector.css']
+          expect(lines[1][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css', 'punctuation.definition.keyword.css']
+          expect(lines[1][1]).toEqual value: 'charset', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css']
 
         it 'highlights invalid @charset statements', ->
           lines = grammar.tokenizeLines " @charset 'US-ASCII';"
