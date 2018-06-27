@@ -1461,7 +1461,7 @@
             | grid|grid-area|grid-auto-columns|grid-auto-flow|grid-auto-rows|grid-column|grid-column-end|grid-column-gap
             | grid-column-start|grid-gap|grid-row|grid-row-end|grid-row-gap|grid-row-start|grid-template|grid-template-areas
             | grid-template-columns|grid-template-rows|height|hyphens|image-orientation|image-rendering|image-resolution
-            | ime-mode|inline-size|isolation|justify-content|left|letter-spacing|line-break|line-height|list-style
+            | ime-mode|inline-size|isolation|justify-self|justify-items|justify-content|left|letter-spacing|line-break|line-height|list-style
             | list-style-image|list-style-position|list-style-type|margin|margin-block-end|margin-block-start|margin-bottom
             | margin-inline-end|margin-inline-start|margin-left|margin-right|margin-top|mask|mask-clip|mask-composite
             | mask-image|mask-mode|mask-origin|mask-position|mask-repeat|mask-size|mask-type|max-block-size|max-height
