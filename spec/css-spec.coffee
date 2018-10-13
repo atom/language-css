@@ -27,7 +27,7 @@ describe 'CSS grammar', ->
       expect(tokens[6]).toEqual value: '+', scopes: ['source.css', 'meta.selector.css', 'keyword.operator.combinator.css']
       expect(tokens[10]).toEqual value: '~', scopes: ['source.css', 'meta.selector.css', 'keyword.operator.combinator.css']
 
-    it 'highlights deprecated combintors', ->
+    it 'highlights deprecated combinators', ->
       {tokens} = grammar.tokenizeLine '.sooo /deep/ >>>_.>>>'
       expect(tokens[3]).toEqual value: '/deep/', scopes: ['source.css', 'invalid.deprecated.combinator.css']
       expect(tokens[5]).toEqual value: '>>>', scopes: ['source.css', 'invalid.deprecated.combinator.css']
