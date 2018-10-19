@@ -1,0 +1,47 @@
+name: 'CSS'
+scopeName: 'source.css'
+type: 'tree-sitter'
+parser: 'tree-sitter-css'
+
+fileTypes: [
+  'css'
+]
+
+injectionRegExp: '(css|CSS)'
+
+folds: [
+  {
+    start: {index: 0, type: '{'},
+    end: {index: -1, type: '}'}
+  }
+  {
+    type: 'comment'
+  }
+]
+
+comments:
+  start: '/*'
+  end: '*/'
+
+scopes:
+  'stylesheet': 'source.css'
+  'comment': 'comment'
+
+  'tag_name': 'entity.name.tag'
+  'nesting_selector, universal_selector': 'entity.name.tag'
+  'class_name': 'entity.other.attribute-name.class'
+  'id_name': 'entity.other.attribute-name.id'
+  'function_name': 'entity.name.function'
+  'property_name': 'support.property-name'
+  'attribute_name': 'entity.other.attribute-name'
+
+  '"@media", "@import", "@charset", at_keyword': 'keyword.control.at-rule'
+
+  'string_value': 'string'
+  'color_value': 'constant.other.color'
+  'integer_value': 'numeric.constant'
+  'float_value': 'numeric.constant'
+
+  '"and", "or", "not"': 'keyword.operator'
+
+  'keyword_value, keyword_query': 'keyword.other'
