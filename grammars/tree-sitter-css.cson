@@ -31,7 +31,7 @@ scopes:
   'nesting_selector, universal_selector': 'entity.name.tag'
   'class_name': 'entity.other.attribute-name.class'
   'id_name': 'entity.other.attribute-name.id'
-  'function_name': 'entity.name.function'
+  'function_name': 'support.function'
   'property_name': 'support.property-name'
   'attribute_name': 'entity.other.attribute-name'
 
