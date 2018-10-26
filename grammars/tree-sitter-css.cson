@@ -35,7 +35,18 @@ scopes:
   'property_name': 'support.property-name'
   'attribute_name': 'entity.other.attribute-name'
 
-  '"@media", "@import", "@charset", at_keyword': 'keyword.control.at-rule'
+  '
+    "@media",
+    "@import",
+    "@charset",
+    "@namespace",
+    "@keyframes",
+    at_keyword
+  ': 'keyword.control.at-rule'
+
+  'to, from': 'keyword.control'
+
+  'important': 'keyword.other.important.css'
 
   'string_value': 'string'
   'color_value': 'constant.other.color'
@@ -45,5 +56,3 @@ scopes:
   'float_value > unit': 'keyword.other.unit'
 
   '"and", "or", "not"': 'keyword.operator'
-
-  'keyword_value, keyword_query': 'keyword.other'
