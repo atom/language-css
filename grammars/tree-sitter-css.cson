@@ -40,7 +40,9 @@ scopes:
   'string_value': 'string'
   'color_value': 'constant.other.color'
   'integer_value': 'numeric.constant'
+  'integer_value > unit': 'keyword.other.unit'
   'float_value': 'numeric.constant'
+  'float_value > unit': 'keyword.other.unit'
 
   '"and", "or", "not"': 'keyword.operator'
 
