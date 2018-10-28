@@ -55,4 +55,6 @@ scopes:
   'float_value': 'numeric.constant'
   'float_value > unit': 'keyword.other.unit'
 
+  'color_value > "#"': 'punctuation.definition.constant.css'
+
   '"and", "or", "not"': 'keyword.operator'
