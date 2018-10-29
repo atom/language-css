@@ -75,6 +75,8 @@ scopes:
     'support.constant.property-value.css'
   ]
 
+  'feature_name': 'support.type.property-name'
+
   'color_value > "#"': 'punctuation.definition.constant.css'
 
   'keyword_query': 'keyword.operator'
