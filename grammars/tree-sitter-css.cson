@@ -40,6 +40,7 @@ scopes:
     "@import",
     "@charset",
     "@namespace",
+    "@supports",
     "@keyframes",
     at_keyword
   ': 'keyword.control.at-rule'
