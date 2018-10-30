@@ -1,4 +1,6 @@
 '.source.css':
+  'core':
+    'useTreeSitterParsers': false
   'editor':
     'commentStart': '/*'
     'commentEnd': '*/'
