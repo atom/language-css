@@ -29,6 +29,14 @@ scopes:
 
   'tag_name': 'entity.name.tag'
   'nesting_selector, universal_selector': 'entity.name.tag'
+  'sibling_selector > "~"': 'keyword.operator.combinator'
+  'child_selector > ">"': 'keyword.operator.combinator'
+  'adjacent_sibling_selector > "+"': 'keyword.operator.combinator'
+  'attribute_selector > "^="': 'keyword.operator.pattern'
+  'attribute_selector > "|="': 'keyword.operator.pattern'
+  'attribute_selector > "~="': 'keyword.operator.pattern'
+  'attribute_selector > "$="': 'keyword.operator.pattern'
+  'attribute_selector > "*="': 'keyword.operator.pattern'
   'class_name': 'entity.other.attribute-name.class'
   'id_name': 'entity.other.attribute-name.id'
   'function_name': 'support.function'
@@ -78,6 +86,8 @@ scopes:
   'feature_name': 'support.type.property-name'
 
   'color_value > "#"': 'punctuation.definition.constant.css'
+  'id_selector > "#"': 'punctuation.definition.entity.css'
+  'selectors > ","': 'punctuation.separator.list.comma.css'
 
   '"and", "or", "not", "only"': 'keyword.operator'
   'keyword_query': 'keyword.operator'
