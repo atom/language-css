@@ -37,6 +37,7 @@ scopes:
   'attribute_selector > "~="': 'keyword.operator.pattern'
   'attribute_selector > "$="': 'keyword.operator.pattern'
   'attribute_selector > "*="': 'keyword.operator.pattern'
+  'attribute_selector > plain_value': 'string.unquoted.attribute-value'
   'class_name': 'entity.other.attribute-name.class'
   'id_name': 'entity.other.attribute-name.id'
   'function_name': 'support.function'
