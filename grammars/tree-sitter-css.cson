@@ -81,7 +81,7 @@ scopes:
 
   '"and", "or", "not", "only"': 'keyword.operator'
   'keyword_query': 'keyword.operator'
-  '"+"': 'keyword.operator'
-  '"-"': 'keyword.operator'
-  '"/"': 'keyword.operator'
-  '"*"': 'keyword.operator'
+  'binary_expression > "+"': 'keyword.operator'
+  'binary_expression > "-"': 'keyword.operator'
+  'binary_expression > "/"': 'keyword.operator'
+  'binary_expression > "*"': 'keyword.operator'
