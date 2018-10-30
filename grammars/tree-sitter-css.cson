@@ -79,7 +79,7 @@ scopes:
 
   'color_value > "#"': 'punctuation.definition.constant.css'
 
-  '"and", "or", "not"': 'keyword.operator'
+  '"and", "or", "not", "only"': 'keyword.operator'
   'keyword_query': 'keyword.operator'
   '"+"': 'keyword.operator'
   '"-"': 'keyword.operator'
