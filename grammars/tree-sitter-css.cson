@@ -45,6 +45,11 @@ scopes:
   'id_name': 'entity.other.attribute-name.id'
   'namespace_name': 'entity.namespace.name'
   'function_name': 'support.function'
+
+  'property_name, plain_value': [
+    {match: '^--', scopes: 'variable.css'}
+  ]
+
   'property_name': 'support.property-name'
   'attribute_name': 'entity.other.attribute-name'
 
