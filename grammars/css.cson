@@ -1378,7 +1378,7 @@
           |bidi-override|blink|block|block-axis|block-start|block-end|bold|bolder|border|border-box|both|bottom|bottom-outside|break-all|break-word|bullets
           |butt|capitalize|caption|cell|center|central|char|circle|clip|clone|close-quote|closest-corner|closest-side|col-resize|collapse|color|color-burn
           |color-dodge|column|column-reverse|common-ligatures|compact|condensed|contain|content|content-box|contents|context-menu|contextual|copy|cover
-          |crisp-edges|crispEdges|crosshair|cyclic|darken|dashed|decimal|default|dense|diagonal-fractions|difference|digits|disabled|disc|discretionary-ligatures
+          |crisp-edges|crispEdges|crosshair|cyclic|dark|darken|dashed|decimal|default|dense|diagonal-fractions|difference|digits|disabled|disc|discretionary-ligatures
           |distribute|distribute-all-lines|distribute-letter|distribute-space|dot|dotted|double|double-circle|downleft|downright|e-resize|each-line|ease|ease-in
           |ease-in-out|ease-out|economy|ellipse|ellipsis|embed|end|evenodd|ew-resize|exact|exclude|exclusion|expanded|extends|extra-condensed|extra-expanded
           |fallback|farthest-corner|farthest-side|fill|fill-available|fill-box|filled|fit-content|fixed|flat|flex|flex-end|flex-start|flip|forwards|freeze
@@ -1386,7 +1386,7 @@
           |historical-forms|historical-ligatures|horizontal|horizontal-tb|hue|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space
           |ideographic|inactive|infinite|inherit|initial|inline|inline-axis|inline-block|inline-end|inline-flex|inline-grid|inline-list-item|inline-start
           |inline-table|inset|inside|inter-character|inter-ideograph|inter-word|intersect|invert|isolate|isolate-override|italic|jis04|jis78|jis83
-          |jis90|justify|justify-all|kannada|keep-all|landscape|large|larger|left|lighten|lighter|line|line-edge|line-through|linear|linearRGB
+          |jis90|justify|justify-all|kannada|keep-all|landscape|large|larger|left|light|lighten|lighter|line|line-edge|line-through|linear|linearRGB
           |lining-nums|list-item|local|loose|lowercase|lr|lr-tb|ltr|luminance|luminosity|main-size|mandatory|manipulation|manual|margin-box|match-parent
           |match-source|mathematical|max-content|medium|menu|message-box|middle|min-content|miter|mixed|move|multiply|n-resize|narrower|ne-resize
           |nearest-neighbor|nesw-resize|newspaper|no-change|no-clip|no-close-quote|no-common-ligatures|no-contextual|no-discretionary-ligatures
@@ -1471,14 +1471,14 @@
             | overflow-wrap|overflow-[xy]|pad|padding|padding-block-end|padding-block-start|padding-bottom|padding-inline-end
             | padding-inline-start|padding-left|padding-right|padding-top|page-break-after|page-break-before|page-break-inside
             | perspective|perspective-origin|pointer-events|position|prefix|quotes|range|resize|right|ruby-align|ruby-merge
-            | ruby-position|scroll-behavior|scroll-snap-coordinate|scroll-snap-destination|scroll-snap-type|shape-image-threshold
-            | shape-margin|shape-outside|speak-as|src|suffix|symbols|system|tab-size|table-layout|text-align|text-align-last
-            | text-combine-upright|text-decoration|text-decoration-color|text-decoration-line|text-decoration-style|text-emphasis
-            | text-emphasis-color|text-emphasis-position|text-emphasis-style|text-indent|text-orientation|text-overflow
-            | text-rendering|text-shadow|text-transform|text-underline-position|top|touch-action|transform|transform-box
-            | transform-origin|transform-style|transition|transition-delay|transition-duration|transition-property
-            | transition-timing-function|unicode-bidi|unicode-range|user-zoom|vertical-align|visibility|white-space|widows
-            | width|will-change|word-break|word-spacing|word-wrap|writing-mode|z-index|zoom
+            | ruby-position|scrollbar-width|scrollbar-color|scroll-behavior|scroll-snap-coordinate|scroll-snap-destination
+            | scroll-snap-type|shape-image-threshold|shape-margin|shape-outside|speak-as|src|suffix|symbols|system|tab-size
+            | table-layout|text-align|text-align-last|text-combine-upright|text-decoration|text-decoration-color|text-decoration-line
+            | text-decoration-style|text-emphasis|text-emphasis-color|text-emphasis-position|text-emphasis-style|text-indent
+            | text-orientation|text-overflow|text-rendering|text-shadow|text-transform|text-underline-position|top|touch-action
+            | transform|transform-box|transform-origin|transform-style|transition|transition-delay|transition-duration
+            | transition-property|transition-timing-function|unicode-bidi|unicode-range|user-zoom|vertical-align|visibility
+            | white-space|widows|width|will-change|word-break|word-spacing|word-wrap|writing-mode|z-index|zoom
 
             # SVG attributes
             | alignment-baseline|baseline-shift|clip-rule|color-interpolation|color-interpolation-filters|color-profile
