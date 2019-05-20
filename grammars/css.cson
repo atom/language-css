@@ -586,8 +586,29 @@
         ]
       },
       {
+        # Single line @custom-at-rule terminated with `;`, such as
+        # @my-rule foo bar;
+        'begin': '(?i)(?=@[\\w-]+[^;]+;\s*$)'
+        'end': '(?<=;)(?!\\G)'
+        'patterns': [
+          {
+            'begin': '(?i)\\G(@)[\\w-]+'
+            'beginCaptures':
+              '0':
+                'name': 'keyword.control.at-rule.css'
+              '1':
+                'name': 'punctuation.definition.keyword.css'
+            'end': ';'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.terminator.rule.css'
+            'name': 'meta.at-rule.header.css'
+          }
+        ]
+      }
+      {
         # @custom-at-rule
-        'begin': '(?i)(?=@[\\w-]+(\\s|\\(|/\\*|$))'
+        'begin': '(?i)(?=@[\\w-]+(\\s|\\(|{|/\\*|$))'
         'end': '(?<=})(?!\\G)'
         'patterns': [
           {
