@@ -735,8 +735,10 @@ describe 'CSS grammar', ->
           expect(tokens[5]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.import.css', 'punctuation.terminator.rule.css']
 
           {tokens} = grammar.tokenizeLine('@import-file.css;')
-          expect(tokens[0]).toEqual value: '@', scopes: ['source.css']
-          expect(tokens[1]).toEqual value: 'import-file.css;', scopes: ['source.css', 'meta.selector.css']
+          expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css', 'punctuation.definition.keyword.css']
+          expect(tokens[1]).toEqual value: 'import-file', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css']
+          expect(tokens[2]).toEqual value: '.css', scopes: ['source.css', 'meta.at-rule.header.css']
+          expect(tokens[3]).toEqual value: ';', scopes: ['source.css', 'meta.at-rule.header.css', 'punctuation.terminator.rule.css']
 
         it 'matches a URL that starts on the next line', ->
           lines = grammar.tokenizeLines '@import\nurl("file.css");'
@@ -1953,6 +1955,38 @@ describe 'CSS grammar', ->
           expect(lines[1][5]).toEqual value: 'landscape', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
           expect(lines[1][6]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
           expect(lines[2][0]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
+
+      describe 'unknown at-rules', ->
+        it 'correctly parses single-line unknown at-rules closing with semicolons', ->
+          lines = grammar.tokenizeLines """
+            @foo;
+            @foo ;
+            @foo a;
+            @foo ();
+            @foo (a);
+          """
+          expect(lines[0][1]).toEqual value: 'foo', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css']
+
+          expect(lines[1][1]).toEqual value: 'foo', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css']
+
+          expect(lines[2][1]).toEqual value: 'foo', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css']
+          expect(lines[2][2]).toEqual value: ' a', scopes: ['source.css', 'meta.at-rule.header.css']
+
+          expect(lines[3][1]).toEqual value: 'foo', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css']
+          expect(lines[3][2]).toEqual value: ' ()', scopes: ['source.css', 'meta.at-rule.header.css']
+
+          expect(lines[4][1]).toEqual value: 'foo', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css']
+          expect(lines[4][2]).toEqual value: ' (a)', scopes: ['source.css', 'meta.at-rule.header.css']
+
+        it 'correctly parses single-line unknown at-rules closing with ;', ->
+          lines = grammar.tokenizeLines """
+            @foo bar;
+            .foo
+          """
+          expect(lines[0][1]).toEqual value: 'foo', scopes: ['source.css', 'meta.at-rule.header.css', 'keyword.control.at-rule.css']
+
+          expect(lines[1][0]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+          expect(lines[1][1]).toEqual value: 'foo', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
 
     describe 'capitalisation', ->
       it 'ignores case in at-rules', ->
