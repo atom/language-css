@@ -834,7 +834,7 @@ describe 'CSS grammar', ->
           expect(tokens[0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.media.header.css', 'keyword.control.at-rule.media.css', 'punctuation.definition.keyword.css']
           expect(tokens[1]).toEqual value: 'media', scopes: ['source.css', 'meta.at-rule.media.header.css', 'keyword.control.at-rule.media.css']
           expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.at-rule.media.header.css', 'punctuation.definition.parameters.begin.bracket.round.css']
-          expect(tokens[4]).toEqual value: 'max-device-width', scopes: ['source.css', 'meta.at-rule.media.header.css', 'invalid.deprecated.media.css']
+          expect(tokens[4]).toEqual value: 'max-device-width', scopes: ['source.css', 'meta.at-rule.media.header.css', 'support.type.property-name.media.css']
           expect(tokens[5]).toEqual value: ':', scopes: ['source.css', 'meta.at-rule.media.header.css', 'punctuation.separator.key-value.css']
           expect(tokens[7]).toEqual value: '2', scopes: ['source.css', 'meta.at-rule.media.header.css', 'constant.numeric.css']
           expect(tokens[8]).toEqual value: 'px', scopes: ['source.css', 'meta.at-rule.media.header.css', 'constant.numeric.css', 'keyword.other.unit.px.css']
