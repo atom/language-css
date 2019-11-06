@@ -1524,12 +1524,13 @@
             | opacity|order|orientation|orphans|outline|outline-color|outline-offset|outline-style|outline-width|overflow
             | overflow-wrap|overflow-[xy]|pad|padding|padding-block-end|padding-block-start|padding-bottom|padding-inline-end
             | padding-inline-start|padding-left|padding-right|padding-top|page-break-after|page-break-before|page-break-inside
-            | perspective|perspective-origin|pointer-events|position|prefix|quotes|range|resize|right|ruby-align|ruby-merge
-            | ruby-position|scroll-behavior|scroll-snap-coordinate|scroll-snap-destination|scroll-snap-type|shape-image-threshold
-            | shape-margin|shape-outside|speak-as|src|suffix|symbols|system|tab-size|table-layout|text-align|text-align-last
-            | text-combine-upright|text-decoration|text-decoration-color|text-decoration-line|text-decoration-style|text-emphasis
-            | text-emphasis-color|text-emphasis-position|text-emphasis-style|text-indent|text-orientation|text-overflow
-            | text-rendering|text-shadow|text-transform|text-underline-position|top|touch-action|transform|transform-box
+            | perspective|perspective-origin|place-content|place-items|place-self|pointer-events|position|prefix|quotes|range
+            | resize|right|row-gap|ruby-align|ruby-merge|ruby-position|scroll-behavior|scroll-snap-coordinate
+            | scroll-snap-destination|scroll-snap-type|shape-image-threshold|shape-margin|shape-outside|speak-as|src|suffix
+            | symbols|system|tab-size|table-layout|text-align|text-align-last|text-combine-upright|text-decoration
+            | text-decoration-color|text-decoration-line|text-decoration-style|text-emphasis|text-emphasis-color
+            | text-emphasis-position|text-emphasis-style|text-indent|text-orientation|text-overflow|text-rendering
+            | text-shadow|text-transform|text-underline-position|top|touch-action|transform|transform-box
             | transform-origin|transform-style|transition|transition-delay|transition-duration|transition-property
             | transition-timing-function|unicode-bidi|unicode-range|user-zoom|vertical-align|visibility|white-space|widows
             | width|will-change|word-break|word-spacing|word-wrap|writing-mode|z-index|zoom

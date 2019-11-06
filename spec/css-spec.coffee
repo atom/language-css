@@ -3572,3 +3572,67 @@ describe 'CSS grammar', ->
       """
       for line in invalid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
+
+  describe "Missing supported properties regressions", ->
+    it "recognises place-items property as supported", ->
+      tokens = grammar.tokenizeLines 'a { place-items: center center; }'
+      expect(tokens[0][0]).toEqual value: 'a', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+      expect(tokens[0][1]).toEqual value: ' ', scopes: ['source.css']
+      expect(tokens[0][2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+      expect(tokens[0][3]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][4]).toEqual value: 'place-items', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(tokens[0][5]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+      expect(tokens[0][6]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][7]).toEqual value: 'center', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      expect(tokens[0][8]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+      expect(tokens[0][9]).toEqual value: 'center', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      expect(tokens[0][10]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(tokens[0][11]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][12]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
+
+    it "recognises place-self property as supported", ->
+      tokens = grammar.tokenizeLines 'a { place-self: center center; }'
+      expect(tokens[0][0]).toEqual value: 'a', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+      expect(tokens[0][1]).toEqual value: ' ', scopes: ['source.css']
+      expect(tokens[0][2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+      expect(tokens[0][3]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][4]).toEqual value: 'place-self', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(tokens[0][5]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+      expect(tokens[0][6]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][7]).toEqual value: 'center', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      expect(tokens[0][8]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+      expect(tokens[0][9]).toEqual value: 'center', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      expect(tokens[0][10]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(tokens[0][11]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][12]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
+
+    it "recognises place-content property as supported", ->
+      tokens = grammar.tokenizeLines 'a { place-content: center center; }'
+      expect(tokens[0][0]).toEqual value: 'a', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+      expect(tokens[0][1]).toEqual value: ' ', scopes: ['source.css']
+      expect(tokens[0][2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+      expect(tokens[0][3]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][4]).toEqual value: 'place-content', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(tokens[0][5]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+      expect(tokens[0][6]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][7]).toEqual value: 'center', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      expect(tokens[0][8]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css']
+      expect(tokens[0][9]).toEqual value: 'center', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'support.constant.property-value.css']
+      expect(tokens[0][10]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(tokens[0][11]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][12]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
+
+    it "recognises row-gap property as supported", ->
+      tokens = grammar.tokenizeLines 'a { row-gap: 5px; }'
+      expect(tokens[0][0]).toEqual value: 'a', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+      expect(tokens[0][1]).toEqual value: ' ', scopes: ['source.css']
+      expect(tokens[0][2]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
+      expect(tokens[0][3]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][4]).toEqual value: 'row-gap', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
+      expect(tokens[0][5]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
+      expect(tokens[0][6]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][7]).toEqual value: '5', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css']
+      expect(tokens[0][8]).toEqual value: 'px', scopes: ['source.css', 'meta.property-list.css', 'meta.property-value.css', 'constant.numeric.css', 'keyword.other.unit.px.css']
+      expect(tokens[0][9]).toEqual value: ';', scopes: ['source.css', 'meta.property-list.css', 'punctuation.terminator.rule.css']
+      expect(tokens[0][10]).toEqual value: ' ', scopes: ['source.css', 'meta.property-list.css']
+      expect(tokens[0][11]).toEqual value: '}', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.end.bracket.curly.css']
