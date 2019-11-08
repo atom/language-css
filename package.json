@@ -4,7 +4,7 @@
   "keywords": [
     "tree-sitter"
   ],
-  "version": "0.44.0",
+  "version": "0.44.1",
   "engines": {
     "atom": "*",
     "node": "*"
