@@ -1196,7 +1196,7 @@
       '1':
         'name': 'support.type.property-name.media.css'
       '2':
-        'name': 'invalid.deprecated.media.css'
+        'name': 'support.type.property-name.media.css'
       '3':
         'name': 'support.type.vendored.property-name.media.css'
     'match': '''(?xi)
