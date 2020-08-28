@@ -1217,6 +1217,7 @@
           | scan
           | orientation
           | display-mode
+          | hover
         )
         |
         # Deprecated features
@@ -1276,6 +1277,7 @@
         | standalone
         | minimal-ui
         | browser
+        | hover
       )
       (?=\\s|\\)|$)
     '''
