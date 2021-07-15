@@ -1911,7 +1911,7 @@ describe 'CSS grammar', ->
 
         it 'tokenises them across lines', ->
           lines = grammar.tokenizeLines """
-            @VIEWPORT
+            @-O-VIEWPORT
             {
               zoom: 0.75;
               min-zoom: 0.5;
@@ -1919,7 +1919,7 @@ describe 'CSS grammar', ->
             }
           """
           expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.viewport.css', 'keyword.control.at-rule.viewport.css', 'punctuation.definition.keyword.css']
-          expect(lines[0][1]).toEqual value: 'VIEWPORT', scopes: ['source.css', 'meta.at-rule.viewport.css', 'keyword.control.at-rule.viewport.css']
+          expect(lines[0][1]).toEqual value: '-O-VIEWPORT', scopes: ['source.css', 'meta.at-rule.viewport.css', 'keyword.control.at-rule.viewport.css']
           expect(lines[1][0]).toEqual value: '{', scopes: ['source.css', 'meta.property-list.css', 'punctuation.section.property-list.begin.bracket.curly.css']
           expect(lines[2][1]).toEqual value: 'zoom', scopes: ['source.css', 'meta.property-list.css', 'meta.property-name.css', 'support.type.property-name.css']
           expect(lines[2][2]).toEqual value: ':', scopes: ['source.css', 'meta.property-list.css', 'punctuation.separator.key-value.css']
@@ -1937,12 +1937,12 @@ describe 'CSS grammar', ->
 
         it 'tokenises injected comments', ->
           lines = grammar.tokenizeLines """
-            @viewport/*{*/{/*
+            @-ms-viewport/*{*/{/*
             ==*/orientation: landscape;
             }
           """
           expect(lines[0][0]).toEqual value: '@', scopes: ['source.css', 'meta.at-rule.viewport.css', 'keyword.control.at-rule.viewport.css', 'punctuation.definition.keyword.css']
-          expect(lines[0][1]).toEqual value: 'viewport', scopes: ['source.css', 'meta.at-rule.viewport.css', 'keyword.control.at-rule.viewport.css']
+          expect(lines[0][1]).toEqual value: '-ms-viewport', scopes: ['source.css', 'meta.at-rule.viewport.css', 'keyword.control.at-rule.viewport.css']
           expect(lines[0][2]).toEqual value: '/*', scopes: ['source.css', 'meta.at-rule.viewport.css', 'comment.block.css', 'punctuation.definition.comment.begin.css']
           expect(lines[0][3]).toEqual value: '{', scopes: ['source.css', 'meta.at-rule.viewport.css', 'comment.block.css']
           expect(lines[0][4]).toEqual value: '*/', scopes: ['source.css', 'meta.at-rule.viewport.css', 'comment.block.css', 'punctuation.definition.comment.end.css']
