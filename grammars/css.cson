@@ -1493,8 +1493,8 @@
         'match': '''(?xi) (?<![\\w-])
           (?:
             # Standard CSS
-            additive-symbols|align-content|align-items|align-self|all|animation|animation-delay|animation-direction|animation-duration
-            | animation-fill-mode|animation-iteration-count|animation-name|animation-play-state|animation-timing-function|backdrop-filter
+            accent-color|additive-symbols|align-content|align-items|align-self|all|animation|animation-delay|animation-direction|animation-duration
+            | animation-fill-mode|animation-iteration-count|animation-name|animation-play-state|animation-timing-function|ascent-override|backdrop-filter
             | backface-visibility|background|background-attachment|background-blend-mode|background-clip|background-color|background-image
             | background-origin|background-position|background-position-[xy]|background-repeat|background-size|bleed|block-size|border
             | border-block-end|border-block-end-color|border-block-end-style|border-block-end-width|border-block-start|border-block-start-color
@@ -1508,7 +1508,7 @@
             | border-top-width|border-width|bottom|box-decoration-break|box-shadow|box-sizing|break-after|break-before|break-inside|caption-side
             | caret-color|clear|clip|clip-path|clip-rule|color|color-adjust|color-interpolation-filters|column-count|column-fill|column-gap
             | column-rule|column-rule-color|column-rule-style|column-rule-width|column-span|column-width|columns|contain|content|counter-increment
-            | counter-reset|cursor|direction|display|empty-cells|enable-background|fallback|fill|fill-opacity|fill-rule|filter|flex|flex-basis
+            | counter-reset|cursor|descent-override|direction|display|empty-cells|enable-background|fallback|fill|fill-opacity|fill-rule|filter|flex|flex-basis
             | flex-direction|flex-flow|flex-grow|flex-shrink|flex-wrap|float|flood-color|flood-opacity|font|font-display|font-family
             | font-feature-settings|font-kerning|font-language-override|font-optical-sizing|font-size|font-size-adjust|font-stretch
             | font-style|font-synthesis|font-variant|font-variant-alternates|font-variant-caps|font-variant-east-asian|font-variant-ligatures
@@ -1517,7 +1517,7 @@
             | grid-gap|grid-row|grid-row-end|grid-row-gap|grid-row-start|grid-template|grid-template-areas|grid-template-columns|grid-template-rows
             | hanging-punctuation|height|hyphens|image-orientation|image-rendering|image-resolution|ime-mode|initial-letter|initial-letter-align
             | inline-size|inset|inset-block|inset-block-end|inset-block-start|inset-inline|inset-inline-end|inset-inline-start|isolation
-            | justify-content|justify-items|justify-self|kerning|left|letter-spacing|lighting-color|line-break|line-clamp|line-height|list-style
+            | justify-content|justify-items|justify-self|kerning|left|letter-spacing|lighting-color|line-break|line-clamp|line-gap-override|line-height|list-style
             | list-style-image|list-style-position|list-style-type|margin|margin-block-end|margin-block-start|margin-bottom|margin-inline-end|margin-inline-start
             | margin-left|margin-right|margin-top|marker-end|marker-mid|marker-start|marks|mask|mask-border|mask-border-mode|mask-border-outset
             | mask-border-repeat|mask-border-slice|mask-border-source|mask-border-width|mask-clip|mask-composite|mask-image|mask-mode
@@ -1534,7 +1534,7 @@
             | scroll-margin-top|scroll-padding|scroll-padding-block|scroll-padding-block-end|scroll-padding-block-start|scroll-padding-bottom
             | scroll-padding-inline|scroll-padding-inline-end|scroll-padding-inline-start|scroll-padding-left|scroll-padding-right
             | scroll-padding-top|scroll-snap-align|scroll-snap-coordinate|scroll-snap-destination|scroll-snap-stop|scroll-snap-type
-            | scrollbar-color|scrollbar-gutter|scrollbar-width|shape-image-threshold|shape-margin|shape-outside|shape-rendering|size
+            | scrollbar-color|scrollbar-gutter|scrollbar-width|shape-image-threshold|shape-margin|shape-outside|shape-rendering|size|size-adjust
             | speak-as|src|stop-color|stop-opacity|stroke|stroke-dasharray|stroke-dashoffset|stroke-linecap|stroke-linejoin|stroke-miterlimit
             | stroke-opacity|stroke-width|suffix|symbols|system|tab-size|table-layout|text-align|text-align-last|text-anchor|text-combine-upright
             | text-decoration|text-decoration-color|text-decoration-line|text-decoration-skip|text-decoration-skip-ink|text-decoration-style
