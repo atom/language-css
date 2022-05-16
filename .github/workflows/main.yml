@@ -20,6 +20,7 @@ jobs:
     - name: Install windows-build-tools
       if: ${{ matrix.os == 'windows-latest' }}
       run: |
+        npm install node-gyp@latest 
         npm config set msvs_version 2019
     - name: Install dependencies
       run: npm i
