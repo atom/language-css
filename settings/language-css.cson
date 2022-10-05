@@ -41,3 +41,10 @@
           'description': "Creates a Color from hue (0-360), saturation (0-100%), lightness (0-100%), and alpha (0-1)."
           'descriptionMoreURL': 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsla()'
         }]
+
+'.source.css .variable.css':
+  'autocomplete':
+    'symbols':
+      'variable':
+        'selector': '.variable.css'
+        'typePriority': 2
