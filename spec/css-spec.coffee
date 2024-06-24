@@ -2215,6 +2215,36 @@ describe 'CSS grammar', ->
           expect(tokens[18]).toEqual value: '*/', scopes: ['source.css', 'meta.selector.css', 'comment.block.css', 'punctuation.definition.comment.end.css']
           expect(tokens[19]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.end.bracket.round.css']
 
+      describe ':is()', ->
+        it 'tokenises other selectors inside :is()', ->
+          {tokens} = grammar.tokenizeLine('*:is(.class-name):is(div) {}')
+          expect(tokens[1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[2]).toEqual value: 'is', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.begin.bracket.round.css']
+          expect(tokens[4]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+          expect(tokens[5]).toEqual value: 'class-name', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+          expect(tokens[6]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.end.bracket.round.css']
+          expect(tokens[7]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[8]).toEqual value: 'is', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[9]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.begin.bracket.round.css']
+          expect(tokens[10]).toEqual value: 'div', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+          expect(tokens[11]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.end.bracket.round.css']
+
+      describe ':where()', ->
+        it 'tokenises other selectors inside :where()', ->
+          {tokens} = grammar.tokenizeLine('*:where(.class-name):where(div) {}')
+          expect(tokens[1]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[2]).toEqual value: 'where', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[3]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.begin.bracket.round.css']
+          expect(tokens[4]).toEqual value: '.', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css', 'punctuation.definition.entity.css']
+          expect(tokens[5]).toEqual value: 'class-name', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.class.css']
+          expect(tokens[6]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.end.bracket.round.css']
+          expect(tokens[7]).toEqual value: ':', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css', 'punctuation.definition.entity.css']
+          expect(tokens[8]).toEqual value: 'where', scopes: ['source.css', 'meta.selector.css', 'entity.other.attribute-name.pseudo-class.css']
+          expect(tokens[9]).toEqual value: '(', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.begin.bracket.round.css']
+          expect(tokens[10]).toEqual value: 'div', scopes: ['source.css', 'meta.selector.css', 'entity.name.tag.css']
+          expect(tokens[11]).toEqual value: ')', scopes: ['source.css', 'meta.selector.css', 'punctuation.section.function.end.bracket.round.css']
+
       describe ':nth-*()', ->
         it 'tokenizes :nth-child()', ->
           tokens = grammar.tokenizeLines '''

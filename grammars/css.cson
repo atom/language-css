@@ -1147,7 +1147,7 @@
       }
       {
         # Logical / Selector-based
-        'begin': '(?i)((:)(?:not|has|matches))(\\()'
+        'begin': '(?i)((:)(?:not|has|matches|is|where))(\\()'
         'beginCaptures':
           '1':
             'name': 'entity.other.attribute-name.pseudo-class.css'
